@@ -193,13 +193,8 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
     public SwipeToLoadLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public SwipeToLoadLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SwipeToLoadLayout, defStyleAttr, defStyleRes);
+        super(context, attrs, defStyleAttr);
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SwipeToLoadLayout, defStyleAttr, 0);
         try {
             final int N = a.getIndexCount();
             for (int i = 0; i < N; i++) {
@@ -480,6 +475,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         } else {
             mOnRefreshCalled = false;
             setStatus(STATUS.STATUS_DEFAULT);
+            mCallback.complete();
             mAutoScroller.autoScroll(-mHeaderOffset, mRefreshingToDefaultScrollingDuration);
         }
     }
@@ -507,6 +503,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         } else {
             mOnRefreshCalled = false;
             setStatus(STATUS.STATUS_DEFAULT);
+            mCallback.complete();
             mAutoScroller.autoScroll(-mFooterOffset, mLoadingMoreToDefaultScrollingDuration);
         }
     }
@@ -558,6 +555,21 @@ public class SwipeToLoadLayout extends ViewGroup {
 
             if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadMoreStatus(mStatus)) {
                 ((SwipeTrigger) mFooterView).onSwipe(y);
+            }
+        }
+
+        @Override
+        public void complete() {
+            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
+                ((SwipeTrigger) mHeaderView).complete();
+            }
+
+            if (mTargetView != null && mTargetView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
+                ((SwipeTrigger) mTargetView).complete();
+            }
+
+            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
+                ((SwipeTrigger) mFooterView).complete();
             }
         }
 

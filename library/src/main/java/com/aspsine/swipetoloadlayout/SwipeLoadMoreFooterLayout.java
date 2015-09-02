@@ -36,6 +36,11 @@ public class SwipeLoadMoreFooterLayout extends FrameLayout implements SwipeLoadM
     }
 
     @Override
+    public void complete() {
+
+    }
+
+    @Override
     public void onReset() {
     }
 }
