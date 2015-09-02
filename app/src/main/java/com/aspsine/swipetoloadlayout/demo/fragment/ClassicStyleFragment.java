@@ -57,7 +57,6 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener 
         swipeToLoadLayout.setOnRefreshListener(this);
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
