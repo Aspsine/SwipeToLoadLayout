@@ -7,15 +7,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.aspsine.swipetoloadlayout.demo.R;
-import com.aspsine.swipetoloadlayout.demo.adapter.FriendAdapter;
-import com.aspsine.swipetoloadlayout.demo.model.Friend;
+import com.aspsine.swipetoloadlayout.demo.adapter.HeroAdapter;
+import com.aspsine.swipetoloadlayout.demo.model.Hero;
+import com.aspsine.swipetoloadlayout.demo.util.AssetUtils;
 import com.aspsine.swipetoloadlayout.demo.view.LoadAbleListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,7 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener 
 
     private LoadAbleListView listView;
 
-    private FriendAdapter mAdapter;
+    private HeroAdapter mAdapter;
 
     public ClassicStyleFragment() {
         // Required empty public constructor
@@ -38,7 +41,7 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new FriendAdapter();
+        mAdapter = new HeroAdapter();
     }
 
     @Override
@@ -73,19 +76,29 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mAdapter.append(getFriends());
+                String json = AssetUtils.getStringFromAsset(getActivity(), "characters.json");
+                List<Hero> heroes = new ArrayList<Hero>();
+                try {
+                    JSONObject jsonObject = new JSONObject(json);
+                    JSONArray jsonHeroes = jsonObject.getJSONArray("heroes");
+                    for (int i = 0; i < jsonHeroes.length(); i++) {
+                        JSONObject item = jsonHeroes.getJSONObject(i);
+                        Hero hero = new Hero();
+                        hero.setAvatar(item.getString("avatar"));
+                        hero.setName(item.getString("name"));
+                        heroes.add(hero);
+                    }
+                    JSONArray jsonSections = jsonObject.getJSONArray("sections");
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                mAdapter.append(heroes);
                 swipeToLoadLayout.setRefreshing(false);
             }
-        }, 3000);
-    }
-
-    private List<Friend> getFriends(){
-        List<Friend> friends = new ArrayList<Friend>();
-        for (int i = 0; i < 10; i++) {
-            Friend friend = new Friend(i + " "+ System.currentTimeMillis() , "https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/image/h%3D200/sign=d98b5134532c11dfc1d1b82353266255/342ac65c1038534340a011f69713b07ecb8088fe.jpg");
-            friends.add(friend);
-        }
-        return friends;
+        }, 4000);
     }
 
 }

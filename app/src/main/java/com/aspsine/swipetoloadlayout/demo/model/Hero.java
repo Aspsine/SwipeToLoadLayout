@@ -3,14 +3,14 @@ package com.aspsine.swipetoloadlayout.demo.model;
 /**
  * Created by Aspsine on 2015/9/2.
  */
-public class Friend {
+public class Hero implements Child{
     private String name;
     private String avatar;
 
-    public Friend() {
+    public Hero() {
     }
 
-    public Friend(String name, String avatar) {
+    public Hero(String name, String avatar) {
         this.name = name;
         this.avatar = avatar;
     }

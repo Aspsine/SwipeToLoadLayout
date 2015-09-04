@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aspsine.swipetoloadlayout.demo.R;
-import com.aspsine.swipetoloadlayout.demo.model.Friend;
+import com.aspsine.swipetoloadlayout.demo.model.Hero;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -17,27 +17,27 @@ import java.util.List;
 /**
  * Created by Aspsine on 2015/9/2.
  */
-public class FriendAdapter extends BaseAdapter {
-    private List<Friend> mFriends;
+public class HeroAdapter extends BaseAdapter {
+    private List<Hero> mHeroes;
 
-    public FriendAdapter() {
-        this.mFriends = new ArrayList<Friend>();
+    public HeroAdapter() {
+        this.mHeroes = new ArrayList<Hero>();
     }
 
-    public void append(List<Friend> friends) {
-        mFriends.clear();
-        mFriends.addAll(friends);
+    public void append(List<Hero> heros) {
+        mHeroes.clear();
+        mHeroes.addAll(heros);
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return mFriends.size();
+        return mHeroes.size();
     }
 
     @Override
-    public Friend getItem(int position) {
-        return mFriends.get(position);
+    public Hero getItem(int position) {
+        return mHeroes.get(position);
     }
 
     @Override
@@ -57,9 +57,9 @@ public class FriendAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        Friend friend = getItem(position);
-        holder.tvName.setText(friend.getName());
-        Picasso.with(parent.getContext()).load(friend.getAvatar()).resize(100, 100).into(holder.ivAvatar);
+        Hero hero = getItem(position);
+        holder.tvName.setText(hero.getName());
+        Picasso.with(parent.getContext()).load(hero.getAvatar()).resize(100, 100).into(holder.ivAvatar);
         return convertView;
     }
 

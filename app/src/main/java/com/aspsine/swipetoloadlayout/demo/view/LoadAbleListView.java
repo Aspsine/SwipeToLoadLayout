@@ -41,7 +41,7 @@ public class LoadAbleListView extends ListView implements RefreshAble, LoadMoreA
 
     @Override
     public boolean onCheckCanLoadMore() {
-        return true;
+        return false;
     }
 
     @Override

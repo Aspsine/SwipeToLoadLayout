@@ -1,0 +1,186 @@
+{
+  "heroes": [
+    {
+      "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/9/a0/54adb647b792d.png",
+      "name": "Ant-Man"
+    },
+    {
+      "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/c/00/54adb7c4e163b.png",
+      "name": "Black Panther"
+    },
+    {
+      "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/a/10/54adb9789bc28.png",
+      "name": "Captain Marvel"
+    },
+    {
+      "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/b/40/54adba004fe21.png",
+      "name": "Doctor Strange"
+    },
+    {
+      "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/f/40/54adba8b35f8b.png",
+      "name": "Inhumans"
+    }
+  ],
+  "sections": [
+    {
+      "name": "Top Marvel Heroes",
+      "heroes": [
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/9/30/538cd33e15ab7/standard_xlarge.jpg",
+          "name": "Spider-Man"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/c/10/537ba5ff07aa4/standard_xlarge.jpg",
+          "name": "Captain Marvel"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/5/a0/538615ca33ab0/standard_xlarge.jpg",
+          "name": "Hulk"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/5/a0/537bc7036ab02/standard_xlarge.jpg",
+          "name": "Thor"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/6/a0/55b6a25e654e6/standard_xlarge.jpg",
+          "name": "Iron Man"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/5/e0/537bb460046bd/standard_xlarge.jpg",
+          "name": "Luke Cage"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/9/10/537ba3f27a6e0/standard_xlarge.jpg",
+          "name": "Black Widow"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/6/90/537ba6d49472b/standard_xlarge.jpg",
+          "name": "Daredevil"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/3/50/537ba56d31087/standard_xlarge.jpg",
+          "name": "Captain America"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf/standard_xlarge.jpg",
+          "name": "Wolverine"
+        }
+      ]
+    },
+    {
+      "name": "Bring on the Bad Guys",
+      "heroes": [
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/2/03/537bc76411307/standard_xlarge.jpg",
+          "name": "Ultron"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/9/50/537bb3780cfd2/standard_xlarge.jpg",
+          "name": "Loki"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/2/03/526036550cd37/standard_xlarge.jpg",
+          "name": "Red Skull"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/5/03/5390dc2225782/standard_xlarge.jpg",
+          "name": "Mystique"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/a/10/537bc68747ccf/standard_xlarge.jpg",
+          "name": "Thanos"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/2/f0/5260363fc40f2/standard_xlarge.jpg",
+          "name": "Ronan"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/3/b0/5261a7e53f827/standard_xlarge.jpg",
+          "name": "Magneto"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/3/60/53176bb096d17/standard_xlarge.jpg",
+          "name": "Dr. Doom"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/f/40/538cf0c2acdd9/standard_xlarge.jpg",
+          "name": "Green Goblin"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/e/03/526952357d91c/standard_xlarge.jpg",
+          "name": "Black Cat"
+        }
+      ]
+    },
+    {
+      "name": "Women of Marvel",
+      "heroes": [
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/f/30/50fecad1f395b/standard_xlarge.jpg",
+          "name": "Black Widow"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/6/80/5269608c1be7a/standard_xlarge.jpg",
+          "name": "Captain Marvel (Carol Danvers)"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/c/30/537bb549bebd0/standard_xlarge.jpg",
+          "name": "Medusa"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/5/b0/548730dac2a40/standard_xlarge.jpg",
+          "name": "Ms. Marvel (Kamala Khan)"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/6/70/5261a7d7c394b/standard_xlarge.jpg",
+          "name": "Scarlet Witch"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/7/20/527bb5d64599e/standard_xlarge.jpg",
+          "name": "She-Hulk (Jennifer Walters)"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/6/40/526963dad214d/standard_xlarge.jpg",
+          "name": "Storm"
+        }
+      ]
+    },
+    {
+      "name": "Titanic Teams",
+      "heroes": [
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/3/a0/537ba3793915b/standard_xlarge.jpg",
+          "name": "Avengers"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/c/10/537babe1c1f66/standard_xlarge.jpg",
+          "name": "Guardians of the Galaxy"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/8/03/510c08f345938/standard_xlarge.jpg",
+          "name": "X-Men"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/3/80/526031e9c785a/standard_xlarge.jpg",
+          "name": "Defenders"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/9/60/50febc4f55525/standard_xlarge.jpg",
+          "name": "Fantastic Four"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/3/30/539f01b910d91/standard_xlarge.jpg",
+          "name": "Brotherhood of Evil Mutants"
+        },
+        {
+          "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/5/70/526033bb40a5e/standard_xlarge.jpg",
+          "name": "Illuminati"
+        },
+        {
+          "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/5/a0/526033a73dca3/standard_xlarge.jpg",
+          "name": "Inhumans"
+        }
+      ]
+    }
+  ]
+}
