@@ -49,7 +49,7 @@ public class HeroAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_friend, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_hero, parent, false);
             holder = new ViewHolder();
             holder.ivAvatar = (ImageView) convertView.findViewById(R.id.ivAvatar);
             holder.tvName = (TextView) convertView.findViewById(R.id.tvName);

@@ -5,25 +5,23 @@ import java.util.List;
 /**
  * Created by aspsine on 15/9/4.
  */
-public class Section implements Parent<String,Hero> {
+public class Section {
+    private String name;
+    private List<Hero> heroes;
 
-    @Override
-    public List<Hero> getChildren() {
-        return null;
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public void setChildren(List<Hero> heros) {
-
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    public String getParent() {
-        return null;
+    public List<Hero> getHeroes() {
+        return heroes;
     }
 
-    @Override
-    public void setParent(String parent) {
-
+    public void setHeroes(List<Hero> heroes) {
+        this.heroes = heroes;
     }
 }

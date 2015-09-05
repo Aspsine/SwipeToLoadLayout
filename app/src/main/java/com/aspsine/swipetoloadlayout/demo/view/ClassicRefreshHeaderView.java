@@ -76,6 +76,7 @@ public class ClassicRefreshHeaderView extends SwipeRefreshHeaderLayout {
         ivArrow.setVisibility(GONE);
         progressBar.setVisibility(GONE);
         ivSuccess.setVisibility(VISIBLE);
+        tvRefresh.setText("COMPLETE");
     }
 
     @Override

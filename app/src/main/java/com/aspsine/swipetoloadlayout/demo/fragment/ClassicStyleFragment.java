@@ -4,6 +4,7 @@ package com.aspsine.swipetoloadlayout.demo.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,10 @@ import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.aspsine.swipetoloadlayout.demo.R;
 import com.aspsine.swipetoloadlayout.demo.adapter.HeroAdapter;
+import com.aspsine.swipetoloadlayout.demo.adapter.SectionAdapter;
+import com.aspsine.swipetoloadlayout.demo.adapter.ViewPagerAdapter;
 import com.aspsine.swipetoloadlayout.demo.model.Hero;
+import com.aspsine.swipetoloadlayout.demo.model.Section;
 import com.aspsine.swipetoloadlayout.demo.util.AssetUtils;
 import com.aspsine.swipetoloadlayout.demo.view.LoadAbleListView;
 
@@ -32,7 +36,11 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener 
 
     private LoadAbleListView listView;
 
-    private HeroAdapter mAdapter;
+    private ViewPager viewPager;
+
+    private SectionAdapter mAdapter;
+
+    private ViewPagerAdapter mPagerAdapter;
 
     public ClassicStyleFragment() {
         // Required empty public constructor
@@ -41,7 +49,8 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new HeroAdapter();
+        mAdapter = new SectionAdapter();
+        mPagerAdapter = new ViewPagerAdapter();
     }
 
     @Override
@@ -56,6 +65,9 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener 
         super.onViewCreated(view, savedInstanceState);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
         listView = (LoadAbleListView) view.findViewById(R.id.listview);
+        viewPager = (ViewPager) LayoutInflater.from(view.getContext()).inflate(R.layout.layout_viewpager, listView, false);
+        viewPager.setAdapter(mPagerAdapter);
+        listView.addHeaderView(viewPager);
         listView.setAdapter(mAdapter);
         swipeToLoadLayout.setOnRefreshListener(this);
     }
@@ -78,6 +90,7 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener 
             public void run() {
                 String json = AssetUtils.getStringFromAsset(getActivity(), "characters.json");
                 List<Hero> heroes = new ArrayList<Hero>();
+                List<Section> sections = new ArrayList<Section>();
                 try {
                     JSONObject jsonObject = new JSONObject(json);
                     JSONArray jsonHeroes = jsonObject.getJSONArray("heroes");
@@ -88,17 +101,35 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener 
                         hero.setName(item.getString("name"));
                         heroes.add(hero);
                     }
-                    JSONArray jsonSections = jsonObject.getJSONArray("sections");
 
+
+                    JSONArray jsonSections = jsonObject.getJSONArray("sections");
+                    for (int i = 0; i < jsonSections.length(); i++) {
+                        JSONObject jsonSection = jsonSections.getJSONObject(i);
+                        Section section = new Section();
+                        section.setName(jsonSection.getString("name"));
+                        JSONArray jsonSectionHeroes = jsonSection.getJSONArray("heroes");
+                        List<Hero> sectionHeroes = new ArrayList<Hero>();
+                        for (int j = 0; j < jsonSectionHeroes.length(); j++) {
+                            JSONObject jsonSectionHero = jsonSectionHeroes.getJSONObject(j);
+                            Hero hero = new Hero();
+                            hero.setName(jsonSectionHero.getString("name"));
+                            hero.setAvatar(jsonSectionHero.getString("avatar"));
+                            sectionHeroes.add(hero);
+                        }
+                        section.setHeroes(sectionHeroes);
+                        sections.add(section);
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                mAdapter.append(heroes);
+                mAdapter.setList(sections);
+                mPagerAdapter.setList(heroes);
+                viewPager.setBackgroundDrawable(getResources().getDrawable(R.mipmap.bg_viewpager));
                 swipeToLoadLayout.setRefreshing(false);
             }
-        }, 4000);
+        }, 1000);
     }
 
 }

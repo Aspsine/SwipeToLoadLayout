@@ -51,7 +51,7 @@ public class LoadAbleListView extends ListView implements RefreshAble, LoadMoreA
 
     public boolean canChildScrollUp() {
         if (getCount() == 0 ||
-                (getFirstVisiblePosition() == 0 && getChildAt(0).getTop() >= 0)) {
+                (getFirstVisiblePosition() == 0 && getChildAt(0) != null && getChildAt(0).getTop() >= 0)) {
             return true;
         }
         return false;

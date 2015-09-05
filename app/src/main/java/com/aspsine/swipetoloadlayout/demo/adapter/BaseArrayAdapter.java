@@ -25,6 +25,7 @@ public abstract class BaseArrayAdapter<T> extends BaseAdapter {
 
     public void append(List<T> list) {
         this.mList.addAll(list);
+        notifyDataSetChanged();
     }
 
     @Override

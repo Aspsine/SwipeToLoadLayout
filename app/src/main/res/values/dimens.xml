@@ -4,5 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="toolbar_elevation">8dp</dimen>
 
+    <dimen name="hero_avatar_size">120dp</dimen>
+    <dimen name="hero_avatar_border">3dp</dimen>
     <dimen name="refresh_header_height_classic">80dp</dimen>
+
 </resources>
