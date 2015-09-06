@@ -5,7 +5,9 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <include layout="@layout/layout_toolbar" />
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar" />
 
     <FrameLayout
         android:id="@+id/container"

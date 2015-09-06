@@ -1,9 +1,7 @@
 package com.aspsine.swipetoloadlayout;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Build;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -100,18 +98,6 @@ public class SwipeToLoadLayout extends ViewGroup {
      * indicate whither is loading
      */
     private boolean mLoading;
-
-    /**
-     * prevent multi-callback.
-     * make sure just call {@code mRefreshListener.onRefresh()} once
-     */
-    private boolean mOnRefreshCalled;
-
-    /**
-     * prevent multi-callback
-     * make sure just call {@code mRefreshListener.onLoadMore()} once
-     */
-    private boolean mOnLoadMoreCalled;
 
     /**
      * <b>ATTRIBUTE:</b>
@@ -466,17 +452,25 @@ public class SwipeToLoadLayout extends ViewGroup {
             }
             setStatus(STATUS.STATUS_REFRESHING);
             int duration;
-            if (mHeaderOffset > mHeaderHeight) {
+            if (mHeaderOffset > mRefreshTriggerOffset) {
                 duration = mReleaseToRefreshingScrollingDuration;
             } else {
                 duration = mDefaultToRefreshingScrollingDuration;
             }
             mAutoScroller.autoScroll(mHeaderHeight - mHeaderOffset, duration);
         } else {
-            mOnRefreshCalled = false;
-            setStatus(STATUS.STATUS_DEFAULT);
-            mCallback.complete();
-            mAutoScroller.autoScroll(-mHeaderOffset, mRefreshingToDefaultScrollingDuration);
+            if (STATUS.isRefreshing(mStatus)) {
+                setStatus(STATUS.STATS_REFRESH_COMPLETE);
+                mRefreshCallback.complete();
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAutoScroller.autoScroll(-mHeaderOffset, mRefreshingToDefaultScrollingDuration);
+                    }
+                }, 300);
+            } else if (STATUS.isSwipingToRefresh(mStatus)) {
+                mAutoScroller.autoScroll(-mHeaderOffset, mRefreshingToDefaultScrollingDuration);
+            }
         }
     }
 
@@ -494,17 +488,25 @@ public class SwipeToLoadLayout extends ViewGroup {
             }
             setStatus(STATUS.STATUS_LOADING_MORE);
             int duration;
-            if (-mFooterOffset > mFooterHeight) {
+            if (-mFooterOffset > mLoadMoreTriggerOffset) {
                 duration = mReleaseToLoadingMoreScrollingDuration;
             } else {
                 duration = mDefaultToLoadingMoreScrollingDuration;
             }
             mAutoScroller.autoScroll(-mFooterOffset - mFooterHeight, duration);
         } else {
-            mOnRefreshCalled = false;
-            setStatus(STATUS.STATUS_DEFAULT);
-            mCallback.complete();
-            mAutoScroller.autoScroll(-mFooterOffset, mLoadingMoreToDefaultScrollingDuration);
+            if (STATUS.isLoadingMore(mStatus)) {
+                setStatus(STATUS.STATUS_LOAD_MORE_COMPLETE);
+                mLoadMoreCallback.complete();
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAutoScroller.autoScroll(-mFooterOffset, mLoadingMoreToDefaultScrollingDuration);
+                    }
+                }, 300);
+            } else if (STATUS.isSwipingToLoadMore(mStatus)) {
+                mAutoScroller.autoScroll(-mFooterOffset, mLoadingMoreToDefaultScrollingDuration);
+            }
         }
     }
 
@@ -516,60 +518,36 @@ public class SwipeToLoadLayout extends ViewGroup {
     private void autoScrollFinished(boolean autoScrollAbort) {
         if (mLoading) {
             if (STATUS.isRefreshing(mStatus) && !autoScrollAbort) {
-                mCallback.onRefresh();
+                mRefreshCallback.onRefresh();
             } else if (STATUS.isLoadingMore(mStatus) && !autoScrollAbort) {
-                mCallback.onLoadMore();
-            }
-        } else {
-            if (STATUS.isStatusDefault(mStatus) && !autoScrollAbort) {
-                mCallback.onReset();
+                mLoadMoreCallback.onLoadMore();
             }
         }
     }
 
-    Callback mCallback = new Callback() {
+    RefreshCallback mRefreshCallback = new RefreshCallback() {
         @Override
         public void onPrepare() {
             if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
+                mHeaderView.setVisibility(VISIBLE);
                 ((SwipeTrigger) mHeaderView).onPrepare();
-            }
-
-            if (mTargetView != null && mTargetView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
-                ((SwipeTrigger) mTargetView).onPrepare();
-            }
-
-            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
-                ((SwipeTrigger) mFooterView).onPrepare();
             }
         }
 
         @Override
         public void onSwipe(int y) {
             if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isRefreshStatus(mStatus)) {
+                if (mHeaderView.getVisibility() == GONE || mHeaderView.getVisibility() == INVISIBLE) {
+                    mHeaderView.setVisibility(VISIBLE);
+                }
                 ((SwipeTrigger) mHeaderView).onSwipe(y);
-            }
-
-            if (mTargetView != null && mTargetView instanceof SwipeTrigger && !STATUS.isStatusDefault(mStatus)) {
-                ((SwipeTrigger) mTargetView).onSwipe(y);
-            }
-
-            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadMoreStatus(mStatus)) {
-                ((SwipeTrigger) mFooterView).onSwipe(y);
             }
         }
 
         @Override
         public void complete() {
-            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
+            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger) {
                 ((SwipeTrigger) mHeaderView).complete();
-            }
-
-            if (mTargetView != null && mTargetView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
-                ((SwipeTrigger) mTargetView).complete();
-            }
-
-            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
-                ((SwipeTrigger) mFooterView).complete();
             }
         }
 
@@ -578,21 +556,8 @@ public class SwipeToLoadLayout extends ViewGroup {
             if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isRefreshing(mStatus) && mLoading) {
                 ((SwipeRefreshTrigger) mHeaderView).onRefresh();
 
-                if (mRefreshListener != null && !mOnRefreshCalled) {
-                    mOnRefreshCalled = true;
+                if (mRefreshListener != null) {
                     mRefreshListener.onRefresh();
-                }
-            }
-        }
-
-        @Override
-        public void onLoadMore() {
-            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadingMore(mStatus) && mLoading) {
-                ((SwipeLoadMoreTrigger) mFooterView).onLoadMore();
-
-                if (mLoadMoreListener != null && !mOnLoadMoreCalled) {
-                    mOnLoadMoreCalled = true;
-                    mLoadMoreListener.onLoadMore();
                 }
             }
         }
@@ -601,17 +566,100 @@ public class SwipeToLoadLayout extends ViewGroup {
         public void onReset() {
             if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
                 ((SwipeTrigger) mHeaderView).onReset();
-            }
-
-            if (mTargetView != null && mTargetView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
-                ((SwipeTrigger) mTargetView).onReset();
-            }
-
-            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
-                ((SwipeTrigger) mFooterView).onReset();
+                mHeaderView.setVisibility(GONE);
             }
         }
     };
+
+    TargetCallback mTargetCallback = new TargetCallback() {
+
+        @Override
+        public void onPrepare() {
+            if (mTargetView != null && mTargetView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
+                ((SwipeTrigger) mTargetView).onPrepare();
+            }
+        }
+
+        @Override
+        public void onSwipe(int y) {
+            if (mTargetView != null && mTargetView instanceof SwipeTrigger && !STATUS.isStatusDefault(mStatus)) {
+                ((SwipeTrigger) mTargetView).onSwipe(y);
+            }
+        }
+
+        @Override
+        public void onRefresh() {
+            if (mTargetView != null && mTargetView instanceof SwipeRefreshTrigger && STATUS.isRefreshing(mStatus) && mLoading) {
+                ((SwipeRefreshTrigger) mTargetView).onRefresh();
+            }
+        }
+
+        @Override
+        public void onLoadMore() {
+            if (mTargetView != null && mTargetView instanceof SwipeLoadMoreTrigger && STATUS.isLoadingMore(mStatus) && mLoading) {
+                ((SwipeLoadMoreTrigger) mTargetView).onLoadMore();
+            }
+        }
+
+        @Override
+        public void complete() {
+            if (mTargetView != null && mTargetView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
+                ((SwipeTrigger) mTargetView).complete();
+            }
+        }
+
+        @Override
+        public void onReset() {
+            if (mTargetView != null && mTargetView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
+                ((SwipeTrigger) mTargetView).onReset();
+            }
+        }
+    };
+
+    LoadMoreCallback mLoadMoreCallback = new LoadMoreCallback() {
+
+        @Override
+        public void onPrepare() {
+            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
+                mFooterView.setVisibility(VISIBLE);
+                ((SwipeTrigger) mFooterView).onPrepare();
+            }
+        }
+
+        @Override
+        public void onSwipe(int y) {
+            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadMoreStatus(mStatus)) {
+                ((SwipeTrigger) mFooterView).onSwipe(y);
+            }
+        }
+
+        @Override
+        public void onLoadMore() {
+            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadingMore(mStatus) && mLoading) {
+                ((SwipeLoadMoreTrigger) mFooterView).onLoadMore();
+
+                if (mLoadMoreListener != null) {
+                    mLoadMoreListener.onLoadMore();
+                }
+            }
+        }
+
+        @Override
+        public void complete() {
+            if (mFooterView != null && mFooterView instanceof SwipeTrigger) {
+                ((SwipeTrigger) mFooterView).complete();
+            }
+        }
+
+        @Override
+        public void onReset() {
+            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
+                ((SwipeTrigger) mFooterView).onReset();
+                mFooterView.setVisibility(GONE);
+            }
+        }
+    };
+
 
     /**
      * TODO add gravity
@@ -682,6 +730,12 @@ public class SwipeToLoadLayout extends ViewGroup {
         } else {
             // more than three children: unsupported!
             throw new IllegalStateException("Children num must equal or less than 3");
+        }
+        if (mHeaderView != null){
+            mHeaderView.setVisibility(GONE);
+        }
+        if (mFooterView!=null){
+            mFooterView.setVisibility(GONE);
         }
     }
 
@@ -860,7 +914,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         if (mTargetView instanceof RefreshAble) {
             canRefresh = ((RefreshAble) mTargetView).onCheckCanRefresh();
         }
-        return canRefresh && mHasHeaderView;
+        return canRefresh && mHasHeaderView && mRefreshTriggerOffset > 0;
     }
 
     /**
@@ -873,7 +927,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         if (mTargetView instanceof LoadMoreAble) {
             canLoadMore = ((LoadMoreAble) mTargetView).onCheckCanLoadMore();
         }
-        return canLoadMore && mHasFooterView;
+        return canLoadMore && mHasFooterView && mLoadMoreTriggerOffset > 0;
     }
 
     @Override
@@ -881,8 +935,10 @@ public class SwipeToLoadLayout extends ViewGroup {
         final int action = MotionEventCompat.getActionMasked(event);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                // if autoScrolling then abort
-                if (!STATUS.isStatusDefault(mStatus)) {
+                // if status is not ing status && not compete status
+                // abort autoScrolling
+                if (!(STATUS.isRefreshComplete(mStatus) || STATUS.isLoadMoreComplete(mStatus))
+                        && !(STATUS.isRefreshing(mStatus) || STATUS.isLoadingMore(mStatus))) {
                     mAutoScroller.abortIfRunning();
                 }
 
@@ -890,10 +946,6 @@ public class SwipeToLoadLayout extends ViewGroup {
                 final float initDownY = getMotionEventY(event, mActivePointerId);
                 if (initDownY == INVALID_COORDINATE) {
                     return false;
-                }
-                // when you first touch call onPrepare()
-                if (STATUS.isStatusDefault(mStatus)) {
-                    mCallback.onPrepare();
                 }
                 mLastY = initDownY;
                 break;
@@ -910,20 +962,30 @@ public class SwipeToLoadLayout extends ViewGroup {
 
                 final float yDiff = y - mLastY;
                 mLastY = y;
+                // if status is refreshing or loading more
+                // or refresh or refresh complete or load more complete
+                // dispatchTouchEvent to child view
+                if (((STATUS.isRefreshing(mStatus) || STATUS.isLoadingMore(mStatus)) && mLoading)
+                        || (STATUS.isRefreshComplete(mStatus) || STATUS.isLoadMoreComplete(mStatus))) {
+                    return super.dispatchTouchEvent(event);
+                }
 
                 if (STATUS.isStatusDefault(mStatus)) {
                     if (yDiff > 0 && onCheckCanRefresh()) {
+                        mRefreshCallback.onPrepare();
                         setStatus(STATUS.STATUS_SWIPING_TO_REFRESH);
+
                     } else if (yDiff < 0 && onCheckCanLoadMore()) {
+                        mLoadMoreCallback.onPrepare();
                         setStatus(STATUS.STATUS_SWIPING_TO_LOAD_MORE);
                     }
                 }
+
+
                 if (STATUS.isSwipingToRefresh(mStatus)
                         || STATUS.isSwipingToLoadMore(mStatus)
                         || STATUS.isReleaseToRefresh(mStatus)
-                        || STATUS.isReleaseToLoadMore(mStatus)
-                        || STATUS.isRefreshing(mStatus)
-                        || STATUS.isLoadingMore(mStatus)) {
+                        || STATUS.isReleaseToLoadMore(mStatus)) {
                     //refresh or loadMore
                     fingerScroll(yDiff);
                 }
@@ -1016,17 +1078,16 @@ public class SwipeToLoadLayout extends ViewGroup {
         } else if (mLoadMoreFinalDragOffset >= mLoadMoreTriggerOffset && -tmpTargetOffset > mLoadMoreFinalDragOffset) {
             yScrolled = -mLoadMoreFinalDragOffset - mTargetOffset;
         }
-        updateScroll(yScrolled, false);
+        updateScroll(yScrolled);
     }
 
     /**
-     * Processed the scrolling(auto or physical) and append the diff values to mTargetOffset
+     * Process the scrolling(auto or physical) and append the diff values to mTargetOffset
      * I think it's the most busy and core method. :) a ha ha ha ha...
      *
      * @param yScrolled
-     * @param autoScroll
      */
-    private void updateScroll(final float yScrolled, boolean autoScroll) {
+    private void updateScroll(final float yScrolled) {
         if (yScrolled == 0) {
             return;
         }
@@ -1036,7 +1097,7 @@ public class SwipeToLoadLayout extends ViewGroup {
                 mHeaderOffset = mTargetOffset;
                 mFooterOffset = 0;
                 if (mTargetOffset < mRefreshTriggerOffset) {
-                    if (STATUS.isStatusDefault(mStatus)) {
+                    if (STATUS.isReleaseToRefresh(mStatus)) {
                         setStatus(STATUS.STATUS_SWIPING_TO_REFRESH);
                     }
                 } else if (mTargetOffset >= mRefreshTriggerOffset) {
@@ -1053,7 +1114,7 @@ public class SwipeToLoadLayout extends ViewGroup {
                 mFooterOffset = mTargetOffset;
                 mHeaderOffset = 0;
                 if (-mTargetOffset < mLoadMoreTriggerOffset) {
-                    if (STATUS.isStatusDefault(mStatus)) {
+                    if (STATUS.isReleaseToLoadMore(mStatus)) {
                         setStatus(STATUS.STATUS_SWIPING_TO_LOAD_MORE);
                     }
                 } else if (-mTargetOffset >= mLoadMoreTriggerOffset) {
@@ -1078,9 +1139,12 @@ public class SwipeToLoadLayout extends ViewGroup {
                 mLoading = false;
                 mHeaderOffset = 0;
                 mFooterOffset = 0;
-                setStatus(STATUS.STATUS_DEFAULT);
-                if (!autoScroll) {
-                    mCallback.onReset();
+                if (STATUS.isRefreshComplete(mStatus) || STATUS.isSwipingToRefresh(mStatus)) {
+                    setStatus(STATUS.STATUS_DEFAULT);
+                    mRefreshCallback.onReset();
+                } else if (STATUS.isLoadMoreComplete(mStatus) || STATUS.isSwipingToLoadMore(mStatus)) {
+                    setStatus(STATUS.STATUS_DEFAULT);
+                    mLoadMoreCallback.onReset();
                 }
             }
         }
@@ -1092,7 +1156,12 @@ public class SwipeToLoadLayout extends ViewGroup {
             mFooterOffset = 0;
             setStatus(STATUS.STATUS_DEFAULT);
         }
-        mCallback.onSwipe(mTargetOffset);
+        Log.i(TAG, "mTargetOffset:" + mTargetOffset + "; Status=" + STATUS.getStatus(mStatus));
+        if (mTargetOffset > 0 && !STATUS.isRefreshComplete(mStatus)) {
+            mRefreshCallback.onSwipe(mTargetOffset);
+        } else if (mTargetOffset < 0 && !STATUS.isLoadMoreComplete(mStatus)) {
+            mLoadMoreCallback.onSwipe(mTargetOffset);
+        }
         layoutChildren();
         invalidate();
     }
@@ -1107,10 +1176,10 @@ public class SwipeToLoadLayout extends ViewGroup {
         } else if (STATUS.isSwipingToLoadMore(mStatus)) {
             // simply return
             setLoadingMore(false);
-        } else if (STATUS.isReleaseToRefresh(mStatus) || STATUS.isRefreshing(mStatus)) {
+        } else if (STATUS.isReleaseToRefresh(mStatus)) {
             // return to header height and perform refresh
             setRefreshing(true);
-        } else if (STATUS.isReleaseToLoadMore(mStatus) || STATUS.isLoadingMore(mStatus)) {
+        } else if (STATUS.isReleaseToLoadMore(mStatus)) {
             // return to footer height and perform loadMore
             setLoadingMore(true);
         }
@@ -1163,7 +1232,7 @@ public class SwipeToLoadLayout extends ViewGroup {
                 finish();
             } else {
                 mmLastY = currY;
-                updateScroll(yDiff, true);
+                updateScroll(yDiff);
                 post(this);
             }
         }
@@ -1195,7 +1264,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         /**
          * The param yScrolled here isn't final pos of y.
          * It's just like the yScrolled param in the
-         * {@link #updateScroll(float yScrolled, boolean autoScroll)}
+         * {@link #updateScroll(float yScrolled)}
          *
          * @param yScrolled
          * @param duration
@@ -1213,10 +1282,17 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
     /**
-     * Callback to implements swipe triggers
+     * RefreshCallback to implements swipe triggers
      */
-    abstract class Callback implements SwipeTrigger, SwipeRefreshTrigger, SwipeLoadMoreTrigger {
+    abstract class RefreshCallback implements SwipeTrigger, SwipeRefreshTrigger {
     }
+
+    abstract class TargetCallback implements SwipeTrigger, SwipeRefreshTrigger, SwipeLoadMoreTrigger {
+    }
+
+    abstract class LoadMoreCallback implements SwipeTrigger, SwipeLoadMoreTrigger {
+    }
+
 
     /**
      * Set the current status for better control
@@ -1225,7 +1301,7 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     private void setStatus(byte status) {
         mStatus = status;
-//        STATUS.printStatus(status);
+        STATUS.printStatus(status);
     }
 
     /**
@@ -1233,7 +1309,8 @@ public class SwipeToLoadLayout extends ViewGroup {
      * enum of status
      */
     private final static class STATUS {
-        private static final byte STATUS_REFRESH_RETURNING = -4;
+        private static final byte STATUS_REFRESH_RETURNING = -5;
+        private static final byte STATS_REFRESH_COMPLETE = -4;
         private static final byte STATUS_REFRESHING = -3;
         private static final byte STATUS_RELEASE_TO_REFRESH = -2;
         private static final byte STATUS_SWIPING_TO_REFRESH = -1;
@@ -1241,7 +1318,8 @@ public class SwipeToLoadLayout extends ViewGroup {
         private static final byte STATUS_SWIPING_TO_LOAD_MORE = 1;
         private static final byte STATUS_RELEASE_TO_LOAD_MORE = 2;
         private static final byte STATUS_LOADING_MORE = 3;
-        private static final byte STATUS_LOAD_MORE_RETURNING = 4;
+        private static final byte STATUS_LOAD_MORE_COMPLETE = 4;
+        private static final byte STATUS_LOAD_MORE_RETURNING = 5;
 
         private static boolean isRefreshing(final byte status) {
             return status == STATUS.STATUS_REFRESHING;
@@ -1249,6 +1327,14 @@ public class SwipeToLoadLayout extends ViewGroup {
 
         private static boolean isLoadingMore(final byte status) {
             return status == STATUS.STATUS_LOADING_MORE;
+        }
+
+        private static boolean isRefreshComplete(final byte status) {
+            return status == STATS_REFRESH_COMPLETE;
+        }
+
+        private static boolean isLoadMoreComplete(final byte status) {
+            return status == STATUS_LOAD_MORE_COMPLETE;
         }
 
         @SuppressWarnings({"unused"})
@@ -1295,6 +1381,9 @@ public class SwipeToLoadLayout extends ViewGroup {
                 case STATUS_REFRESH_RETURNING:
                     statusInfo = "status_refresh_returning";
                     break;
+                case STATS_REFRESH_COMPLETE:
+                    statusInfo = "stats_refresh_complete";
+                    break;
                 case STATUS_REFRESHING:
                     statusInfo = "status_refreshing";
                     break;
@@ -1316,6 +1405,9 @@ public class SwipeToLoadLayout extends ViewGroup {
                 case STATUS_LOADING_MORE:
                     statusInfo = "status_loading_more";
                     break;
+                case STATUS_LOAD_MORE_COMPLETE:
+                    statusInfo = "status_load_more_complete";
+                    break;
                 case STATUS_LOAD_MORE_RETURNING:
                     statusInfo = "status_load_more_returning";
                     break;
@@ -1327,7 +1419,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
 
         private static void printStatus(int status) {
-            Log.d(TAG, getStatus(status));
+            Log.d(TAG, "printStatus:" + getStatus(status));
         }
     }
 }

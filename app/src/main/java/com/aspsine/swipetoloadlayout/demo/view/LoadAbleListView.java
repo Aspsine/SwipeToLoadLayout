@@ -1,11 +1,9 @@
 package com.aspsine.swipetoloadlayout.demo.view;
 
 import android.content.Context;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.widget.AbsListView;
+import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.aspsine.swipetoloadlayout.LoadMoreAble;
 import com.aspsine.swipetoloadlayout.RefreshAble;
@@ -17,7 +15,7 @@ public class LoadAbleListView extends ListView implements RefreshAble, LoadMoreA
 
     private boolean mRefreshAble = true;
 
-    private boolean mLoadMoreAble;
+    private boolean mLoadMoreAble = true;
 
     public LoadAbleListView(Context context) {
         super(context);
@@ -41,17 +39,26 @@ public class LoadAbleListView extends ListView implements RefreshAble, LoadMoreA
 
     @Override
     public boolean onCheckCanLoadMore() {
-        return true;
+        return canChildScrollUp() && mLoadMoreAble;
     }
 
     @Override
     public boolean onCheckCanRefresh() {
-        return canChildScrollUp() && mRefreshAble;
+        return canChildScrollDown() && mRefreshAble;
+    }
+
+    public boolean canChildScrollDown() {
+        if (getCount() == 0 ||
+                (getFirstVisiblePosition() == 0 && getChildAt(0) != null && getChildAt(0).getTop() >= 0)) {
+            return true;
+        }
+        return false;
     }
 
     public boolean canChildScrollUp() {
-        if (getCount() == 0 ||
-                (getFirstVisiblePosition() == 0 && getChildAt(0).getTop() >= 0)) {
+        int lastVisiblePosition = getLastVisiblePosition();
+        View lastView = getChildAt(getChildCount() - 1);
+        if (lastVisiblePosition == getCount() - 1 && lastView != null && lastView.getBottom() >= 0) {
             return true;
         }
         return false;

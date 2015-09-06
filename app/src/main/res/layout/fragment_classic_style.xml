@@ -1,70 +1,21 @@
 <com.aspsine.swipetoloadlayout.SwipeToLoadLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeToLoadLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color_swipe_to_load_layout"
+    app:default_to_refreshing_scrolling_duration="1000"
     app:swipe_style="classic"
-    app:default_to_refreshing_scrolling_duration="2000"
+    android:background="@color/style_window_background"
     tools:context="com.aspsine.swipetoloadlayout.demo.fragment.ClassicStyleFragment">
-
-    <com.aspsine.swipetoloadlayout.demo.view.ClassicRefreshHeaderView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/refresh_header_height_classic">
-
-            <ImageView
-                android:id="@+id/ivArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="48dp"
-                android:layout_toLeftOf="@+id/tvRefresh"
-                android:background="@mipmap/classic_arrow_down"/>
-
-            <ProgressBar
-                android:id="@+id/progressbar"
-                style="@android:style/Widget.ProgressBar.Small.Inverse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="48dp"
-                android:layout_toLeftOf="@+id/tvRefresh" />
-
-            <ImageView
-                android:id="@+id/ivSuccess"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/refresh_success"
-                android:layout_marginRight="48dp"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/tvRefresh"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/tvRefresh"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:textColor="@color/style_color_accent" />
-
-        </RelativeLayout>
-    </com.aspsine.swipetoloadlayout.demo.view.ClassicRefreshHeaderView>
+    <include layout="@layout/layout_classic_header"/>
 
     <com.aspsine.swipetoloadlayout.demo.view.LoadAbleListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/style_window_background" />
+        android:divider="@null"
+        android:clipToPadding="false" />
 
-    <com.aspsine.swipetoloadlayout.demo.view.ClassicLoadMoreFooterView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </com.aspsine.swipetoloadlayout.demo.view.ClassicLoadMoreFooterView>
+    <include layout="@layout/layout_classic_footer"/>
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
