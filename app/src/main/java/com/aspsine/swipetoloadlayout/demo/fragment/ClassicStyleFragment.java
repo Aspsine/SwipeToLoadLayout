@@ -13,7 +13,6 @@ import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.aspsine.swipetoloadlayout.demo.R;
-import com.aspsine.swipetoloadlayout.demo.adapter.HeroAdapter;
 import com.aspsine.swipetoloadlayout.demo.adapter.SectionAdapter;
 import com.aspsine.swipetoloadlayout.demo.adapter.ViewPagerAdapter;
 import com.aspsine.swipetoloadlayout.demo.model.Hero;
