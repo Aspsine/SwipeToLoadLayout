@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by aspsine on 15/9/4.
  */
-public class Characoters {
+public class Characters {
     private List<Hero> heroes;
 
     private List<Section> sections;
