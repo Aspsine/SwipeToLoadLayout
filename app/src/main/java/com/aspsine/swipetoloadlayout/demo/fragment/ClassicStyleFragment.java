@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.aspsine.swipetoloadlayout.demo.R;
@@ -30,7 +31,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClassicStyleFragment extends Fragment implements OnRefreshListener {
+public class ClassicStyleFragment extends Fragment implements OnRefreshListener, OnLoadMoreListener {
 
     private SwipeToLoadLayout swipeToLoadLayout;
 
@@ -70,17 +71,18 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener 
         listView.addHeaderView(viewPager);
         listView.setAdapter(mAdapter);
         swipeToLoadLayout.setOnRefreshListener(this);
+        swipeToLoadLayout.setOnLoadMoreListener(this);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        swipeToLoadLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeToLoadLayout.setRefreshing(true);
-            }
-        });
+//        swipeToLoadLayout.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                swipeToLoadLayout.setRefreshing(true);
+//            }
+//        });
     }
 
     @Override
@@ -129,7 +131,16 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener 
                 viewPager.setBackgroundDrawable(getResources().getDrawable(R.mipmap.bg_viewpager));
                 swipeToLoadLayout.setRefreshing(false);
             }
-        }, 1000);
+        }, 5000);
     }
 
+    @Override
+    public void onLoadMore() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeToLoadLayout.setLoadingMore(false);
+            }
+        }, 1000);
+    }
 }

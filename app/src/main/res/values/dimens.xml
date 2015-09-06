@@ -7,5 +7,6 @@
     <dimen name="hero_avatar_size">120dp</dimen>
     <dimen name="hero_avatar_border">3dp</dimen>
     <dimen name="refresh_header_height_classic">80dp</dimen>
+    <dimen name="load_more_footer_height_classic">60dp</dimen>
 
 </resources>

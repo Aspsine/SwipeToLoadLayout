@@ -32,8 +32,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="48dp"
             android:layout_toLeftOf="@+id/tvRefresh"
-            android:background="@mipmap/refresh_success"
-            android:visibility="gone" />
+            android:background="@mipmap/refresh_success" />
 
         <TextView
             android:id="@+id/tvRefresh"

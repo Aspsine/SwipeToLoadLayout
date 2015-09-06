@@ -3,6 +3,7 @@ package com.aspsine.swipetoloadlayout.demo.view;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,8 +25,6 @@ public class ClassicRefreshHeaderView extends SwipeRefreshHeaderLayout {
     private Drawable arrowUp;
     private Drawable arrowDown;
 
-    private boolean mRefreshing;
-
     public ClassicRefreshHeaderView(Context context) {
         this(context, null);
     }
@@ -44,7 +43,7 @@ public class ClassicRefreshHeaderView extends SwipeRefreshHeaderLayout {
 
     @Override
     public void onRefresh() {
-        mRefreshing = true;
+        Log.d("ClassicRefreshHeader", "onRefresh()");
         ivArrow.setVisibility(GONE);
         progressBar.setVisibility(VISIBLE);
         tvRefresh.setText("REFRESHING");
@@ -52,27 +51,29 @@ public class ClassicRefreshHeaderView extends SwipeRefreshHeaderLayout {
 
     @Override
     public void onPrepare() {
-        mRefreshing = false;
+        Log.d("ClassicRefreshHeader", "onPrepare()");
         ivSuccess.setVisibility(GONE);
     }
 
     @Override
     public void onSwipe(int y) {
-        if (!mRefreshing) {
-            ivArrow.setVisibility(VISIBLE);
-            progressBar.setVisibility(GONE);
-            if (y > mHeaderHeight) {
-                tvRefresh.setText("RELEASE TO REFRESH");
-                ivArrow.setBackgroundDrawable(arrowUp);
-            } else if (y < mHeaderHeight) {
-                ivArrow.setBackgroundDrawable(arrowDown);
-                tvRefresh.setText("SWIPE TO REFRESH");
-            }
+        Log.d("ClassicRefreshHeader", "onSwipe(" + y + ")");
+        ivArrow.setVisibility(VISIBLE);
+        progressBar.setVisibility(GONE);
+        ivSuccess.setVisibility(GONE);
+        if (y > mHeaderHeight) {
+            tvRefresh.setText("RELEASE TO REFRESH");
+            ivArrow.setBackgroundDrawable(arrowUp);
+        } else if (y < mHeaderHeight) {
+            ivArrow.setBackgroundDrawable(arrowDown);
+            tvRefresh.setText("SWIPE TO REFRESH");
         }
+
     }
 
     @Override
     public void complete() {
+        Log.d("ClassicRefreshHeader", "complete()");
         ivArrow.setVisibility(GONE);
         progressBar.setVisibility(GONE);
         ivSuccess.setVisibility(VISIBLE);
@@ -81,10 +82,10 @@ public class ClassicRefreshHeaderView extends SwipeRefreshHeaderLayout {
 
     @Override
     public void onReset() {
+        Log.d("ClassicRefreshHeader", "onReset()");
         ivSuccess.setVisibility(GONE);
         ivArrow.setVisibility(GONE);
         progressBar.setVisibility(GONE);
-        mRefreshing = false;
     }
 
     @Override
