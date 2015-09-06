@@ -86,6 +86,17 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener,
 
     @Override
     public void onRefresh() {
+//        StringRequest request = new StringRequest(Constants.API.CHARACTERS, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String s) {
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//
+//            }
+//        });
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
