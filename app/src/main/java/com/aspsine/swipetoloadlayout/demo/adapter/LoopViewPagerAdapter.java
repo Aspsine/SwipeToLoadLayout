@@ -97,7 +97,7 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         Hero hero = mHeroes.get(position);
-        holder.tvName.setText(hero.getName());
+        holder.tvName.setText(hero.getName().replace(" ", System.getProperty("line.separator")));
         Picasso.with(parent.getContext()).load(hero.getAvatar()).into(holder.ivBanner);
         return convertView;
     }

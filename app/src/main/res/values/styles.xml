@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppTheme.Base">
+    <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/style_color_primary</item>
         <item name="colorPrimaryDark">@color/style_color_primary_dark</item>
@@ -9,5 +9,5 @@
         <item name="android:windowBackground">@color/style_window_background</item>
     </style>
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar" />
+    <style name="AppTheme" parent="AppTheme.Base" />
 </resources>

@@ -18,5 +18,7 @@
         android:layout_marginRight="24dp"
         android:layout_marginTop="24dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:maxLines="2"
+        android:textAllCaps="true"/>
 </FrameLayout>
