@@ -12,7 +12,7 @@ import android.widget.AbsListView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.GsonRequest;
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
@@ -23,7 +23,6 @@ import com.aspsine.swipetoloadlayout.demo.adapter.LoopViewPagerAdapter;
 import com.aspsine.swipetoloadlayout.demo.adapter.SectionAdapter;
 import com.aspsine.swipetoloadlayout.demo.model.Characters;
 import com.aspsine.swipetoloadlayout.demo.view.LoadAbleListView;
-import com.google.gson.Gson;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -118,10 +117,9 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener,
 
     @Override
     public void onRefresh() {
-        StringRequest request = new StringRequest(Constants.API.CHARACTERS, new Response.Listener<String>() {
+        GsonRequest request = new GsonRequest<Characters>(Constants.API.CHARACTERS, Characters.class, new Response.Listener<Characters>() {
             @Override
-            public void onResponse(String s) {
-                Characters characters = new Gson().fromJson(s, Characters.class);
+            public void onResponse(Characters characters) {
                 mAdapter.setList(characters.getSections());
                 mPagerAdapter.setList(characters.getHeroes());
                 viewPager.setBackgroundDrawable(getResources().getDrawable(R.mipmap.bg_viewpager));
