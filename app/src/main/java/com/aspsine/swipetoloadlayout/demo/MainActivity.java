@@ -1,6 +1,8 @@
 package com.aspsine.swipetoloadlayout.demo;
 
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -19,9 +21,11 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null){
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.container, new ClassicStyleFragment())
+                    .add(R.id.container, new ClassicStyleFragment(), ClassicStyleFragment.TAG)
                     .commit();
         }
+
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     }
 
 }

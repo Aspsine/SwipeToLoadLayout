@@ -32,7 +32,7 @@ import com.aspsine.swipetoloadlayout.demo.view.LoadAbleListView;
 public class ClassicStyleFragment extends BaseToolbarFragment implements OnRefreshListener, OnLoadMoreListener,
         SectionAdapter.OnChildItemClickListener<Hero>,
         SectionAdapter.OnChildItemLongClickListener<Hero> {
-    private static final String TAG = ClassicStyleFragment.class.getSimpleName();
+    public static final String TAG = ClassicStyleFragment.class.getSimpleName();
 
     private SwipeToLoadLayout swipeToLoadLayout;
 
