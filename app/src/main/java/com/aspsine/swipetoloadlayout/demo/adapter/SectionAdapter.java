@@ -20,8 +20,6 @@ import java.util.List;
  * Created by aspsine on 15/9/4.
  */
 public class SectionAdapter extends BaseGroupAdapter<Section, Hero> {
-
-
     List<Section> mSections;
 
     public SectionAdapter() {
@@ -54,7 +52,7 @@ public class SectionAdapter extends BaseGroupAdapter<Section, Hero> {
     }
 
     @Override
-    protected View getGroupView(int groupPosition, View convertView, ViewGroup parent) {
+    protected View getGroupView(final int groupPosition, View convertView, ViewGroup parent) {
         HeaderViewHolder holder = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_header, parent, false);
@@ -64,7 +62,7 @@ public class SectionAdapter extends BaseGroupAdapter<Section, Hero> {
         } else {
             holder = (HeaderViewHolder) convertView.getTag();
         }
-        String header = getGroup(groupPosition).getName();
+        final String header = getGroup(groupPosition).getName();
         holder.tvHeader.setText(header);
         return convertView;
     }
@@ -85,7 +83,7 @@ public class SectionAdapter extends BaseGroupAdapter<Section, Hero> {
     }
 
     @Override
-    protected View getChildView(int groupPosition, int childPosition, View convertView, ViewGroup parent) {
+    protected View getChildView(final int groupPosition, final int childPosition, View convertView, ViewGroup parent) {
         ChildViewHolder holder = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_hero, parent, false);
@@ -96,7 +94,7 @@ public class SectionAdapter extends BaseGroupAdapter<Section, Hero> {
         } else {
             holder = (ChildViewHolder) convertView.getTag();
         }
-        Hero hero = getChild(groupPosition, childPosition);
+        final Hero hero = getChild(groupPosition, childPosition);
         holder.tvName.setText(hero.getName());
         Resources resources = parent.getResources();
         int size = resources.getDimensionPixelOffset(R.dimen.hero_avatar_size);
@@ -106,6 +104,25 @@ public class SectionAdapter extends BaseGroupAdapter<Section, Hero> {
                 .resize(size, size)
                 .transform(new CircleTransformation(width))
                 .into(holder.ivAvatar);
+        final View finalConvertView = convertView;
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnChildItemClickListener != null) {
+                    mOnChildItemClickListener.onChildItemClick(groupPosition, childPosition, hero, finalConvertView);
+                }
+            }
+        });
+
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnChildItemLongClickListener != null) {
+                    return mOnChildItemLongClickListener.onClickItemLongClick(groupPosition, childPosition, hero, finalConvertView);
+                }
+                return false;
+            }
+        });
         return convertView;
     }
 

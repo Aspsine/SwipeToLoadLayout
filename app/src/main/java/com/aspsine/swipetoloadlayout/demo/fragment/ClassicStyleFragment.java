@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -22,12 +23,15 @@ import com.aspsine.swipetoloadlayout.demo.R;
 import com.aspsine.swipetoloadlayout.demo.adapter.LoopViewPagerAdapter;
 import com.aspsine.swipetoloadlayout.demo.adapter.SectionAdapter;
 import com.aspsine.swipetoloadlayout.demo.model.Characters;
+import com.aspsine.swipetoloadlayout.demo.model.Hero;
 import com.aspsine.swipetoloadlayout.demo.view.LoadAbleListView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClassicStyleFragment extends Fragment implements OnRefreshListener, OnLoadMoreListener {
+public class ClassicStyleFragment extends Fragment implements OnRefreshListener, OnLoadMoreListener,
+        SectionAdapter.OnChildItemClickListener<Hero>,
+        SectionAdapter.OnChildItemLongClickListener<Hero> {
     private static final String TAG = ClassicStyleFragment.class.getSimpleName();
 
     private SwipeToLoadLayout swipeToLoadLayout;
@@ -50,7 +54,8 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new SectionAdapter();
-
+        mAdapter.setOnChildItemClickListener(this);
+        mAdapter.setOnChildItemLongClickListener(this);
     }
 
     @Override
@@ -143,5 +148,17 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener,
                 swipeToLoadLayout.setLoadingMore(false);
             }
         }, 1000);
+    }
+
+    @Override
+    public void onChildItemClick(int groupPosition, int childPosition, Hero hero, View view) {
+        Toast.makeText(getActivity(), hero.getName() + " Click", Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public boolean onClickItemLongClick(int groupPosition, int childPosition, Hero hero, View view) {
+        Toast.makeText(getActivity(), hero.getName() + " Long Click", Toast.LENGTH_SHORT).show();
+        return true;
     }
 }

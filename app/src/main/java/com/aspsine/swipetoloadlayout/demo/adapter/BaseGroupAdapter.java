@@ -14,6 +14,46 @@ public abstract class BaseGroupAdapter<G, C> extends BaseAdapter {
 
     private List<Integer> mHeaderPositions;
 
+    protected OnGroupItemClickListener mOnGroupItemClickListener;
+
+    protected OnGroupItemLongClickListener mOnGroupItemLongClickListener;
+
+    protected OnChildItemClickListener mOnChildItemClickListener;
+
+    protected OnChildItemLongClickListener mOnChildItemLongClickListener;
+
+    public interface OnGroupItemClickListener<G> {
+        void onGroupItemClick(int groupPosition, G g, View view);
+    }
+
+    public interface OnGroupItemLongClickListener<G> {
+        boolean onGroupLongClick(int groupPosition, G g, View view);
+    }
+
+    public interface OnChildItemClickListener<C> {
+        void onChildItemClick(int groupPosition, int childPosition, C c, View view);
+    }
+
+    public interface OnChildItemLongClickListener<C> {
+        boolean onClickItemLongClick(int groupPosition, int childPosition, C c, View view);
+    }
+
+    public void setOnGroupItemClickListener(OnGroupItemClickListener onGroupItemClickListener) {
+        this.mOnGroupItemClickListener = onGroupItemClickListener;
+    }
+
+    public void setOnGroupItemLongClickListener(OnGroupItemLongClickListener onGroupItemLongClickListener) {
+        this.mOnGroupItemLongClickListener = onGroupItemLongClickListener;
+    }
+
+    public void setOnChildItemClickListener(OnChildItemClickListener onChildItemClickListener) {
+        this.mOnChildItemClickListener = onChildItemClickListener;
+    }
+
+    public void setOnChildItemLongClickListener(OnChildItemLongClickListener onChildItemLongClickListener) {
+        this.mOnChildItemLongClickListener = onChildItemLongClickListener;
+    }
+
     @Override
     public long getItemId(int position) {
         return position;
