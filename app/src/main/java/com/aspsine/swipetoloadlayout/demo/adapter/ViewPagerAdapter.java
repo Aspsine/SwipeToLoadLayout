@@ -1,5 +1,7 @@
 package com.aspsine.swipetoloadlayout.demo.adapter;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -22,19 +24,31 @@ import java.util.List;
  * Created by aspsine on 15/9/5.
  */
 public class ViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener, View.OnTouchListener, Runnable {
-    private ViewPager mViewPager;
 
-    private List<View> mViews;
+    private static final int DELAY_MILLIS = 5000;
 
-    private List<Hero> mHeroes;
+    private final ViewPager mViewPager;
+
+    private final Handler mHandler;
+
+    private final List<View> mViews;
+
+    private final List<Hero> mHeroes;
 
     private int mChildCount;
 
+    /**
+     * indicate if user is touching viewpager
+     */
     private boolean mTouching;
 
+    /**
+     * indicate if viewpager loop need pause
+     */
     private boolean mPause;
 
     public ViewPagerAdapter(ViewPager viewPager) {
+        mHandler = new Handler(Looper.getMainLooper());
         mHeroes = new ArrayList<>();
         mViews = new LinkedList<>();
 
@@ -44,18 +58,51 @@ public class ViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageCh
 
     public void setList(List<Hero> heroes) {
         mHeroes.clear();
+        // add last element in position 0, add all, add first element in last position
         mHeroes.add(heroes.get(heroes.size() - 1));
         mHeroes.addAll(heroes);
         mHeroes.add(heroes.get(0));
+
+        // init a view list
         for (int i = 0; i < mHeroes.size(); i++) {
             mViews.add(null);
         }
         notifyDataSetChanged();
+
         if (mViewPager.getCurrentItem() == 0) {
             mViewPager.setCurrentItem(1, false);
         }
         stop();
         start();
+    }
+
+    /**
+     * start loop
+     */
+    public void start() {
+        resume();
+        post();
+    }
+
+    /**
+     * stop loop
+     */
+    public void stop() {
+        mHandler.removeCallbacks(this);
+    }
+
+    /**
+     * resume loop
+     */
+    public void resume() {
+        mPause = false;
+    }
+
+    /**
+     * pause loop
+     */
+    public void pause() {
+        mPause = true;
     }
 
     @Override
@@ -66,23 +113,6 @@ public class ViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageCh
             mTouching = false;
         }
         return false;
-    }
-
-    public void start(){
-        mPause = false;
-        post();
-    }
-
-    public void resume(){
-        mPause = false;
-    }
-
-    public void pause(){
-        mPause = true;
-    }
-
-    public void stop(){
-        mViewPager.removeCallbacks(this);
     }
 
     @Override
@@ -102,12 +132,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageCh
     }
 
     private void post() {
-        mViewPager.postDelayed(this, 5000);
-    }
-
-    public class ViewHolder {
-        ImageView ivBanner;
-        TextView tvName;
+        mHandler.postDelayed(this, DELAY_MILLIS);
     }
 
     @Override
@@ -168,14 +193,15 @@ public class ViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageCh
     @Override
     public void onPageSelected(int position) {
         if (0 < position && position < mHeroes.size() - 1) {
+            // change indicator here
             Log.e("ViewPager", "Fixed position = " + (position - 1));
         }
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        Log.e("ViewPager", "state=" + state);
-        if (state == 0) {
+        if (state == ViewPager.SCROLL_STATE_IDLE) {
+            // if heroes size cannot be smaller than 3
             if (mHeroes.size() > 3) {
                 if (mViewPager.getCurrentItem() == 0) {
                     mViewPager.setCurrentItem(mHeroes.size() - 2, false);
@@ -184,5 +210,10 @@ public class ViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageCh
                 }
             }
         }
+    }
+
+    public static class ViewHolder {
+        ImageView ivBanner;
+        TextView tvName;
     }
 }
