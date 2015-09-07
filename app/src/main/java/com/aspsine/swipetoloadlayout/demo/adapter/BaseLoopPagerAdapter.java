@@ -43,11 +43,16 @@ public abstract class BaseLoopPagerAdapter extends PagerAdapter implements ViewP
     }
 
     /**
+     * get the item count or pager count
+     *
      * @return
+     * @see #notifyDataSetChanged()
      */
     public abstract int getPagerCount();
 
     /**
+     * get the item
+     *
      * @param position
      * @return
      * @see #notifyDataSetChanged()
@@ -55,6 +60,8 @@ public abstract class BaseLoopPagerAdapter extends PagerAdapter implements ViewP
     public abstract Object getItem(int position);
 
     /**
+     * get the viewpager item view
+     *
      * @param position
      * @param convertView
      * @param parent
@@ -84,7 +91,7 @@ public abstract class BaseLoopPagerAdapter extends PagerAdapter implements ViewP
             mList.add(getItem(0));
         }
 
-        if (getPagerCount() + 2 != mViews.size()) {
+        if (fixedCount + 2 != mViews.size()) {
             mViews.clear();
             for (int i = 0; i < mList.size(); i++) {
                 mViews.add(null);
@@ -207,7 +214,7 @@ public abstract class BaseLoopPagerAdapter extends PagerAdapter implements ViewP
     @Override
     public final void onPageSelected(int position) {
         if (0 < position && position < mList.size() - 1) {
-            onPageItemSelected(position);
+            onPageItemSelected(position - 1);
         }
     }
 
