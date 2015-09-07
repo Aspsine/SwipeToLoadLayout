@@ -2,6 +2,7 @@ package com.aspsine.swipetoloadlayout.demo.adapter;
 
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
@@ -42,6 +43,10 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * oh shit! An indicator view is badly needed!
+     * this shit have no animation at all.
+     */
     private void initIndicators() {
         if (mIndicators.getChildCount() != mHeroes.size()) {
             mIndicators.removeAllViews();
@@ -99,8 +104,10 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
 
     @Override
     public void onPageItemSelected(int position) {
-        mIndicators.getChildAt(mLastPosition).setActivated(false);
-        mIndicators.getChildAt(position).setActivated(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mIndicators.getChildAt(mLastPosition).setActivated(false);
+            mIndicators.getChildAt(position).setActivated(true);
+        }
         mLastPosition = position;
     }
 
