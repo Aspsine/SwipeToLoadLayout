@@ -1,11 +1,15 @@
 package com.aspsine.swipetoloadlayout.demo.adapter;
 
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aspsine.swipetoloadlayout.demo.R;
@@ -22,8 +26,13 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
 
     private final List<Hero> mHeroes;
 
-    public LoopViewPagerAdapter(ViewPager viewPager) {
+    private final ViewGroup mIndicators;
+
+    private int mLastPosition;
+
+    public LoopViewPagerAdapter(ViewPager viewPager, ViewGroup indicators) {
         super(viewPager);
+        mIndicators = indicators;
         mHeroes = new ArrayList<>();
     }
 
@@ -31,6 +40,32 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
         mHeroes.clear();
         mHeroes.addAll(heroes);
         notifyDataSetChanged();
+    }
+
+    private void initIndicators() {
+        if (mIndicators.getChildCount() != mHeroes.size()) {
+            mIndicators.removeAllViews();
+            Resources res = mIndicators.getResources();
+            int size = res.getDimensionPixelOffset(R.dimen.indicator_size);
+            int margin = res.getDimensionPixelOffset(R.dimen.indicator_margin);
+            for (int i = 0; i < getPagerCount(); i++) {
+                ImageView indicator = new ImageView(mIndicators.getContext());
+                indicator.setAlpha(180);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(size, size);
+                lp.setMargins(margin, 0, 0, 0);
+                lp.gravity = Gravity.CENTER;
+                indicator.setLayoutParams(lp);
+                Drawable drawable = res.getDrawable(R.drawable.selector_indicator);
+                indicator.setImageDrawable(drawable);
+                mIndicators.addView(indicator);
+            }
+        }
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        initIndicators();
+        super.notifyDataSetChanged();
     }
 
     @Override
@@ -64,7 +99,9 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
 
     @Override
     public void onPageItemSelected(int position) {
-
+        mIndicators.getChildAt(mLastPosition).setActivated(false);
+        mIndicators.getChildAt(position).setActivated(true);
+        mLastPosition = position;
     }
 
     public static class ViewHolder {

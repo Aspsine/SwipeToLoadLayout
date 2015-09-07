@@ -214,7 +214,7 @@ public abstract class BaseLoopPagerAdapter extends PagerAdapter implements ViewP
     @Override
     public final void onPageSelected(int position) {
         if (0 < position && position < mList.size() - 1) {
-            onPageItemSelected(position);
+            onPageItemSelected(position - 1);
         }
     }
 

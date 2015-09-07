@@ -37,6 +37,8 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener,
 
     private ViewPager viewPager;
 
+    private ViewGroup indicators;
+
     private SectionAdapter mAdapter;
 
     private LoopViewPagerAdapter mPagerAdapter;
@@ -62,13 +64,15 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener,
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        View pagerView = LayoutInflater.from(view.getContext()).inflate(R.layout.layout_viewpager, listView, false);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
         listView = (LoadAbleListView) view.findViewById(R.id.listview);
-        viewPager = (ViewPager) LayoutInflater.from(view.getContext()).inflate(R.layout.layout_viewpager, listView, false);
-        mPagerAdapter = new LoopViewPagerAdapter(viewPager);
+        viewPager = (ViewPager) pagerView.findViewById(R.id.viewPager);
+        indicators = (ViewGroup) pagerView.findViewById(R.id.indicators);
+        mPagerAdapter = new LoopViewPagerAdapter(viewPager, indicators);
         viewPager.setAdapter(mPagerAdapter);
         viewPager.addOnPageChangeListener(mPagerAdapter);
-        listView.addHeaderView(viewPager);
+        listView.addHeaderView(pagerView);
         listView.setAdapter(mAdapter);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
