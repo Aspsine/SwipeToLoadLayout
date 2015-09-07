@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,29 +13,17 @@ import android.widget.AbsListView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.aspsine.swipetoloadlayout.demo.App;
 import com.aspsine.swipetoloadlayout.demo.Constants;
 import com.aspsine.swipetoloadlayout.demo.R;
+import com.aspsine.swipetoloadlayout.demo.adapter.LoopViewPagerAdapter;
 import com.aspsine.swipetoloadlayout.demo.adapter.SectionAdapter;
-import com.aspsine.swipetoloadlayout.demo.adapter.ViewPagerAdapter;
 import com.aspsine.swipetoloadlayout.demo.model.Characters;
-import com.aspsine.swipetoloadlayout.demo.model.Hero;
-import com.aspsine.swipetoloadlayout.demo.model.Section;
-import com.aspsine.swipetoloadlayout.demo.util.AssetUtils;
 import com.aspsine.swipetoloadlayout.demo.view.LoadAbleListView;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,7 +39,7 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener,
 
     private SectionAdapter mAdapter;
 
-    private ViewPagerAdapter mPagerAdapter;
+    private LoopViewPagerAdapter mPagerAdapter;
 
     public ClassicStyleFragment() {
         // Required empty public constructor
@@ -78,7 +65,7 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener,
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
         listView = (LoadAbleListView) view.findViewById(R.id.listview);
         viewPager = (ViewPager) LayoutInflater.from(view.getContext()).inflate(R.layout.layout_viewpager, listView, false);
-        mPagerAdapter = new ViewPagerAdapter(viewPager);
+        mPagerAdapter = new LoopViewPagerAdapter(viewPager);
         viewPager.setAdapter(mPagerAdapter);
         viewPager.addOnPageChangeListener(mPagerAdapter);
         listView.addHeaderView(viewPager);
@@ -91,9 +78,9 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener,
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (firstVisibleItem == 0) {
-                    mPagerAdapter.resume();
+                    mPagerAdapter.start();
                 } else {
-                    mPagerAdapter.pause();
+                    mPagerAdapter.stop();
                 }
             }
         });
