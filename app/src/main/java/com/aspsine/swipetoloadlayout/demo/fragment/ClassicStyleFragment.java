@@ -5,21 +5,31 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
+import com.aspsine.swipetoloadlayout.demo.App;
+import com.aspsine.swipetoloadlayout.demo.Constants;
 import com.aspsine.swipetoloadlayout.demo.R;
-import com.aspsine.swipetoloadlayout.demo.adapter.HeroAdapter;
 import com.aspsine.swipetoloadlayout.demo.adapter.SectionAdapter;
 import com.aspsine.swipetoloadlayout.demo.adapter.ViewPagerAdapter;
+import com.aspsine.swipetoloadlayout.demo.model.Characters;
 import com.aspsine.swipetoloadlayout.demo.model.Hero;
 import com.aspsine.swipetoloadlayout.demo.model.Section;
 import com.aspsine.swipetoloadlayout.demo.util.AssetUtils;
 import com.aspsine.swipetoloadlayout.demo.view.LoadAbleListView;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +42,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class ClassicStyleFragment extends Fragment implements OnRefreshListener, OnLoadMoreListener {
+    private static final String TAG = ClassicStyleFragment.class.getSimpleName();
 
     private SwipeToLoadLayout swipeToLoadLayout;
 
@@ -51,7 +62,7 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new SectionAdapter();
-        mPagerAdapter = new ViewPagerAdapter();
+
     }
 
     @Override
@@ -67,9 +78,25 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener,
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
         listView = (LoadAbleListView) view.findViewById(R.id.listview);
         viewPager = (ViewPager) LayoutInflater.from(view.getContext()).inflate(R.layout.layout_viewpager, listView, false);
+        mPagerAdapter = new ViewPagerAdapter(viewPager);
         viewPager.setAdapter(mPagerAdapter);
+        viewPager.addOnPageChangeListener(mPagerAdapter);
         listView.addHeaderView(viewPager);
         listView.setAdapter(mAdapter);
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0) {
+                    mPagerAdapter.resume();
+                } else {
+                    mPagerAdapter.pause();
+                }
+            }
+        });
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
     }
@@ -77,61 +104,46 @@ public class ClassicStyleFragment extends Fragment implements OnRefreshListener,
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        swipeToLoadLayout.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                swipeToLoadLayout.setRefreshing(true);
-//            }
-//        });
+        swipeToLoadLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeToLoadLayout.setRefreshing(true);
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPagerAdapter.start();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        App.getRequestQueue().cancelAll(TAG);
+        mPagerAdapter.stop();
     }
 
     @Override
     public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
+        StringRequest request = new StringRequest(Constants.API.CHARACTERS, new Response.Listener<String>() {
             @Override
-            public void run() {
-                String json = AssetUtils.getStringFromAsset(getActivity(), "characters.json");
-                List<Hero> heroes = new ArrayList<Hero>();
-                List<Section> sections = new ArrayList<Section>();
-                try {
-                    JSONObject jsonObject = new JSONObject(json);
-                    JSONArray jsonHeroes = jsonObject.getJSONArray("heroes");
-                    for (int i = 0; i < jsonHeroes.length(); i++) {
-                        JSONObject item = jsonHeroes.getJSONObject(i);
-                        Hero hero = new Hero();
-                        hero.setAvatar(item.getString("avatar"));
-                        hero.setName(item.getString("name"));
-                        heroes.add(hero);
-                    }
-
-
-                    JSONArray jsonSections = jsonObject.getJSONArray("sections");
-                    for (int i = 0; i < jsonSections.length(); i++) {
-                        JSONObject jsonSection = jsonSections.getJSONObject(i);
-                        Section section = new Section();
-                        section.setName(jsonSection.getString("name"));
-                        JSONArray jsonSectionHeroes = jsonSection.getJSONArray("heroes");
-                        List<Hero> sectionHeroes = new ArrayList<Hero>();
-                        for (int j = 0; j < jsonSectionHeroes.length(); j++) {
-                            JSONObject jsonSectionHero = jsonSectionHeroes.getJSONObject(j);
-                            Hero hero = new Hero();
-                            hero.setName(jsonSectionHero.getString("name"));
-                            hero.setAvatar(jsonSectionHero.getString("avatar"));
-                            sectionHeroes.add(hero);
-                        }
-                        section.setHeroes(sectionHeroes);
-                        sections.add(section);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                mAdapter.setList(sections);
-                mPagerAdapter.setList(heroes);
+            public void onResponse(String s) {
+                Characters characters = new Gson().fromJson(s, Characters.class);
+                mAdapter.setList(characters.getSections());
+                mPagerAdapter.setList(characters.getHeroes());
                 viewPager.setBackgroundDrawable(getResources().getDrawable(R.mipmap.bg_viewpager));
                 swipeToLoadLayout.setRefreshing(false);
             }
-        }, 5000);
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                swipeToLoadLayout.setRefreshing(false);
+                volleyError.printStackTrace();
+            }
+        });
+        App.getRequestQueue().add(request).setTag(TAG);
     }
 
     @Override
