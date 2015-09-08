@@ -5,6 +5,7 @@
     <color name="style_color_primary_light">#FFCDD2</color>
     <color name="style_color_accent">@color/red</color>
     <color name="style_window_background">#212121</color>
+    <color name="style_window_background_light">#ffffff</color>
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>

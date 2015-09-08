@@ -6,27 +6,49 @@
             android:icon="@mipmap/ic_launcher"
             android:title="Home" />
         <item
-            android:id="@+id/nav_messages"
+            android:id="@+id/nav_comics"
             android:icon="@mipmap/ic_launcher"
-            android:title="Messages" />
+            android:title="Comics" />
         <item
-            android:id="@+id/nav_friends"
+            android:id="@+id/nav_movies"
             android:icon="@mipmap/ic_launcher"
-            android:title="Friends" />
+            android:title="Movies" />
         <item
-            android:id="@+id/nav_discussion"
+            android:id="@+id/nav_videos"
             android:icon="@mipmap/ic_launcher"
-            android:title="Discussion" />
+            android:title="Videos" />
+        <item
+            android:id="@+id/nav_games"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Games" />
+        <item
+            android:id="@+id/nav_tv"
+            android:icon="@mipmap/ic_launcher"
+            android:title="TV" />
+        <item
+            android:id="@+id/nav_characters"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Characters" />
+        <item
+            android:id="@+id/nav_news"
+            android:icon="@mipmap/ic_launcher"
+            android:title="News" />
+        <item
+            android:id="@+id/nav_images"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Images" />
     </group>
 
-    <item android:title="Sub items">
+    <item android:title="SETTINGS">
         <menu>
             <item
+                android:id="@+id/nav_settings"
                 android:icon="@mipmap/ic_launcher"
-                android:title="Sub item 1" />
+                android:title="Settings" />
             <item
+                android:id="@+id/nav_about"
                 android:icon="@mipmap/ic_launcher"
-                android:title="Sub item 2" />
+                android:title="About" />
         </menu>
     </item>
 </menu>

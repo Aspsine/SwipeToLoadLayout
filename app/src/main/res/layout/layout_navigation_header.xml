@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="192dp"
-    android:background="@color/style_color_primary">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:background="@color/style_color_primary_dark">
 
-</LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:letterSpacing="-0.09"
+        android:text="MARVEL"
+        android:textColor="@color/white"
+        android:textScaleX="0.65"
+        android:textSize="64sp"
+        android:textStyle="bold" />
+</FrameLayout>

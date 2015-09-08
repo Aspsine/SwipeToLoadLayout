@@ -29,7 +29,7 @@ import com.aspsine.swipetoloadlayout.demo.view.LoadAbleListView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClassicStyleFragment extends BaseToolbarFragment implements OnRefreshListener, OnLoadMoreListener,
+public class ClassicStyleFragment extends BaseNavigationFragment implements OnRefreshListener, OnLoadMoreListener,
         SectionAdapter.OnChildItemClickListener<Hero>,
         SectionAdapter.OnChildItemLongClickListener<Hero> {
     public static final String TAG = ClassicStyleFragment.class.getSimpleName();
@@ -68,7 +68,6 @@ public class ClassicStyleFragment extends BaseToolbarFragment implements OnRefre
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getSupportActionBar().setTitle("MARVEL");
         View pagerView = LayoutInflater.from(view.getContext()).inflate(R.layout.layout_viewpager, listView, false);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
         listView = (LoadAbleListView) view.findViewById(R.id.listview);
@@ -100,6 +99,7 @@ public class ClassicStyleFragment extends BaseToolbarFragment implements OnRefre
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setTitle("Characters");
         swipeToLoadLayout.post(new Runnable() {
             @Override
             public void run() {
