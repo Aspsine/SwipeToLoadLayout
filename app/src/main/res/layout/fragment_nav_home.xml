@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:background="@color/style_window_background"
         app:default_to_refreshing_scrolling_duration="1000"
-        app:swipe_style="classic">
+        app:swipe_style="above">
 
         <include layout="@layout/layout_qq_header" />
 

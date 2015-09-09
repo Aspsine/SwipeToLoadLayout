@@ -18,7 +18,7 @@
         app:default_to_refreshing_scrolling_duration="1000"
         app:swipe_style="classic">
 
-        <include layout="@layout/layout_qq_header" />
+        <include layout="@layout/layout_twitter_header" />
 
         <com.aspsine.swipetoloadlayout.demo.view.LoadAbleRecyclerView
             android:id="@+id/recyclerView"
