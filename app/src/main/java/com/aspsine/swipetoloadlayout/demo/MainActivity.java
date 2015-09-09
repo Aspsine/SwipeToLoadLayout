@@ -15,7 +15,9 @@ import android.view.MenuItem;
 
 import com.aspsine.swipetoloadlayout.demo.fragment.BaseNavigationFragment;
 import com.aspsine.swipetoloadlayout.demo.fragment.BaseToolbarFragment;
-import com.aspsine.swipetoloadlayout.demo.fragment.ClassicStyleFragment;
+import com.aspsine.swipetoloadlayout.demo.fragment.NavHomeFragment;
+import com.aspsine.swipetoloadlayout.demo.fragment.NavListViewFragment;
+import com.aspsine.swipetoloadlayout.demo.fragment.NavRecyclerFragment;
 
 public class MainActivity extends AppCompatActivity implements BaseToolbarFragment.ToggleDrawerCallBack
         , NavigationView.OnNavigationItemSelectedListener {
@@ -35,17 +37,11 @@ public class MainActivity extends AppCompatActivity implements BaseToolbarFragme
         handler = new Handler(Looper.getMainLooper());
 
         if (savedInstanceState == null) {
-            navigationView.setCheckedItem(R.id.nav_home);
-            showNavigationFragment(R.id.nav_home);
+            navigationView.setCheckedItem(R.id.nav_listView);
+            showNavigationFragment(R.id.nav_listView);
         } else {
 
         }
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .add(R.id.container, new ClassicStyleFragment(), ClassicStyleFragment.TAG)
-//                    .commit();
-//        }
     }
 
     @Override
@@ -78,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements BaseToolbarFragme
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         Fragment lastFragment = fm.findFragmentByTag(getTag(lastNavItemId));
+        lastNavItemId = itemId;
         if (lastFragment != null) {
             ft.detach(lastFragment);
         }
@@ -92,43 +89,52 @@ public class MainActivity extends AppCompatActivity implements BaseToolbarFragme
     }
 
     private BaseNavigationFragment getItem(int itemId) {
-        BaseNavigationFragment navigationFragment = null;
+        BaseNavigationFragment navigationFragment = new BaseNavigationFragment();
 
         switch (itemId) {
-            case R.id.nav_home:
+            case R.id.nav_listView:
+                navigationFragment = new NavListViewFragment();
+                break;
+
+            case R.id.nav_recyclerView:
+                navigationFragment = new NavRecyclerFragment();
+                break;
+
+            case R.id.nav_twitter_style:
+                navigationFragment = new NavHomeFragment();
+                break;
+
+            case R.id.nav_google_style:
                 navigationFragment = new BaseNavigationFragment();
                 break;
 
-            case R.id.nav_comics:
-                navigationFragment = new BaseNavigationFragment();
+            case R.id.nav_qq_style:
+                navigationFragment = new NavListViewFragment();
                 break;
 
-            case R.id.nav_movies:
-                navigationFragment = new BaseNavigationFragment();
+            case R.id.nav_wechat_style:
                 break;
 
-            case R.id.nav_videos:
-                navigationFragment = new BaseNavigationFragment();
+            case R.id.nav_dazhundianping_style:
                 break;
 
-            case R.id.nav_games:
-                navigationFragment = new BaseNavigationFragment();
+            case R.id.nav_sina_weibo_style:
+
                 break;
 
-            case R.id.nav_tv:
-                navigationFragment = new BaseNavigationFragment();
+            case R.id.nav_easy_news_style:
+
+                break;
+            case R.id.nav_souhu_video_style:
+
                 break;
 
-            case R.id.nav_characters:
-                navigationFragment = new ClassicStyleFragment();
+            case R.id.nav_widgets:
+
                 break;
 
-            case R.id.nav_news:
-                navigationFragment = new BaseNavigationFragment();
-                break;
+            case R.id.nav_set_header_footer_via_code:
 
-            case R.id.nav_images:
-                navigationFragment = new BaseNavigationFragment();
                 break;
         }
         return navigationFragment;

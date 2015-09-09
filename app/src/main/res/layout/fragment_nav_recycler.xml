@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.aspsine.swipetoloadlayout.demo.fragment.NavHomeFragment">
+    android:orientation="vertical"
+    tools:context="com.aspsine.swipetoloadlayout.demo.fragment.NavRecyclerFragment">
 
     <include
         android:id="@+id/toolbar"
@@ -19,8 +20,8 @@
 
         <include layout="@layout/layout_qq_header" />
 
-        <com.aspsine.swipetoloadlayout.demo.view.LoadAbleListView
-            android:id="@+id/listView"
+        <com.aspsine.swipetoloadlayout.demo.view.LoadAbleRecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
@@ -28,5 +29,4 @@
 
         <include layout="@layout/layout_classic_footer" />
     </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
-
 </LinearLayout>

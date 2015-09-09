@@ -2,41 +2,70 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_listView"
             android:icon="@mipmap/ic_launcher"
-            android:title="Home" />
+            android:title="ListView" />
+
         <item
-            android:id="@+id/nav_comics"
+            android:id="@+id/nav_recyclerView"
             android:icon="@mipmap/ic_launcher"
-            android:title="Comics" />
+            android:title="RecyclerView" />
+
         <item
-            android:id="@+id/nav_movies"
+            android:id="@+id/nav_twitter_style"
             android:icon="@mipmap/ic_launcher"
-            android:title="Movies" />
+            android:title="Twitter Style" />
+
         <item
-            android:id="@+id/nav_videos"
+            android:id="@+id/nav_google_style"
             android:icon="@mipmap/ic_launcher"
-            android:title="Videos" />
+            android:title="Google Style" />
+
         <item
-            android:id="@+id/nav_games"
+            android:id="@+id/nav_yalantis_phoenix_style"
             android:icon="@mipmap/ic_launcher"
-            android:title="Games" />
+            android:title="Yalantis Phoenix Style" />
+
         <item
-            android:id="@+id/nav_tv"
+            android:id="@+id/nav_qq_style"
             android:icon="@mipmap/ic_launcher"
-            android:title="TV" />
+            android:title="QQ Style" />
+
         <item
-            android:id="@+id/nav_characters"
+            android:id="@+id/nav_wechat_style"
             android:icon="@mipmap/ic_launcher"
-            android:title="Characters" />
+            android:title="WeChat Style" />
+
         <item
-            android:id="@+id/nav_news"
+            android:id="@+id/nav_dazhundianping_style"
             android:icon="@mipmap/ic_launcher"
-            android:title="News" />
+            android:title="Da Zhong Dian Ping Style" />
+
         <item
-            android:id="@+id/nav_images"
+            android:id="@+id/nav_sina_weibo_style"
             android:icon="@mipmap/ic_launcher"
-            android:title="Images" />
+            android:title="Sina WeiBo Style" />
+
+        <item
+            android:id="@+id/nav_easy_news_style"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Easy News Style" />
+
+        <item
+            android:id="@+id/nav_souhu_video_style"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Souhu Video Style" />
+
+        <item
+            android:id="@+id/nav_widgets"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Widgets" />
+
+        <item
+            android:id="@+id/nav_set_header_footer_via_code"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Set Header Footer Via Java Code" />
+
     </group>
 
     <item android:title="SETTINGS">

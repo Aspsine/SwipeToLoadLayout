@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.aspsine.swipetoloadlayout.demo.fragment.ClassicStyleFragment">
+    tools:context="com.aspsine.swipetoloadlayout.demo.fragment.NavListViewFragment">
     <include
         android:id="@+id/toolbar"
         layout="@layout/layout_toolbar"/>
@@ -16,10 +16,10 @@
         app:default_to_refreshing_scrolling_duration="1000"
         app:swipe_style="classic">
 
-        <include layout="@layout/layout_classic_header" />
+        <include layout="@layout/layout_qq_header" />
 
         <com.aspsine.swipetoloadlayout.demo.view.LoadAbleListView
-            android:id="@+id/listview"
+            android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"

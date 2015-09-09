@@ -22,17 +22,17 @@ import com.aspsine.swipetoloadlayout.demo.Constants;
 import com.aspsine.swipetoloadlayout.demo.R;
 import com.aspsine.swipetoloadlayout.demo.adapter.LoopViewPagerAdapter;
 import com.aspsine.swipetoloadlayout.demo.adapter.SectionAdapter;
-import com.aspsine.swipetoloadlayout.demo.model.Characters;
-import com.aspsine.swipetoloadlayout.demo.model.Hero;
+import com.aspsine.swipetoloadlayout.demo.model.Character;
+import com.aspsine.swipetoloadlayout.demo.model.SectionCharacters;
 import com.aspsine.swipetoloadlayout.demo.view.LoadAbleListView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClassicStyleFragment extends BaseNavigationFragment implements OnRefreshListener, OnLoadMoreListener,
-        SectionAdapter.OnChildItemClickListener<Hero>,
-        SectionAdapter.OnChildItemLongClickListener<Hero> {
-    public static final String TAG = ClassicStyleFragment.class.getSimpleName();
+public class NavListViewFragment extends BaseNavigationFragment implements OnRefreshListener, OnLoadMoreListener,
+        SectionAdapter.OnChildItemClickListener<Character>,
+        SectionAdapter.OnChildItemLongClickListener<Character> {
+    public static final String TAG = NavListViewFragment.class.getSimpleName();
 
     private SwipeToLoadLayout swipeToLoadLayout;
 
@@ -46,7 +46,7 @@ public class ClassicStyleFragment extends BaseNavigationFragment implements OnRe
 
     private LoopViewPagerAdapter mPagerAdapter;
 
-    public ClassicStyleFragment() {
+    public NavListViewFragment() {
         // Required empty public constructor
     }
 
@@ -62,7 +62,7 @@ public class ClassicStyleFragment extends BaseNavigationFragment implements OnRe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_classic_style, container, false);
+        return inflater.inflate(R.layout.fragment_nav_listview, container, false);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class ClassicStyleFragment extends BaseNavigationFragment implements OnRe
         super.onViewCreated(view, savedInstanceState);
         View pagerView = LayoutInflater.from(view.getContext()).inflate(R.layout.layout_viewpager, listView, false);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
-        listView = (LoadAbleListView) view.findViewById(R.id.listview);
+        listView = (LoadAbleListView) view.findViewById(R.id.listView);
         viewPager = (ViewPager) pagerView.findViewById(R.id.viewPager);
         indicators = (ViewGroup) pagerView.findViewById(R.id.indicators);
         mPagerAdapter = new LoopViewPagerAdapter(viewPager, indicators);
@@ -99,7 +99,7 @@ public class ClassicStyleFragment extends BaseNavigationFragment implements OnRe
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setTitle("Characters");
+        setTitle("ListView Top Characters");
         swipeToLoadLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -118,16 +118,22 @@ public class ClassicStyleFragment extends BaseNavigationFragment implements OnRe
     public void onPause() {
         super.onPause();
         App.getRequestQueue().cancelAll(TAG);
+        if (swipeToLoadLayout.isRefreshing()) {
+            swipeToLoadLayout.setRefreshing(false);
+        }
+        if (swipeToLoadLayout.isLoadingMore()) {
+            swipeToLoadLayout.setLoadingMore(false);
+        }
         mPagerAdapter.stop();
     }
 
     @Override
     public void onRefresh() {
-        GsonRequest request = new GsonRequest<Characters>(Constants.API.CHARACTERS, Characters.class, new Response.Listener<Characters>() {
+        GsonRequest request = new GsonRequest<SectionCharacters>(Constants.API.CHARACTERS, SectionCharacters.class, new Response.Listener<SectionCharacters>() {
             @Override
-            public void onResponse(Characters characters) {
+            public void onResponse(SectionCharacters characters) {
                 mAdapter.setList(characters.getSections());
-                mPagerAdapter.setList(characters.getHeroes());
+                mPagerAdapter.setList(characters.getCharacters());
                 viewPager.setBackgroundDrawable(getResources().getDrawable(R.mipmap.bg_viewpager));
                 swipeToLoadLayout.setRefreshing(false);
             }
@@ -152,14 +158,14 @@ public class ClassicStyleFragment extends BaseNavigationFragment implements OnRe
     }
 
     @Override
-    public void onChildItemClick(int groupPosition, int childPosition, Hero hero, View view) {
-        Toast.makeText(getActivity(), hero.getName() + " Click", Toast.LENGTH_SHORT).show();
+    public void onChildItemClick(int groupPosition, int childPosition, Character character, View view) {
+        Toast.makeText(getActivity(), character.getName() + " Click", Toast.LENGTH_SHORT).show();
     }
 
 
     @Override
-    public boolean onClickItemLongClick(int groupPosition, int childPosition, Hero hero, View view) {
-        Toast.makeText(getActivity(), hero.getName() + " Long Click", Toast.LENGTH_SHORT).show();
+    public boolean onClickItemLongClick(int groupPosition, int childPosition, Character character, View view) {
+        Toast.makeText(getActivity(), character.getName() + " Long Click", Toast.LENGTH_SHORT).show();
         return true;
     }
 }

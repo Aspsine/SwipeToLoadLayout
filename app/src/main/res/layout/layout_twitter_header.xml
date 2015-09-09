@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.aspsine.swipetoloadlayout.demo.view.ClassicRefreshHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.aspsine.swipetoloadlayout.demo.view.TwitterRefreshHeader xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/refresh_header_height_classic">
+        android:layout_gravity="center"
+        android:layout_height="@dimen/refresh_header_height_twitter">
 
         <ImageView
             android:id="@+id/ivArrow"
@@ -14,7 +15,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="48dp"
             android:layout_toLeftOf="@+id/tvRefresh"
-            android:background="@mipmap/classic_arrow_down" />
+            android:background="@mipmap/twitter_pull_arrow" />
 
         <ProgressBar
             android:id="@+id/progressbar"
@@ -25,15 +26,6 @@
             android:layout_marginRight="48dp"
             android:layout_toLeftOf="@+id/tvRefresh" />
 
-        <ImageView
-            android:id="@+id/ivSuccess"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="48dp"
-            android:layout_toLeftOf="@+id/tvRefresh"
-            android:background="@mipmap/refresh_success" />
-
         <TextView
             android:id="@+id/tvRefresh"
             android:layout_width="150dp"
@@ -41,6 +33,5 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:textColor="?attr/colorPrimary" />
-
     </RelativeLayout>
-</com.aspsine.swipetoloadlayout.demo.view.ClassicRefreshHeaderView>
+</com.aspsine.swipetoloadlayout.demo.view.TwitterRefreshHeader>

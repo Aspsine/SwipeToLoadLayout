@@ -14,36 +14,35 @@ import com.aspsine.swipetoloadlayout.demo.R;
 /**
  * Created by Aspsine on 2015/9/2.
  */
-public class ClassicRefreshHeaderView extends SwipeRefreshHeaderLayout {
+public class QQRefreshHeaderView extends SwipeRefreshHeaderLayout {
     private int mHeaderHeight;
     private TextView tvRefresh;
     private ImageView ivArrow;
     private ImageView ivSuccess;
     private ProgressBar progressBar;
 
-
     private Drawable arrowUp;
     private Drawable arrowDown;
 
-    public ClassicRefreshHeaderView(Context context) {
+    public QQRefreshHeaderView(Context context) {
         this(context, null);
     }
 
-    public ClassicRefreshHeaderView(Context context, AttributeSet attrs) {
+    public QQRefreshHeaderView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ClassicRefreshHeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public QQRefreshHeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        mHeaderHeight = getResources().getDimensionPixelOffset(R.dimen.refresh_header_height_classic);
-        arrowUp = getResources().getDrawable(R.mipmap.classic_arrow_up);
-        arrowDown = getResources().getDrawable(R.mipmap.classic_arrow_down);
+        mHeaderHeight = getResources().getDimensionPixelOffset(R.dimen.refresh_header_height_qq);
+        arrowUp = getResources().getDrawable(R.mipmap.qq_arrow_up);
+        arrowDown = getResources().getDrawable(R.mipmap.qq_arrow_down);
     }
 
     @Override
     public void onRefresh() {
-        Log.d("ClassicRefreshHeader", "onRefresh()");
+        Log.d("QQRefreshHeaderView", "onRefresh()");
         ivArrow.setVisibility(GONE);
         progressBar.setVisibility(VISIBLE);
         tvRefresh.setText("REFRESHING");
@@ -51,13 +50,13 @@ public class ClassicRefreshHeaderView extends SwipeRefreshHeaderLayout {
 
     @Override
     public void onPrepare() {
-        Log.d("ClassicRefreshHeader", "onPrepare()");
+        Log.d("QQRefreshHeaderView", "onPrepare()");
         ivSuccess.setVisibility(GONE);
     }
 
     @Override
     public void onSwipe(int y) {
-        Log.d("ClassicRefreshHeader", "onSwipe(" + y + ")");
+        Log.d("QQRefreshHeaderView", "onSwipe(" + y + ")");
         ivArrow.setVisibility(VISIBLE);
         progressBar.setVisibility(GONE);
         ivSuccess.setVisibility(GONE);
@@ -73,7 +72,7 @@ public class ClassicRefreshHeaderView extends SwipeRefreshHeaderLayout {
 
     @Override
     public void complete() {
-        Log.d("ClassicRefreshHeader", "complete()");
+        Log.d("QQRefreshHeaderView", "complete()");
         ivArrow.setVisibility(GONE);
         progressBar.setVisibility(GONE);
         ivSuccess.setVisibility(VISIBLE);
@@ -82,7 +81,7 @@ public class ClassicRefreshHeaderView extends SwipeRefreshHeaderLayout {
 
     @Override
     public void onReset() {
-        Log.d("ClassicRefreshHeader", "onReset()");
+        Log.d("QQRefreshHeaderView", "onReset()");
         ivSuccess.setVisibility(GONE);
         ivArrow.setVisibility(GONE);
         progressBar.setVisibility(GONE);

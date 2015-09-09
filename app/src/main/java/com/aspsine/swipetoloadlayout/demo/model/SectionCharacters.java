@@ -5,18 +5,18 @@ import java.util.List;
 /**
  * Created by aspsine on 15/9/4.
  */
-public class Characters {
+public class SectionCharacters {
 
-    private List<Hero> heroes;
+    private List<Character> characters;
 
     private List<Section> sections;
 
-    public List<Hero> getHeroes() {
-        return heroes;
+    public List<Character> getCharacters() {
+        return characters;
     }
 
-    public void setHeroes(List<Hero> heroes) {
-        this.heroes = heroes;
+    public void setCharacters(List<Character> characters) {
+        this.characters = characters;
     }
 
     public List<Section> getSections() {

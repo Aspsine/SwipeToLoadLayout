@@ -3,14 +3,14 @@ package com.aspsine.swipetoloadlayout.demo.model;
 /**
  * Created by Aspsine on 2015/9/2.
  */
-public class Hero{
+public class Character {
     private String name;
     private String avatar;
 
-    public Hero() {
+    public Character() {
     }
 
-    public Hero(String name, String avatar) {
+    public Character(String name, String avatar) {
         this.name = name;
         this.avatar = avatar;
     }

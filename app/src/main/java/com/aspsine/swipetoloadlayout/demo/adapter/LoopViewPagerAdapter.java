@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aspsine.swipetoloadlayout.demo.R;
-import com.aspsine.swipetoloadlayout.demo.model.Hero;
+import com.aspsine.swipetoloadlayout.demo.model.Character;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
 
-    private final List<Hero> mHeroes;
+    private final List<Character> mHeroes;
 
     private final ViewGroup mIndicators;
 
@@ -37,7 +37,7 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
         mHeroes = new ArrayList<>();
     }
 
-    public void setList(List<Hero> heroes) {
+    public void setList(List<Character> heroes) {
         mHeroes.clear();
         mHeroes.addAll(heroes);
         notifyDataSetChanged();
@@ -79,7 +79,7 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
     }
 
     @Override
-    public Hero getItem(int position) {
+    public Character getItem(int position) {
         return mHeroes.get(position);
     }
 
@@ -96,9 +96,9 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        Hero hero = mHeroes.get(position);
-        holder.tvName.setText(hero.getName().replace(" ", System.getProperty("line.separator")));
-        Picasso.with(parent.getContext()).load(hero.getAvatar()).into(holder.ivBanner);
+        Character character = mHeroes.get(position);
+        holder.tvName.setText(character.getName().replace(" ", System.getProperty("line.separator")));
+        Picasso.with(parent.getContext()).load(character.getAvatar()).into(holder.ivBanner);
         return convertView;
     }
 

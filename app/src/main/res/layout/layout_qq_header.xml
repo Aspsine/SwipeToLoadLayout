@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<com.aspsine.swipetoloadlayout.demo.view.ClassicLoadMoreFooterView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.aspsine.swipetoloadlayout.demo.view.QQRefreshHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/load_more_footer_height_qq">
+        android:layout_height="@dimen/refresh_header_height_qq">
+
+        <ImageView
+            android:id="@+id/ivArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="48dp"
+            android:layout_toLeftOf="@+id/tvRefresh"
+            android:background="@mipmap/qq_arrow_down" />
 
         <ProgressBar
             android:id="@+id/progressbar"
@@ -14,25 +22,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@+id/tvLoadMore" />
+            android:layout_marginRight="48dp"
+            android:layout_toLeftOf="@+id/tvRefresh" />
 
         <ImageView
             android:id="@+id/ivSuccess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@+id/tvLoadMore"
+            android:layout_marginRight="48dp"
+            android:layout_toLeftOf="@+id/tvRefresh"
             android:background="@mipmap/qq_refresh_success" />
 
         <TextView
-            android:id="@+id/tvLoadMore"
+            android:id="@+id/tvRefresh"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="LoadMore"
             android:textColor="?attr/colorPrimary" />
+
     </RelativeLayout>
-</com.aspsine.swipetoloadlayout.demo.view.ClassicLoadMoreFooterView>
+</com.aspsine.swipetoloadlayout.demo.view.QQRefreshHeaderView>
