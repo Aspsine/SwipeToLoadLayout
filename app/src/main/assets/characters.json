@@ -1,5 +1,5 @@
 {
-  "heroes": [
+  "characters": [
     {
       "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/9/a0/54adb647b792d.png",
       "name": "Ant-Man"
@@ -24,7 +24,7 @@
   "sections": [
     {
       "name": "Top Marvel Heroes",
-      "heroes": [
+      "characters": [
         {
           "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/9/30/538cd33e15ab7/standard_xlarge.jpg",
           "name": "Spider-Man"
