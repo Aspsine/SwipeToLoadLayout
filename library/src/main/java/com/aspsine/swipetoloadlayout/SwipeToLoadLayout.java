@@ -90,6 +90,11 @@ public class SwipeToLoadLayout extends ViewGroup {
     private float mLastY;
 
     /**
+     * last touch point.x
+     */
+    private float mLastX;
+
+    /**
      * action touch pointer's id
      */
     private int mActivePointerId;
@@ -731,10 +736,10 @@ public class SwipeToLoadLayout extends ViewGroup {
             // more than three children: unsupported!
             throw new IllegalStateException("Children num must equal or less than 3");
         }
-        if (mHeaderView != null){
+        if (mHeaderView != null) {
             mHeaderView.setVisibility(GONE);
         }
-        if (mFooterView!=null){
+        if (mFooterView != null) {
             mFooterView.setVisibility(GONE);
         }
     }
@@ -944,29 +949,23 @@ public class SwipeToLoadLayout extends ViewGroup {
 
                 mActivePointerId = MotionEventCompat.getPointerId(event, 0);
                 final float initDownY = getMotionEventY(event, mActivePointerId);
+                final float initDownX = getMotionEventX(event, mActivePointerId);
                 if (initDownY == INVALID_COORDINATE) {
                     return false;
                 }
                 mLastY = initDownY;
+                mLastX = initDownX;
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (mActivePointerId == INVALID_POINTER) {
-                    Log.e(TAG, "Got ACTION_MOVE event but don't have an active pointer id.");
-                    return false;
-                }
-
                 final float y = getMotionEventY(event, mActivePointerId);
-                if (y == INVALID_COORDINATE) {
-                    return false;
-                }
+                final float x = getMotionEventX(event, mActivePointerId);
 
                 final float yDiff = y - mLastY;
+                final float xDiff = x - mLastX;
                 mLastY = y;
-                // if status is refreshing or loading more
-                // or refresh or refresh complete or load more complete
-                // dispatchTouchEvent to child view
-                if (((STATUS.isRefreshing(mStatus) || STATUS.isLoadingMore(mStatus)) && mLoading)
-                        || (STATUS.isRefreshComplete(mStatus) || STATUS.isLoadMoreComplete(mStatus))) {
+                mLastX = x;
+
+                if (Math.abs(xDiff) > Math.abs(yDiff) && Math.abs(x) > mTouchSlop) {
                     return super.dispatchTouchEvent(event);
                 }
 
@@ -974,13 +973,11 @@ public class SwipeToLoadLayout extends ViewGroup {
                     if (yDiff > 0 && onCheckCanRefresh()) {
                         mRefreshCallback.onPrepare();
                         setStatus(STATUS.STATUS_SWIPING_TO_REFRESH);
-
                     } else if (yDiff < 0 && onCheckCanLoadMore()) {
                         mLoadMoreCallback.onPrepare();
                         setStatus(STATUS.STATUS_SWIPING_TO_LOAD_MORE);
                     }
                 }
-
 
                 if (STATUS.isSwipingToRefresh(mStatus)
                         || STATUS.isSwipingToLoadMore(mStatus)
@@ -988,16 +985,21 @@ public class SwipeToLoadLayout extends ViewGroup {
                         || STATUS.isReleaseToLoadMore(mStatus)) {
                     //refresh or loadMore
                     fingerScroll(yDiff);
+                    if (!STATUS.isStatusDefault(mStatus)) {
+                        return false;
+                    }
                 }
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 final int index = MotionEventCompat.getActionIndex(event);
                 mActivePointerId = MotionEventCompat.getPointerId(event, index);
                 mLastY = getMotionEventY(event, mActivePointerId);
+                mLastX = getMotionEventX(event, mActivePointerId);
                 break;
             case MotionEvent.ACTION_POINTER_UP:
                 onSecondaryPointerUp(event);
                 mLastY = getMotionEventY(event, mActivePointerId);
+                mLastX = getMotionEventX(event, mActivePointerId);
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
@@ -1010,8 +1012,7 @@ public class SwipeToLoadLayout extends ViewGroup {
             default:
                 break;
         }
-        super.dispatchTouchEvent(event);
-        return true;
+        return super.dispatchTouchEvent(event);
     }
 
 
@@ -1148,14 +1149,6 @@ public class SwipeToLoadLayout extends ViewGroup {
                 }
             }
         }
-
-        if ((mHeaderOffset != 0 && !onCheckCanRefresh())
-                || (mFooterOffset != 0 && !onCheckCanLoadMore())) {
-            mHeaderOffset = 0;
-            mTargetOffset = 0;
-            mFooterOffset = 0;
-            setStatus(STATUS.STATUS_DEFAULT);
-        }
         Log.i(TAG, "mTargetOffset:" + mTargetOffset + "; Status=" + STATUS.getStatus(mStatus));
         if (mTargetOffset > 0 && !STATUS.isRefreshComplete(mStatus)) {
             mRefreshCallback.onSwipe(mTargetOffset);
@@ -1208,6 +1201,15 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
         return MotionEventCompat.getY(event, index);
     }
+
+    private float getMotionEventX(MotionEvent event, int activePointId) {
+        final int index = MotionEventCompat.findPointerIndex(event, activePointId);
+        if (index < 0) {
+            return INVALID_COORDINATE;
+        }
+        return MotionEventCompat.getX(event, index);
+    }
+
 
     private class AutoScroller implements Runnable {
 
