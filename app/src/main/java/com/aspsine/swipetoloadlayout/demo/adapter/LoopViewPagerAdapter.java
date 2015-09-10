@@ -48,7 +48,7 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
      * this shit have no animation at all.
      */
     private void initIndicators() {
-        if (mIndicators.getChildCount() != mHeroes.size()) {
+        if (mIndicators.getChildCount() != mHeroes.size() && mHeroes.size() > 1) {
             mIndicators.removeAllViews();
             Resources res = mIndicators.getResources();
             int size = res.getDimensionPixelOffset(R.dimen.indicator_size);

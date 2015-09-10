@@ -104,7 +104,11 @@ public class GoogleStyleFragment extends Fragment implements OnRefreshListener, 
         GsonRequest request = new GsonRequest<SectionCharacters>(Constants.API.CHARACTERS, SectionCharacters.class, new Response.Listener<SectionCharacters>() {
             @Override
             public void onResponse(SectionCharacters characters) {
-                mAdapter.setList(characters.getCharacters(), characters.getSections().subList(mType, mType + 1));
+                int end = mType + 1;
+                if (mType == 3) {
+                    end = mType + 2;
+                }
+                mAdapter.setList(characters.getCharacters().subList(mType, end), characters.getSections().subList(mType, mType + 1));
                 swipeToLoadLayout.setRefreshing(false);
                 mPageNum = mType;
             }

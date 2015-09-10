@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/load_more_footer_height_qq">
+        android:layout_height="@dimen/load_more_footer_height_classic">
 
         <ProgressBar
             android:id="@+id/progressbar"
