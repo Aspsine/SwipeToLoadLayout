@@ -5,8 +5,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:layout_height="@dimen/refresh_header_height_twitter">
+        android:layout_height="@dimen/refresh_header_height_twitter"
+        android:layout_gravity="center">
 
         <ImageView
             android:id="@+id/ivArrow"
@@ -16,6 +16,15 @@
             android:layout_marginRight="48dp"
             android:layout_toLeftOf="@+id/tvRefresh"
             android:background="@mipmap/twitter_pull_arrow" />
+
+        <ImageView
+            android:id="@+id/ivSuccess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="48dp"
+            android:layout_toLeftOf="@+id/tvRefresh"
+            android:background="@mipmap/qq_refresh_success" />
 
         <ProgressBar
             android:id="@+id/progressbar"

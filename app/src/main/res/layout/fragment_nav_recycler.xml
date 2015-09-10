@@ -24,8 +24,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:divider="@null" />
+            android:clipToPadding="false" />
 
         <include layout="@layout/layout_classic_footer" />
     </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

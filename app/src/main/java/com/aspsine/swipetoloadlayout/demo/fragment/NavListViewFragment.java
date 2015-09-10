@@ -2,7 +2,6 @@ package com.aspsine.swipetoloadlayout.demo.fragment;
 
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -73,8 +72,6 @@ public class NavListViewFragment extends BaseNavigationFragment implements OnRef
         listView = (LoadAbleListView) view.findViewById(R.id.listView);
         viewPager = (ViewPager) pagerView.findViewById(R.id.viewPager);
         indicators = (ViewGroup) pagerView.findViewById(R.id.indicators);
-        mPagerAdapter = new LoopViewPagerAdapter(viewPager, indicators);
-        viewPager.setAdapter(mPagerAdapter);
         viewPager.addOnPageChangeListener(mPagerAdapter);
         listView.addHeaderView(pagerView);
         listView.setAdapter(mAdapter);
@@ -86,9 +83,14 @@ public class NavListViewFragment extends BaseNavigationFragment implements OnRef
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (firstVisibleItem == 0) {
-                    mPagerAdapter.start();
+                    if (mPagerAdapter != null) {
+                        mPagerAdapter.start();
+                    }
+
                 } else {
-                    mPagerAdapter.stop();
+                    if (mPagerAdapter != null) {
+                        mPagerAdapter.stop();
+                    }
                 }
             }
         });
@@ -111,7 +113,9 @@ public class NavListViewFragment extends BaseNavigationFragment implements OnRef
     @Override
     public void onResume() {
         super.onResume();
-        mPagerAdapter.start();
+        if (mPagerAdapter != null) {
+            mPagerAdapter.start();
+        }
     }
 
     @Override
@@ -124,7 +128,9 @@ public class NavListViewFragment extends BaseNavigationFragment implements OnRef
         if (swipeToLoadLayout.isLoadingMore()) {
             swipeToLoadLayout.setLoadingMore(false);
         }
-        mPagerAdapter.stop();
+        if (mPagerAdapter != null) {
+            mPagerAdapter.stop();
+        }
     }
 
     @Override
@@ -133,8 +139,16 @@ public class NavListViewFragment extends BaseNavigationFragment implements OnRef
             @Override
             public void onResponse(SectionCharacters characters) {
                 mAdapter.setList(characters.getSections());
-                mPagerAdapter.setList(characters.getCharacters());
-                viewPager.setBackgroundDrawable(getResources().getDrawable(R.mipmap.bg_viewpager));
+                if (viewPager.getAdapter() == null) {
+                    mPagerAdapter = new LoopViewPagerAdapter(viewPager, indicators);
+                    viewPager.setAdapter(mPagerAdapter);
+                    viewPager.addOnPageChangeListener(mPagerAdapter);
+                    mPagerAdapter.setList(characters.getCharacters());
+                    viewPager.setBackgroundDrawable(getResources().getDrawable(R.mipmap.bg_viewpager));
+                } else {
+                    mPagerAdapter = (LoopViewPagerAdapter) viewPager.getAdapter();
+                    mPagerAdapter.setList(characters.getCharacters());
+                }
                 swipeToLoadLayout.setRefreshing(false);
             }
         }, new Response.ErrorListener() {
@@ -149,7 +163,7 @@ public class NavListViewFragment extends BaseNavigationFragment implements OnRef
 
     @Override
     public void onLoadMore() {
-        new Handler().postDelayed(new Runnable() {
+        swipeToLoadLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
                 swipeToLoadLayout.setLoadingMore(false);

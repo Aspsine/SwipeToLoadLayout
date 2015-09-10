@@ -15,7 +15,7 @@ import android.view.MenuItem;
 
 import com.aspsine.swipetoloadlayout.demo.fragment.BaseNavigationFragment;
 import com.aspsine.swipetoloadlayout.demo.fragment.BaseToolbarFragment;
-import com.aspsine.swipetoloadlayout.demo.fragment.NavHomeFragment;
+import com.aspsine.swipetoloadlayout.demo.fragment.NavGoogleFragment;
 import com.aspsine.swipetoloadlayout.demo.fragment.NavListViewFragment;
 import com.aspsine.swipetoloadlayout.demo.fragment.NavRecyclerFragment;
 
@@ -100,12 +100,8 @@ public class MainActivity extends AppCompatActivity implements BaseToolbarFragme
                 navigationFragment = new NavRecyclerFragment();
                 break;
 
-            case R.id.nav_twitter_style:
-                navigationFragment = new NavHomeFragment();
-                break;
-
             case R.id.nav_google_style:
-                navigationFragment = new BaseNavigationFragment();
+                navigationFragment = new NavGoogleFragment();
                 break;
 
             case R.id.nav_qq_style:

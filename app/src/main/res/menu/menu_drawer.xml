@@ -4,17 +4,12 @@
         <item
             android:id="@+id/nav_listView"
             android:icon="@mipmap/ic_launcher"
-            android:title="ListView" />
+            android:title="Twitter Style ListView " />
 
         <item
             android:id="@+id/nav_recyclerView"
             android:icon="@mipmap/ic_launcher"
-            android:title="RecyclerView" />
-
-        <item
-            android:id="@+id/nav_twitter_style"
-            android:icon="@mipmap/ic_launcher"
-            android:title="Twitter Style" />
+            android:title="Twitter Style RecyclerView" />
 
         <item
             android:id="@+id/nav_google_style"
