@@ -38,7 +38,7 @@ public class NavTwitterFragment extends BaseNavPagerFragment {
     @Override
     protected String[] getTitles() {
         return new String[]{"ListView", "GridView",
-                "RecyclerView", "Grid RecyclerView",
+                "RecyclerView", "Grid RecyclerView", "StaggeredGrid RecyclerView",
                 "ScrollView", "WebView",
                 "FrameLayout", "RelativeLayout",
                 "LinearLayout", "ImageView", "TextView"};
@@ -53,10 +53,12 @@ public class NavTwitterFragment extends BaseNavPagerFragment {
         } else if (title.equals("GridView")) {
             fragment = new TwitterGridViewFragment();
         } else if (title.equals("RecyclerView")) {
-            fragment = new TwitterRecyclerFragment();
+            fragment = TwitterRecyclerFragment.newInstance(TwitterRecyclerFragment.TYPE_LINEAR);
         } else if (title.equals("Grid RecyclerView")) {
             // grid
-            fragment = new TwitterRecyclerFragment();
+            fragment = TwitterRecyclerFragment.newInstance(TwitterRecyclerFragment.TYPE_GRID);
+        } else if (title.equals("StaggeredGrid RecyclerView")) {
+            fragment = TwitterRecyclerFragment.newInstance(TwitterRecyclerFragment.TYPE_STAGGERED_GRID);
         } else if (title.equals("ScrollView")) {
             fragment = new TwitterScrollViewFragment();
         } else if (title.equals("WebView")) {

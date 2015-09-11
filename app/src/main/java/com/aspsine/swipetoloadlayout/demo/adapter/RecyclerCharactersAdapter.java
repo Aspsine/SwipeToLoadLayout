@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aspsine.swipetoloadlayout.demo.R;
+import com.aspsine.swipetoloadlayout.demo.fragment.TwitterRecyclerFragment;
 import com.aspsine.swipetoloadlayout.demo.model.Character;
 import com.aspsine.swipetoloadlayout.demo.model.Section;
 import com.squareup.picasso.CircleTransformation;
@@ -35,7 +36,10 @@ public class RecyclerCharactersAdapter extends RecyclerView.Adapter<RecyclerView
 
     private LoopViewPagerAdapter mPagerAdapter;
 
-    public RecyclerCharactersAdapter() {
+    private final int mType;
+
+    public RecyclerCharactersAdapter(int type) {
+        mType = type;
         mHeroes = new ArrayList<>();
         mSections = new ArrayList<>();
         mGroupPositions = new ArrayList<>();
@@ -106,10 +110,18 @@ public class RecyclerCharactersAdapter extends RecyclerView.Adapter<RecyclerView
                 itemView = inflate(viewGroup, R.layout.layout_viewpager);
                 return new ViewPagerHolder(itemView);
             case TYPE_GROUP:
-                itemView = inflate(viewGroup, R.layout.item_header);
+                if (mType == TwitterRecyclerFragment.TYPE_LINEAR) {
+                    itemView = inflate(viewGroup, R.layout.item_header);
+                } else {
+                    itemView = inflate(viewGroup, R.layout.item_header_grid);
+                }
                 return new GroupHolder(itemView);
             case TYPE_CHILD:
-                itemView = inflate(viewGroup, R.layout.item_hero);
+                if (mType == TwitterRecyclerFragment.TYPE_LINEAR) {
+                    itemView = inflate(viewGroup, R.layout.item_hero);
+                } else {
+                    itemView = inflate(viewGroup, R.layout.item_hero_grid);
+                }
                 return new ChildHolder(itemView);
         }
         throw new IllegalArgumentException("Wrong type!");

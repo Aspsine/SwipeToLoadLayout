@@ -4,7 +4,10 @@ package com.aspsine.swipetoloadlayout.demo.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +35,27 @@ public class TwitterRecyclerFragment extends BaseFragment implements OnRefreshLi
         SectionAdapter.OnChildItemLongClickListener<Character> {
     private static final String TAG = TwitterRecyclerFragment.class.getSimpleName();
 
+    public static final int TYPE_LINEAR = 0;
+
+    public static final int TYPE_GRID = 1;
+
+    public static final int TYPE_STAGGERED_GRID = 2;
+
     private SwipeToLoadLayout swipeToLoadLayout;
 
     private LoadAbleRecyclerView recyclerView;
 
     private RecyclerCharactersAdapter mAdapter;
+
+    private int mType;
+
+    public static Fragment newInstance(int type) {
+        TwitterRecyclerFragment fragment = new TwitterRecyclerFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("LAYOUT_MANAGER_TYPE", type);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     public TwitterRecyclerFragment() {
         // Required empty public constructor
@@ -45,7 +64,8 @@ public class TwitterRecyclerFragment extends BaseFragment implements OnRefreshLi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new RecyclerCharactersAdapter();
+        mType = getArguments().getInt("LAYOUT_MANAGER_TYPE", TYPE_LINEAR);
+        mAdapter = new RecyclerCharactersAdapter(mType);
     }
 
     @Override
@@ -60,7 +80,14 @@ public class TwitterRecyclerFragment extends BaseFragment implements OnRefreshLi
         super.onViewCreated(view, savedInstanceState);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
         recyclerView = (LoadAbleRecyclerView) view.findViewById(R.id.recyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = null;
+        if (mType == TYPE_LINEAR) {
+            layoutManager = new LinearLayoutManager(getContext());
+        } else if (mType == TYPE_GRID) {
+            layoutManager = new GridLayoutManager(getContext(), 2);
+        } else if (mType == TYPE_STAGGERED_GRID) {
+            layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        }
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
 
