@@ -1140,15 +1140,22 @@ public class SwipeToLoadLayout extends ViewGroup {
                 mLoading = false;
                 mHeaderOffset = 0;
                 mFooterOffset = 0;
-                if (STATUS.isRefreshComplete(mStatus) || STATUS.isSwipingToRefresh(mStatus)) {
+                if (STATUS.isRefreshComplete(mStatus) || STATUS.isSwipingToRefresh(mStatus)
+                        //FIX quick scrolling jump (swiping to refresh) directly lead mTargetOffset < 0 bug
+                        // release to refresh(quick scroll) -> mTargetOffset ==0 (not change status to default) -> mTargetOffset<0
+                        || STATUS.isReleaseToRefresh(mStatus)) {
                     setStatus(STATUS.STATUS_DEFAULT);
                     mRefreshCallback.onReset();
-                } else if (STATUS.isLoadMoreComplete(mStatus) || STATUS.isSwipingToLoadMore(mStatus)) {
+                } else if (STATUS.isLoadMoreComplete(mStatus) || STATUS.isSwipingToLoadMore(mStatus)
+                        //FIX quick scrolling release to load more jump swiping to load more directly lead mTargetOffset > 0 bug
+                        // scrolling release(quick scroll) -> mTargetOffset ==0 (not change status to default) -> mTargetOffset>0
+                        || STATUS.isReleaseToLoadMore(mStatus)) {
                     setStatus(STATUS.STATUS_DEFAULT);
                     mLoadMoreCallback.onReset();
                 }
             }
         }
+
         Log.i(TAG, "mTargetOffset:" + mTargetOffset + "; Status=" + STATUS.getStatus(mStatus));
         if (mTargetOffset > 0 && !STATUS.isRefreshComplete(mStatus)) {
             mRefreshCallback.onSwipe(mTargetOffset);
