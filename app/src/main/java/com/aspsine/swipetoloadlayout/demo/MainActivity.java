@@ -16,8 +16,7 @@ import android.view.MenuItem;
 import com.aspsine.swipetoloadlayout.demo.fragment.BaseNavigationFragment;
 import com.aspsine.swipetoloadlayout.demo.fragment.BaseToolbarFragment;
 import com.aspsine.swipetoloadlayout.demo.fragment.NavGoogleFragment;
-import com.aspsine.swipetoloadlayout.demo.fragment.NavListViewFragment;
-import com.aspsine.swipetoloadlayout.demo.fragment.NavRecyclerFragment;
+import com.aspsine.swipetoloadlayout.demo.fragment.NavTwitterFragment;
 
 public class MainActivity extends AppCompatActivity implements BaseToolbarFragment.ToggleDrawerCallBack
         , NavigationView.OnNavigationItemSelectedListener {
@@ -37,8 +36,8 @@ public class MainActivity extends AppCompatActivity implements BaseToolbarFragme
         handler = new Handler(Looper.getMainLooper());
 
         if (savedInstanceState == null) {
-            navigationView.setCheckedItem(R.id.nav_listView);
-            showNavigationFragment(R.id.nav_listView);
+            navigationView.setCheckedItem(R.id.nav_Twitter_style);
+            showNavigationFragment(R.id.nav_Twitter_style);
         } else {
 
         }
@@ -92,12 +91,8 @@ public class MainActivity extends AppCompatActivity implements BaseToolbarFragme
         BaseNavigationFragment navigationFragment = new BaseNavigationFragment();
 
         switch (itemId) {
-            case R.id.nav_listView:
-                navigationFragment = new NavListViewFragment();
-                break;
-
-            case R.id.nav_recyclerView:
-                navigationFragment = new NavRecyclerFragment();
+            case R.id.nav_Twitter_style:
+                navigationFragment = new NavTwitterFragment();
                 break;
 
             case R.id.nav_google_style:
@@ -105,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements BaseToolbarFragme
                 break;
 
             case R.id.nav_qq_style:
-                navigationFragment = new NavListViewFragment();
+
                 break;
 
             case R.id.nav_wechat_style:

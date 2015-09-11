@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aspsine.swipetoloadlayout.SwipeToLoadLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeToLoadLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/style_window_background">
+
+    <include layout="@layout/layout_twitter_header" />
+
+    <com.aspsine.swipetoloadlayout.demo.view.LoadAbleImageView
+        android:id="@+id/ivContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:background="@color/style_color_primary_light"
+        android:scaleType="centerCrop" />
+
+    <include layout="@layout/layout_classic_footer" />
+</com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

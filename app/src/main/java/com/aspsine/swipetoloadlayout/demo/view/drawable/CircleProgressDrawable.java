@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
  * Created by aspsine on 15/9/11.
  */
 public class CircleProgressDrawable extends Drawable {
+
     @Override
     public void draw(Canvas canvas) {
 

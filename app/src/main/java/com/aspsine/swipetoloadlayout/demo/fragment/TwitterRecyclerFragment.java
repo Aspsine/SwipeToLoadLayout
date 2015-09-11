@@ -27,10 +27,10 @@ import com.aspsine.swipetoloadlayout.demo.view.LoadAbleRecyclerView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NavRecyclerFragment extends BaseNavigationFragment implements OnRefreshListener, OnLoadMoreListener,
+public class TwitterRecyclerFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener,
         SectionAdapter.OnChildItemClickListener<Character>,
         SectionAdapter.OnChildItemLongClickListener<Character> {
-    private static final String TAG = NavRecyclerFragment.class.getSimpleName();
+    private static final String TAG = TwitterRecyclerFragment.class.getSimpleName();
 
     private SwipeToLoadLayout swipeToLoadLayout;
 
@@ -38,7 +38,7 @@ public class NavRecyclerFragment extends BaseNavigationFragment implements OnRef
 
     private RecyclerCharactersAdapter mAdapter;
 
-    public NavRecyclerFragment() {
+    public TwitterRecyclerFragment() {
         // Required empty public constructor
     }
 
@@ -52,7 +52,7 @@ public class NavRecyclerFragment extends BaseNavigationFragment implements OnRef
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nav_recycler, container, false);
+        return inflater.inflate(R.layout.fragment_twitter_recycler, container, false);
     }
 
     @Override
@@ -71,7 +71,6 @@ public class NavRecyclerFragment extends BaseNavigationFragment implements OnRef
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setTitle("Recycler Top Characters");
         swipeToLoadLayout.post(new Runnable() {
             @Override
             public void run() {

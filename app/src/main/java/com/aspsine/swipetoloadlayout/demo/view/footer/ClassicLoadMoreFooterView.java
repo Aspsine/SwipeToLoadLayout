@@ -1,4 +1,4 @@
-package com.aspsine.swipetoloadlayout.demo.view;
+package com.aspsine.swipetoloadlayout.demo.view.footer;
 
 import android.content.Context;
 import android.util.AttributeSet;

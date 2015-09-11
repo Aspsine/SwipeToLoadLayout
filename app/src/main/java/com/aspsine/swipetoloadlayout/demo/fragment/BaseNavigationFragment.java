@@ -7,6 +7,7 @@ public class BaseNavigationFragment extends BaseToolbarFragment {
 
     public static final String NAVIGATION_FRAGMENT_TITLE = "navigation_fragment_title";
 
+    
 
 
 }

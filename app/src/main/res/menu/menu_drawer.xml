@@ -2,14 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_listView"
+            android:id="@+id/nav_Twitter_style"
             android:icon="@mipmap/ic_launcher"
-            android:title="Twitter Style ListView " />
-
-        <item
-            android:id="@+id/nav_recyclerView"
-            android:icon="@mipmap/ic_launcher"
-            android:title="Twitter Style RecyclerView" />
+            android:title="Twitter Style" />
 
         <item
             android:id="@+id/nav_google_style"

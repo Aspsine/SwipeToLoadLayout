@@ -28,10 +28,10 @@ import com.aspsine.swipetoloadlayout.demo.view.LoadAbleListView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NavListViewFragment extends BaseNavigationFragment implements OnRefreshListener, OnLoadMoreListener,
+public class TwitterListViewFragment extends Fragment implements OnRefreshListener, OnLoadMoreListener,
         SectionAdapter.OnChildItemClickListener<Character>,
         SectionAdapter.OnChildItemLongClickListener<Character> {
-    public static final String TAG = NavListViewFragment.class.getSimpleName();
+    public static final String TAG = TwitterListViewFragment.class.getSimpleName();
 
     private SwipeToLoadLayout swipeToLoadLayout;
 
@@ -45,7 +45,7 @@ public class NavListViewFragment extends BaseNavigationFragment implements OnRef
 
     private LoopViewPagerAdapter mPagerAdapter;
 
-    public NavListViewFragment() {
+    public TwitterListViewFragment() {
         // Required empty public constructor
     }
 
@@ -61,7 +61,7 @@ public class NavListViewFragment extends BaseNavigationFragment implements OnRef
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nav_listview, container, false);
+        return inflater.inflate(R.layout.fragment_twitter_listview, container, false);
     }
 
     @Override
@@ -101,7 +101,6 @@ public class NavListViewFragment extends BaseNavigationFragment implements OnRef
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setTitle("ListView Top Characters");
         swipeToLoadLayout.post(new Runnable() {
             @Override
             public void run() {

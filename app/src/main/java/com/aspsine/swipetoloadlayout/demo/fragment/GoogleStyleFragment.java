@@ -2,7 +2,6 @@ package com.aspsine.swipetoloadlayout.demo.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,7 @@ import com.aspsine.swipetoloadlayout.demo.view.LoadAbleRecyclerView;
 /**
  * Created by Aspsine on 2015/9/10.
  */
-public class GoogleStyleFragment extends Fragment implements OnRefreshListener, OnLoadMoreListener {
+public class GoogleStyleFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
     public static final String TAG = GoogleStyleFragment.class.getSimpleName();
     public static final String GOOGLE_REFRESH_TYPE = "google_refresh_type";
 

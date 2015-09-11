@@ -4,7 +4,7 @@
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.aspsine.swipetoloadlayout.demo.fragment.NavGoogleFragment">
+    tools:context="com.aspsine.swipetoloadlayout.demo.fragment.NavTwitterFragment">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -18,15 +18,16 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
+            <!--delete reason: listview don't support coordinate scroll-->
+            <!--app:layout_scrollFlags="scroll|enterAlways"-->
         </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:tabMode="scrollable"
             app:tabIndicatorColor="@color/style_color_primary_light" />
     </android.support.design.widget.AppBarLayout>
 
@@ -35,6 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
