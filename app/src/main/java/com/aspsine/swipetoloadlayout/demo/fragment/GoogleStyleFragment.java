@@ -47,7 +47,7 @@ public class GoogleStyleFragment extends BaseFragment implements OnRefreshListen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mType = getArguments().getInt(GOOGLE_REFRESH_TYPE, 0);
-        mAdapter = new RecyclerCharactersAdapter(mType);
+        mAdapter = new RecyclerCharactersAdapter(0);
     }
 
     @Nullable
