@@ -126,8 +126,8 @@ public class GoogleStyleFragment extends BaseFragment implements OnRefreshListen
         GsonRequest request = new GsonRequest<SectionCharacters>(Constants.API.CHARACTERS, SectionCharacters.class, new Response.Listener<SectionCharacters>() {
             @Override
             public void onResponse(SectionCharacters characters) {
-                mPageNum++;
-                if (mPageNum < 4) {
+                if (mPageNum < 3) {
+                    mPageNum++;
                     mAdapter.append(characters.getSections().subList(mPageNum, mPageNum + 1));
                 } else {
                     Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
