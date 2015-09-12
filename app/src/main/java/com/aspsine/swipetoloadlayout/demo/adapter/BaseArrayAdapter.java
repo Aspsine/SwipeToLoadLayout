@@ -1,7 +1,5 @@
 package com.aspsine.swipetoloadlayout.demo.adapter;
 
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
