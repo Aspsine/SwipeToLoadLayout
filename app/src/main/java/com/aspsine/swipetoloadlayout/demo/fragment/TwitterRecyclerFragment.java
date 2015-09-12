@@ -11,6 +11,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -48,6 +49,8 @@ public class TwitterRecyclerFragment extends BaseFragment implements OnRefreshLi
     private RecyclerCharactersAdapter mAdapter;
 
     private int mType;
+
+    private int mPageNum;
 
     public static Fragment newInstance(int type) {
         TwitterRecyclerFragment fragment = new TwitterRecyclerFragment();
@@ -115,7 +118,8 @@ public class TwitterRecyclerFragment extends BaseFragment implements OnRefreshLi
     @Override
     public void onPause() {
         super.onPause();
-        App.getRequestQueue().cancelAll(TAG);
+        App.getRequestQueue().cancelAll(TAG + "refresh" + mType);
+        App.getRequestQueue().cancelAll(TAG + "loadmore" + mType);
         if (swipeToLoadLayout.isRefreshing()) {
             swipeToLoadLayout.setRefreshing(false);
         }
@@ -137,12 +141,25 @@ public class TwitterRecyclerFragment extends BaseFragment implements OnRefreshLi
 
     @Override
     public void onLoadMore() {
-        swipeToLoadLayout.postDelayed(new Runnable() {
+        GsonRequest request = new GsonRequest<SectionCharacters>(Constants.API.CHARACTERS, SectionCharacters.class, new Response.Listener<SectionCharacters>() {
             @Override
-            public void run() {
+            public void onResponse(SectionCharacters characters) {
+                if (mPageNum < 3) {
+                    mPageNum++;
+                    mAdapter.append(characters.getSections().subList(mPageNum, mPageNum + 1));
+                } else {
+                    Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+                }
                 swipeToLoadLayout.setLoadingMore(false);
             }
-        }, 1000);
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                swipeToLoadLayout.setLoadingMore(false);
+                volleyError.printStackTrace();
+            }
+        });
+        App.getRequestQueue().add(request).setTag(TAG + "loadmore" + mType);
     }
 
     @Override
@@ -150,7 +167,8 @@ public class TwitterRecyclerFragment extends BaseFragment implements OnRefreshLi
         GsonRequest request = new GsonRequest<SectionCharacters>(Constants.API.CHARACTERS, SectionCharacters.class, new Response.Listener<SectionCharacters>() {
             @Override
             public void onResponse(SectionCharacters characters) {
-                mAdapter.setList(characters.getCharacters(), characters.getSections());
+                mPageNum = 0;
+                mAdapter.setList(characters.getCharacters(), characters.getSections().subList(0, mPageNum + 1));
                 swipeToLoadLayout.setRefreshing(false);
             }
         }, new Response.ErrorListener() {
@@ -160,6 +178,6 @@ public class TwitterRecyclerFragment extends BaseFragment implements OnRefreshLi
                 volleyError.printStackTrace();
             }
         });
-        App.getRequestQueue().add(request).setTag(TAG);
+        App.getRequestQueue().add(request).setTag(TAG + "refresh" + mType);
     }
 }

@@ -1,13 +1,78 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.aspsine.swipetoloadlayout.SwipeToLoadLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeToLoadLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/style_window_background"
+    app:default_to_refreshing_scrolling_duration="1000"
+    app:swipe_style="classic"
     tools:context="com.aspsine.swipetoloadlayout.demo.fragment.TwitterScrollViewFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <include layout="@layout/layout_twitter_header" />
 
-</FrameLayout>
+    <com.aspsine.swipetoloadlayout.demo.view.LoadAbleScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/ivOne"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/viewpager_height"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:background="@color/black"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/ivTwo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/viewpager_height"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:background="@color/black"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/ivThree"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/viewpager_height"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:background="@color/black"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/ivFour"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/viewpager_height"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:background="@color/black"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/ivFive"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/viewpager_height"
+                android:layout_margin="8dp"
+                android:background="@color/black"
+                android:scaleType="centerCrop" />
+        </LinearLayout>
+    </com.aspsine.swipetoloadlayout.demo.view.LoadAbleScrollView>
+
+    <include layout="@layout/layout_classic_footer" />
+</com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

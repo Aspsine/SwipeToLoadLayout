@@ -7,7 +7,7 @@
     android:background="@color/style_window_background"
     app:default_to_refreshing_scrolling_duration="1000"
     app:swipe_style="classic"
-    tools:context="com.aspsine.swipetoloadlayout.demo.fragment.TwitterListViewFragment">
+    tools:context="com.aspsine.swipetoloadlayout.demo.fragment.TwitterGridViewFragment">
 
     <include layout="@layout/layout_twitter_header" />
 
