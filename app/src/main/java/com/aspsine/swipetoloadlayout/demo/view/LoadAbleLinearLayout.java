@@ -31,11 +31,4 @@ public class LoadAbleLinearLayout extends LinearLayout implements RefreshAble, L
         return true;
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == event.ACTION_DOWN) {
-            return true;
-        }
-        return super.onTouchEvent(event);
-    }
 }

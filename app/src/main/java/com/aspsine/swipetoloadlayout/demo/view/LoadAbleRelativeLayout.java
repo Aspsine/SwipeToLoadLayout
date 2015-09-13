@@ -34,11 +34,4 @@ public class LoadAbleRelativeLayout extends RelativeLayout implements RefreshAbl
         return true;
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            return true;
-        }
-        return super.onTouchEvent(event);
-    }
 }

@@ -34,11 +34,4 @@ public class LoadAbleTextView extends TextView implements RefreshAble, LoadMoreA
         return true;
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            return true;
-        }
-        return super.onTouchEvent(event);
-    }
 }

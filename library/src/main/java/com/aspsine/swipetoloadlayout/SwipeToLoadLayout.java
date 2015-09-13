@@ -1009,7 +1009,7 @@ public class SwipeToLoadLayout extends ViewGroup {
                 }
                 mLastY = initDownY;
                 mLastX = initDownX;
-                return false;
+                return true;
             case MotionEvent.ACTION_MOVE:
                 final float y = getMotionEventY(event, mActivePointerId);
                 final float x = getMotionEventX(event, mActivePointerId);
@@ -1071,7 +1071,7 @@ public class SwipeToLoadLayout extends ViewGroup {
             default:
                 break;
         }
-        return false;
+        return super.onTouchEvent(event);
     }
 
     /**
