@@ -236,7 +236,7 @@ public class SwipeToLoadLayout extends ViewGroup {
     /**
      * the style enum
      */
-    public static enum STYLE {
+    public  enum STYLE {
         CLASSIC, ABOVE, BLEW, SCALE;
 
         static STYLE getStyle(int i) {
@@ -935,9 +935,12 @@ public class SwipeToLoadLayout extends ViewGroup {
         return canLoadMore && mHasFooterView && mLoadMoreTriggerOffset > 0;
     }
 
+    private boolean mTriggerCondition;
+
     @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
+    public boolean onInterceptTouchEvent(MotionEvent event) {
         final int action = MotionEventCompat.getActionMasked(event);
+
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 // if status is not ing status && not compete status
@@ -946,7 +949,6 @@ public class SwipeToLoadLayout extends ViewGroup {
                         && !(STATUS.isRefreshing(mStatus) || STATUS.isLoadingMore(mStatus))) {
                     mAutoScroller.abortIfRunning();
                 }
-
                 mActivePointerId = MotionEventCompat.getPointerId(event, 0);
                 final float initDownY = getMotionEventY(event, mActivePointerId);
                 final float initDownX = getMotionEventX(event, mActivePointerId);
@@ -956,6 +958,58 @@ public class SwipeToLoadLayout extends ViewGroup {
                 mLastY = initDownY;
                 mLastX = initDownX;
                 break;
+
+            case MotionEvent.ACTION_MOVE:
+                if (mActivePointerId == INVALID_POINTER) {
+                    return false;
+                }
+                float y = getMotionEventY(event, mActivePointerId);
+                float x = getMotionEventX(event, mActivePointerId);
+                final float yDiff = y - mLastY;
+                final float xDiff = x - mLastX;
+                mLastY = y;
+                mLastX = x;
+
+                boolean moved = Math.abs(yDiff) >= Math.abs(xDiff);
+
+                mTriggerCondition = (yDiff > 0 && moved && onCheckCanRefresh())
+                        || (yDiff < 0 && moved && onCheckCanLoadMore());
+                if (mTriggerCondition) {
+                    return true;
+                }
+
+                break;
+            case MotionEvent.ACTION_POINTER_UP: {
+                onSecondaryPointerUp(event);
+                mLastY = getMotionEventY(event, mActivePointerId);
+                mLastX = getMotionEventX(event, mActivePointerId);
+                break;
+            }
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                mActivePointerId = INVALID_POINTER;
+                mTriggerCondition = false;
+                break;
+        }
+        return super.onInterceptTouchEvent(event);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        final int action = MotionEventCompat.getActionMasked(event);
+
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+
+                mActivePointerId = MotionEventCompat.getPointerId(event, 0);
+                final float initDownY = getMotionEventY(event, mActivePointerId);
+                final float initDownX = getMotionEventX(event, mActivePointerId);
+                if (initDownY == INVALID_COORDINATE) {
+                    return false;
+                }
+                mLastY = initDownY;
+                mLastX = initDownX;
+                return false;
             case MotionEvent.ACTION_MOVE:
                 final float y = getMotionEventY(event, mActivePointerId);
                 final float x = getMotionEventX(event, mActivePointerId);
@@ -965,56 +1019,60 @@ public class SwipeToLoadLayout extends ViewGroup {
                 mLastY = y;
                 mLastX = x;
 
-                if (Math.abs(xDiff) > Math.abs(yDiff) && Math.abs(x) > mTouchSlop) {
-                    return super.dispatchTouchEvent(event);
-                }
-
-                if (STATUS.isStatusDefault(mStatus)) {
-                    if (yDiff > 0 && onCheckCanRefresh()) {
-                        mRefreshCallback.onPrepare();
-                        setStatus(STATUS.STATUS_SWIPING_TO_REFRESH);
-                    } else if (yDiff < 0 && onCheckCanLoadMore()) {
-                        mLoadMoreCallback.onPrepare();
-                        setStatus(STATUS.STATUS_SWIPING_TO_LOAD_MORE);
+                if (mTriggerCondition) {
+                    if (STATUS.isStatusDefault(mStatus)) {
+                        if (yDiff > 0 && onCheckCanRefresh()) {
+                            mRefreshCallback.onPrepare();
+                            setStatus(STATUS.STATUS_SWIPING_TO_REFRESH);
+                        } else if (yDiff < 0 && onCheckCanLoadMore()) {
+                            mLoadMoreCallback.onPrepare();
+                            setStatus(STATUS.STATUS_SWIPING_TO_LOAD_MORE);
+                        }
                     }
-                }
 
-                if (STATUS.isSwipingToRefresh(mStatus)
-                        || STATUS.isSwipingToLoadMore(mStatus)
-                        || STATUS.isReleaseToRefresh(mStatus)
-                        || STATUS.isReleaseToLoadMore(mStatus)) {
-                    //refresh or loadMore
-                    fingerScroll(yDiff);
-                    if (!STATUS.isStatusDefault(mStatus)) {
-                        return false;
+                    if (STATUS.isSwipingToRefresh(mStatus)
+                            || STATUS.isSwipingToLoadMore(mStatus)
+                            || STATUS.isReleaseToRefresh(mStatus)
+                            || STATUS.isReleaseToLoadMore(mStatus)) {
+                        //refresh or loadMore
+                        fingerScroll(yDiff);
+                        if (!STATUS.isStatusDefault(mStatus)) {
+                            return false;
+                        }
                     }
+                    return true;
                 }
                 break;
-            case MotionEvent.ACTION_POINTER_DOWN:
-                final int index = MotionEventCompat.getActionIndex(event);
-                mActivePointerId = MotionEventCompat.getPointerId(event, index);
+            case MotionEvent.ACTION_POINTER_DOWN: {
+                final int pointerIndex = MotionEventCompat.getActionIndex(event);
+                final int pointerId = MotionEventCompat.getPointerId(event, pointerIndex);
+                if (pointerId != INVALID_POINTER) {
+                    mActivePointerId = pointerId;
+                }
                 mLastY = getMotionEventY(event, mActivePointerId);
                 mLastX = getMotionEventX(event, mActivePointerId);
                 break;
-            case MotionEvent.ACTION_POINTER_UP:
+            }
+            case MotionEvent.ACTION_POINTER_UP: {
                 onSecondaryPointerUp(event);
                 mLastY = getMotionEventY(event, mActivePointerId);
                 mLastX = getMotionEventX(event, mActivePointerId);
                 break;
+            }
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 if (mActivePointerId == INVALID_POINTER) {
                     return false;
                 }
                 onActivePointerUp();
+                mTriggerCondition = false;
                 mActivePointerId = INVALID_POINTER;
                 break;
             default:
                 break;
         }
-        return super.dispatchTouchEvent(event);
+        return false;
     }
-
 
     /**
      * scrolling by physical touch with your fingers
