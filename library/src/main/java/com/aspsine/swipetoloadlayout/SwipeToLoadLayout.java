@@ -952,17 +952,19 @@ public class SwipeToLoadLayout extends ViewGroup {
                 }
                 mLastY = mInitDownY;
                 mLastX = mInitDownX;
-                // let child view handle the ACTION_DOWN;
+                // let children view handle the ACTION_DOWN;
 
                 // 1. children consumed:
-                // if child view onTouchEvent() ACTION_DOWN return true.
+                // if at least one of children onTouchEvent() ACTION_DOWN return true.
                 // ACTION_DOWN event will not return to SwipeToLoadLayout#onTouchEvent().
-                // but the other action will can be handled by SwipeToLoadLayout#onInterceptTouchEvent()
+                // but the others action can be handled by SwipeToLoadLayout#onInterceptTouchEvent()
 
                 // 2. children not consumed:
-                // if child view onTouchEvent() ACTION_DOWN return false.
+                // if children onTouchEvent() ACTION_DOWN return false.
                 // ACTION_DOWN event will return to SwipeToLoadLayout's onTouchEvent().
-                // SwipeToLoadLayout onTouchEvent() ACTION_DOWN return true to consume the ACTION_DOWN event.
+                // SwipeToLoadLayout#onTouchEvent() ACTION_DOWN return true to consume the ACTION_DOWN event.
+
+                // anyway: handle action down in onInterceptTouchEvent() to init is an good option
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (mActivePointerId == INVALID_POINTER) {
@@ -979,9 +981,10 @@ public class SwipeToLoadLayout extends ViewGroup {
                 boolean triggerCondition = (yInitDiff > 0 && moved && onCheckCanRefresh())
                         || (yInitDiff < 0 && moved && onCheckCanLoadMore());
                 if (triggerCondition) {
+                    // the condition trigger refresh or load more is true
+                    // intercept the move action event and pass it to SwipeToLoadLayout#onTouchEvent()
                     return true;
                 }
-
                 break;
             case MotionEvent.ACTION_POINTER_UP: {
                 onSecondaryPointerUp(event);
@@ -1006,6 +1009,8 @@ public class SwipeToLoadLayout extends ViewGroup {
                 mActivePointerId = MotionEventCompat.getPointerId(event, 0);
                 return true;
             case MotionEvent.ACTION_MOVE:
+                // take over the move action event from SwipeToLoadLayout#onInterceptTouchEvent()
+                // if condition is true
                 final float y = getMotionEventY(event, mActivePointerId);
                 final float x = getMotionEventX(event, mActivePointerId);
 
@@ -1013,33 +1018,29 @@ public class SwipeToLoadLayout extends ViewGroup {
                 final float xDiff = x - mLastX;
                 mLastY = y;
                 mLastX = x;
-                boolean moved = Math.abs(yDiff) > Math.abs(xDiff);
 
-                boolean triggerCondition = (yDiff > 0 && moved) || (yDiff < 0 && moved);
-                if (triggerCondition) {
-                    if (STATUS.isStatusDefault(mStatus)) {
-                        if (yDiff > 0 && onCheckCanRefresh()) {
-                            mRefreshCallback.onPrepare();
-                            setStatus(STATUS.STATUS_SWIPING_TO_REFRESH);
-                        } else if (yDiff < 0 && onCheckCanLoadMore()) {
-                            mLoadMoreCallback.onPrepare();
-                            setStatus(STATUS.STATUS_SWIPING_TO_LOAD_MORE);
-                        }
-                    }
-
-                    if (STATUS.isSwipingToRefresh(mStatus)
-                            || STATUS.isSwipingToLoadMore(mStatus)
-                            || STATUS.isReleaseToRefresh(mStatus)
-                            || STATUS.isReleaseToLoadMore(mStatus)) {
-                        //refresh or loadMore
-                        fingerScroll(yDiff);
-                        if (!STATUS.isStatusDefault(mStatus)) {
-                            return false;
-                        }
-                    }
-                    return true;
+                if (Math.abs(xDiff) > Math.abs(yDiff) && Math.abs(xDiff) > mTouchSlop) {
+                    return onTouchEvent(event);
                 }
-                break;
+
+                if (STATUS.isStatusDefault(mStatus)) {
+                    if (yDiff > 0 && onCheckCanRefresh()) {
+                        mRefreshCallback.onPrepare();
+                        setStatus(STATUS.STATUS_SWIPING_TO_REFRESH);
+                    } else if (yDiff < 0 && onCheckCanLoadMore()) {
+                        mLoadMoreCallback.onPrepare();
+                        setStatus(STATUS.STATUS_SWIPING_TO_LOAD_MORE);
+                    }
+                }
+
+                if (STATUS.isSwipingToRefresh(mStatus)
+                        || STATUS.isSwipingToLoadMore(mStatus)
+                        || STATUS.isReleaseToRefresh(mStatus)
+                        || STATUS.isReleaseToLoadMore(mStatus)) {
+                    //refresh or loadMore
+                    fingerScroll(yDiff);
+                }
+                return true;
             case MotionEvent.ACTION_POINTER_DOWN: {
                 final int pointerIndex = MotionEventCompat.getActionIndex(event);
                 final int pointerId = MotionEventCompat.getPointerId(event, pointerIndex);
