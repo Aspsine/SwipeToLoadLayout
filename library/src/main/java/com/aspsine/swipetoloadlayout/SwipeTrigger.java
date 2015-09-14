@@ -8,6 +8,8 @@ public interface SwipeTrigger {
 
     void onSwipe(int y);
 
+    void onRelease();
+
     void complete();
 
     void onReset();

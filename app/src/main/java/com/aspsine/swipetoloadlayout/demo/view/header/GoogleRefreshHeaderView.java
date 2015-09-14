@@ -53,6 +53,11 @@ public class GoogleRefreshHeaderView extends FrameLayout implements SwipeTrigger
     }
 
     @Override
+    public void onRelease() {
+
+    }
+
+    @Override
     public void complete() {
 
     }
