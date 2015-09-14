@@ -73,6 +73,16 @@ public class SwipeToLoadLayout extends ViewGroup {
     private int mFooterOffset;
 
     /**
+     * init touch action down point.y
+     */
+    private float mInitDownY;
+
+    /**
+     * init touch action down point.x
+     */
+    private float mInitDownX;
+
+    /**
      * last touch point.y
      */
     private float mLastY;
@@ -227,7 +237,7 @@ public class SwipeToLoadLayout extends ViewGroup {
      * <b>ATTRIBUTE:</b>
      * the style default classic
      */
-    private STYLE mStyle = STYLE.CLASSIC;
+    private int mStyle = STYLE.CLASSIC;
     /**
      * <b>ATTRIBUTE:</b>
      * offset to trigger refresh
@@ -282,9 +292,6 @@ public class SwipeToLoadLayout extends ViewGroup {
      * {@link #setLoadingMore(boolean)} true
      */
     private int mDefaultToLoadingMoreScrollingDuration = DEFAULT_DEFAULT_TO_LOADING_MORE_SCROLLING_DURATION;
-    private boolean mTriggerCondition;
-    private float mInitDownY;
-    private float mInitDownX;
 
     public SwipeToLoadLayout(Context context) {
         this(context, null);
@@ -302,7 +309,7 @@ public class SwipeToLoadLayout extends ViewGroup {
             for (int i = 0; i < N; i++) {
                 int attr = a.getIndex(i);
                 if (attr == R.styleable.SwipeToLoadLayout_swipe_style) {
-                    setSwipeStyle(STYLE.getStyle(a.getInt(attr, 0)));
+                    setSwipeStyle(a.getInt(attr, STYLE.CLASSIC));
 
                 } else if (attr == R.styleable.SwipeToLoadLayout_refresh_final_drag_offset) {
                     setRefreshFinalDragOffset(a.getDimensionPixelOffset(attr, 0));
@@ -479,7 +486,7 @@ public class SwipeToLoadLayout extends ViewGroup {
      *
      * @param style
      */
-    public void setSwipeStyle(STYLE style) {
+    public void setSwipeStyle(int style) {
         this.mStyle = style;
         requestLayout();
     }
@@ -735,19 +742,19 @@ public class SwipeToLoadLayout extends ViewGroup {
             final int headerLeft = paddingLeft + lp.leftMargin;
             final int headerTop;
             switch (mStyle) {
-                case CLASSIC:
+                case STYLE.CLASSIC:
                     // classic
                     headerTop = paddingTop + lp.topMargin - mHeaderHeight + mHeaderOffset;
                     break;
-                case ABOVE:
+                case STYLE.ABOVE:
                     // classic
                     headerTop = paddingTop + lp.topMargin - mHeaderHeight + mHeaderOffset;
                     break;
-                case BLEW:
+                case STYLE.BLEW:
                     // blew
                     headerTop = paddingTop + lp.topMargin;
                     break;
-                case SCALE:
+                case STYLE.SCALE:
                     // scale
                     headerTop = paddingTop + lp.topMargin - mHeaderHeight / 2 + mHeaderOffset / 2;
                     break;
@@ -770,19 +777,19 @@ public class SwipeToLoadLayout extends ViewGroup {
             final int targetTop;
 
             switch (mStyle) {
-                case CLASSIC:
+                case STYLE.CLASSIC:
                     // classic
                     targetTop = paddingTop + lp.topMargin + mTargetOffset;
                     break;
-                case ABOVE:
+                case STYLE.ABOVE:
                     // above
                     targetTop = paddingTop + lp.topMargin;
                     break;
-                case BLEW:
+                case STYLE.BLEW:
                     // classic
                     targetTop = paddingTop + lp.topMargin + mTargetOffset;
                     break;
-                case SCALE:
+                case STYLE.SCALE:
                     // classic
                     targetTop = paddingTop + lp.topMargin + mTargetOffset;
                     break;
@@ -803,19 +810,19 @@ public class SwipeToLoadLayout extends ViewGroup {
             final int footerLeft = paddingLeft + lp.leftMargin;
             final int footerBottom;
             switch (mStyle) {
-                case CLASSIC:
+                case STYLE.CLASSIC:
                     // classic
                     footerBottom = height - paddingBottom - lp.bottomMargin + mFooterHeight + mFooterOffset;
                     break;
-                case ABOVE:
+                case STYLE.ABOVE:
                     // classic
                     footerBottom = height - paddingBottom - lp.bottomMargin + mFooterHeight + mFooterOffset;
                     break;
-                case BLEW:
+                case STYLE.BLEW:
                     // blew
                     footerBottom = height - paddingBottom - lp.bottomMargin;
                     break;
-                case SCALE:
+                case STYLE.SCALE:
                     // scale
                     footerBottom = height - paddingBottom - lp.bottomMargin + mFooterHeight / 2 + mFooterOffset / 2;
                     break;
@@ -867,7 +874,6 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        Log.e(TAG, "onInterceptTouchEvent() : " + event);
         final int action = MotionEventCompat.getActionMasked(event);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
@@ -909,10 +915,9 @@ public class SwipeToLoadLayout extends ViewGroup {
                 mLastX = x;
 
                 boolean moved = Math.abs(yInitDiff) > Math.abs(xInitDiff);
-                mTriggerCondition = (yInitDiff > 0 && moved && onCheckCanRefresh())
+                boolean triggerCondition = (yInitDiff > 0 && moved && onCheckCanRefresh())
                         || (yInitDiff < 0 && moved && onCheckCanLoadMore());
-                Log.e(TAG, "onInterceptTouchEvent() " + "ACTION_MOVE " + " moved=" + moved + " onCheckCanRefresh()= " + onCheckCanRefresh());
-                if (mTriggerCondition) {
+                if (triggerCondition) {
                     return true;
                 }
 
@@ -926,7 +931,6 @@ public class SwipeToLoadLayout extends ViewGroup {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 mActivePointerId = INVALID_POINTER;
-                mTriggerCondition = false;
                 break;
         }
         return super.onInterceptTouchEvent(event);
@@ -934,21 +938,11 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.e(TAG, "onTouchEvent() : " + event);
         final int action = MotionEventCompat.getActionMasked(event);
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-
                 mActivePointerId = MotionEventCompat.getPointerId(event, 0);
-                final float initDownY = getMotionEventY(event, mActivePointerId);
-                final float initDownX = getMotionEventX(event, mActivePointerId);
-                if (initDownY == INVALID_COORDINATE) {
-                    return false;
-                }
-                mLastY = initDownY;
-                mLastX = initDownX;
-
                 return true;
             case MotionEvent.ACTION_MOVE:
                 final float y = getMotionEventY(event, mActivePointerId);
@@ -960,8 +954,8 @@ public class SwipeToLoadLayout extends ViewGroup {
                 mLastX = x;
                 boolean moved = Math.abs(yDiff) > Math.abs(xDiff);
 
-                mTriggerCondition = (yDiff > 0 && moved) || (yDiff < 0 && moved);
-                if (mTriggerCondition) {
+                boolean triggerCondition = (yDiff > 0 && moved) || (yDiff < 0 && moved);
+                if (triggerCondition) {
                     if (STATUS.isStatusDefault(mStatus)) {
                         if (yDiff > 0 && onCheckCanRefresh()) {
                             mRefreshCallback.onPrepare();
@@ -1007,7 +1001,6 @@ public class SwipeToLoadLayout extends ViewGroup {
                     return false;
                 }
                 onActivePointerUp();
-                mTriggerCondition = false;
                 mActivePointerId = INVALID_POINTER;
                 break;
             default:
@@ -1230,23 +1223,11 @@ public class SwipeToLoadLayout extends ViewGroup {
     /**
      * the style enum
      */
-    public enum STYLE {
-        CLASSIC, ABOVE, BLEW, SCALE;
-
-        static STYLE getStyle(int i) {
-            switch (i) {
-                case 0:
-                    return CLASSIC;
-                case 1:
-                    return ABOVE;
-                case 2:
-                    return BLEW;
-                case 3:
-                    return SCALE;
-                default:
-                    return CLASSIC;
-            }
-        }
+    public static final class STYLE {
+        public static final int CLASSIC = 0;
+        public static final int ABOVE = 1;
+        public static final int BLEW = 2;
+        public static final int SCALE = 3;
     }
 
     /**
