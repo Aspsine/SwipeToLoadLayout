@@ -7,6 +7,7 @@ import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.TypedValue;
 
 /**
  * Created by Aspsine on 2015/9/11.
@@ -68,6 +69,10 @@ public abstract class ProgressDrawable extends Drawable implements Animatable {
         return mContext;
     }
 
+    protected void post(Runnable runnable) {
+        postDelayed(runnable, 0);
+    }
+
     protected void postDelayed(Runnable runnable, int delayMillis) {
         if (mHandler == null) {
             synchronized (ProgressDrawable.class) {
@@ -75,5 +80,9 @@ public abstract class ProgressDrawable extends Drawable implements Animatable {
             }
         }
         mHandler.postDelayed(runnable, delayMillis);
+    }
+
+    protected int dp2px(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getContext().getResources().getDisplayMetrics());
     }
 }
