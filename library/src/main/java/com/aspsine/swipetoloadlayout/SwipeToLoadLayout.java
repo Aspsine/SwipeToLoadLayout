@@ -202,6 +202,15 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     private int mDefaultToLoadingMoreScrollingDuration = DEFAULT_DEFAULT_TO_LOADING_MORE_SCROLLING_DURATION;
 
+    /**
+     * the style enum
+     */
+    public static final class STYLE {
+        public static final int CLASSIC = 0;
+        public static final int ABOVE = 1;
+        public static final int BLEW = 2;
+        public static final int SCALE = 3;
+    }
 
     public SwipeToLoadLayout(Context context) {
         this(context, null);
@@ -259,16 +268,6 @@ public class SwipeToLoadLayout extends ViewGroup {
 
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mAutoScroller = new AutoScroller();
-    }
-
-    /**
-     * the style enum
-     */
-    public static final class STYLE {
-        public static final int CLASSIC = 0;
-        public static final int ABOVE = 1;
-        public static final int BLEW = 2;
-        public static final int SCALE = 3;
     }
 
     /**
@@ -545,157 +544,6 @@ public class SwipeToLoadLayout extends ViewGroup {
             }
         }
     }
-
-    RefreshCallback mRefreshCallback = new RefreshCallback() {
-        @Override
-        public void onPrepare() {
-            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
-                mHeaderView.setVisibility(VISIBLE);
-                ((SwipeTrigger) mHeaderView).onPrepare();
-            }
-        }
-
-        @Override
-        public void onSwipe(int y) {
-            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isRefreshStatus(mStatus)) {
-                if (mHeaderView.getVisibility() == GONE || mHeaderView.getVisibility() == INVISIBLE) {
-                    mHeaderView.setVisibility(VISIBLE);
-                }
-                ((SwipeTrigger) mHeaderView).onSwipe(y);
-            }
-        }
-
-        @Override
-        public void onRelease() {
-
-        }
-
-        @Override
-        public void complete() {
-            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger) {
-                ((SwipeTrigger) mHeaderView).complete();
-            }
-        }
-
-        @Override
-        public void onRefresh() {
-            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isRefreshing(mStatus) && mLoading) {
-                ((SwipeRefreshTrigger) mHeaderView).onRefresh();
-
-                if (mRefreshListener != null) {
-                    mRefreshListener.onRefresh();
-                }
-            }
-        }
-
-        @Override
-        public void onReset() {
-            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
-                ((SwipeTrigger) mHeaderView).onReset();
-                mHeaderView.setVisibility(GONE);
-            }
-        }
-    };
-
-    TargetCallback mTargetCallback = new TargetCallback() {
-
-        @Override
-        public void onPrepare() {
-            if (mTargetView != null && mTargetView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
-                ((SwipeTrigger) mTargetView).onPrepare();
-            }
-        }
-
-        @Override
-        public void onSwipe(int y) {
-            if (mTargetView != null && mTargetView instanceof SwipeTrigger && !STATUS.isStatusDefault(mStatus)) {
-                ((SwipeTrigger) mTargetView).onSwipe(y);
-            }
-        }
-
-        @Override
-        public void onRelease() {
-
-        }
-
-        @Override
-        public void onRefresh() {
-            if (mTargetView != null && mTargetView instanceof SwipeRefreshTrigger && STATUS.isRefreshing(mStatus) && mLoading) {
-                ((SwipeRefreshTrigger) mTargetView).onRefresh();
-            }
-        }
-
-        @Override
-        public void onLoadMore() {
-            if (mTargetView != null && mTargetView instanceof SwipeLoadMoreTrigger && STATUS.isLoadingMore(mStatus) && mLoading) {
-                ((SwipeLoadMoreTrigger) mTargetView).onLoadMore();
-            }
-        }
-
-        @Override
-        public void complete() {
-            if (mTargetView != null && mTargetView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
-                ((SwipeTrigger) mTargetView).complete();
-            }
-        }
-
-        @Override
-        public void onReset() {
-            if (mTargetView != null && mTargetView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
-                ((SwipeTrigger) mTargetView).onReset();
-            }
-        }
-    };
-
-    LoadMoreCallback mLoadMoreCallback = new LoadMoreCallback() {
-
-        @Override
-        public void onPrepare() {
-            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
-                mFooterView.setVisibility(VISIBLE);
-                ((SwipeTrigger) mFooterView).onPrepare();
-            }
-        }
-
-        @Override
-        public void onSwipe(int y) {
-            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadMoreStatus(mStatus)) {
-                ((SwipeTrigger) mFooterView).onSwipe(y);
-            }
-        }
-
-        @Override
-        public void onRelease() {
-
-        }
-
-        @Override
-        public void onLoadMore() {
-            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadingMore(mStatus) && mLoading) {
-                ((SwipeLoadMoreTrigger) mFooterView).onLoadMore();
-
-                if (mLoadMoreListener != null) {
-                    mLoadMoreListener.onLoadMore();
-                }
-            }
-        }
-
-        @Override
-        public void complete() {
-            if (mFooterView != null && mFooterView instanceof SwipeTrigger) {
-                ((SwipeTrigger) mFooterView).complete();
-            }
-        }
-
-        @Override
-        public void onReset() {
-            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
-                ((SwipeTrigger) mFooterView).onReset();
-                mFooterView.setVisibility(GONE);
-            }
-        }
-    };
-
 
     /**
      * TODO add gravity
@@ -1380,15 +1228,119 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
     }
 
+    RefreshCallback mRefreshCallback = new RefreshCallback() {
+        @Override
+        public void onPrepare() {
+            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
+                mHeaderView.setVisibility(VISIBLE);
+                ((SwipeTrigger) mHeaderView).onPrepare();
+            }
+        }
+
+        @Override
+        public void onSwipe(int y) {
+            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isRefreshStatus(mStatus)) {
+                if (mHeaderView.getVisibility() == GONE || mHeaderView.getVisibility() == INVISIBLE) {
+                    mHeaderView.setVisibility(VISIBLE);
+                }
+                ((SwipeTrigger) mHeaderView).onSwipe(y);
+            }
+        }
+
+        @Override
+        public void onRelease() {
+            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isReleaseToRefresh(mStatus)) {
+                ((SwipeTrigger) mHeaderView).onRelease();
+            }
+        }
+
+        @Override
+        public void complete() {
+            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger) {
+                ((SwipeTrigger) mHeaderView).complete();
+            }
+        }
+
+        @Override
+        public void onRefresh() {
+            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isRefreshing(mStatus) && mLoading) {
+                ((SwipeRefreshTrigger) mHeaderView).onRefresh();
+
+                if (mRefreshListener != null) {
+                    mRefreshListener.onRefresh();
+                }
+            }
+        }
+
+        @Override
+        public void onReset() {
+            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
+                ((SwipeTrigger) mHeaderView).onReset();
+                mHeaderView.setVisibility(GONE);
+            }
+        }
+    };
+
+    LoadMoreCallback mLoadMoreCallback = new LoadMoreCallback() {
+
+        @Override
+        public void onPrepare() {
+            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
+                mFooterView.setVisibility(VISIBLE);
+                ((SwipeTrigger) mFooterView).onPrepare();
+            }
+        }
+
+        @Override
+        public void onSwipe(int y) {
+            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadMoreStatus(mStatus)) {
+                ((SwipeTrigger) mFooterView).onSwipe(y);
+            }
+        }
+
+        @Override
+        public void onRelease() {
+            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isReleaseToLoadMore(mStatus)) {
+                ((SwipeTrigger) mFooterView).onRelease();
+            }
+        }
+
+        @Override
+        public void onLoadMore() {
+            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadingMore(mStatus) && mLoading) {
+                ((SwipeLoadMoreTrigger) mFooterView).onLoadMore();
+
+                if (mLoadMoreListener != null) {
+                    mLoadMoreListener.onLoadMore();
+                }
+            }
+        }
+
+        @Override
+        public void complete() {
+            if (mFooterView != null && mFooterView instanceof SwipeTrigger) {
+                ((SwipeTrigger) mFooterView).complete();
+            }
+        }
+
+        @Override
+        public void onReset() {
+            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
+                ((SwipeTrigger) mFooterView).onReset();
+                mFooterView.setVisibility(GONE);
+            }
+        }
+    };
+
     /**
-     * RefreshCallback to implements swipe triggers
+     * refresh event callback
      */
     abstract class RefreshCallback implements SwipeTrigger, SwipeRefreshTrigger {
     }
 
-    abstract class TargetCallback implements SwipeTrigger, SwipeRefreshTrigger, SwipeLoadMoreTrigger {
-    }
-
+    /**
+     * load more event callback
+     */
     abstract class LoadMoreCallback implements SwipeTrigger, SwipeLoadMoreTrigger {
     }
 
