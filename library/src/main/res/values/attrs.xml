@@ -10,11 +10,15 @@
         <attr name="load_more_trigger_offset" format="dimension" />
         <attr name="refresh_final_drag_offset" format="dimension" />
         <attr name="load_more_final_drag_offset" format="dimension" />
+
+
         <attr name="release_to_refreshing_scrolling_duration" format="integer" />
-        <attr name="refreshing_to_default_scrolling_duration" format="integer" />
+        <attr name="refresh_complete_delay_duration" format="integer" />
+        <attr name="refresh_complete_to_default_scrolling_duration" format="integer" />
         <attr name="default_to_refreshing_scrolling_duration" format="integer" />
         <attr name="release_to_loading_more_scrolling_duration" format="integer" />
-        <attr name="loading_more_to_default_scrolling_duration" format="integer" />
+        <attr name="load_more_complete_delay_duration" format="integer" />
+        <attr name="load_more_complete_to_default_scrolling_duration" format="integer" />
         <attr name="default_to_loading_more_scrolling_duration" format="integer" />
     </declare-styleable>
 </resources>

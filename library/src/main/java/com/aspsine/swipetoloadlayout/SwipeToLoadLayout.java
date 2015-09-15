@@ -245,7 +245,10 @@ public class SwipeToLoadLayout extends ViewGroup {
                 } else if (attr == R.styleable.SwipeToLoadLayout_release_to_refreshing_scrolling_duration) {
                     setReleaseToRefreshingScrollingDuration(a.getInt(attr, DEFAULT_RELEASE_TO_REFRESHING_SCROLLING_DURATION));
 
-                } else if (attr == R.styleable.SwipeToLoadLayout_refreshing_to_default_scrolling_duration) {
+                } else if (attr == R.styleable.SwipeToLoadLayout_refresh_complete_delay_duration) {
+                    setRefreshCompleteDelayDuration(a.getInt(attr, DEFAULT_REFRESH_COMPLETE_DELAY_DURATION));
+
+                } else if (attr == R.styleable.SwipeToLoadLayout_refresh_complete_to_default_scrolling_duration) {
                     setRefreshCompleteToDefaultScrollingDuration(a.getInt(attr, DEFAULT_REFRESH_COMPLETE_TO_DEFAULT_SCROLLING_DURATION));
 
                 } else if (attr == R.styleable.SwipeToLoadLayout_default_to_refreshing_scrolling_duration) {
@@ -254,7 +257,10 @@ public class SwipeToLoadLayout extends ViewGroup {
                 } else if (attr == R.styleable.SwipeToLoadLayout_release_to_loading_more_scrolling_duration) {
                     setReleaseToLoadingMoreScrollingDuration(a.getInt(attr, DEFAULT_RELEASE_TO_LOADING_MORE_SCROLLING_DURATION));
 
-                } else if (attr == R.styleable.SwipeToLoadLayout_loading_more_to_default_scrolling_duration) {
+                } else if (attr == R.styleable.SwipeToLoadLayout_load_more_complete_delay_duration) {
+                    setLoadMoreCompleteDelayDuration(a.getInt(attr, DEFAULT_LOAD_MORE_COMPLETE_DELAY_DURATION));
+
+                } else if (attr == R.styleable.SwipeToLoadLayout_load_more_complete_to_default_scrolling_duration) {
                     setLoadMoreCompleteToDefaultScrollingDuration(a.getInt(attr, DEFAULT_LOAD_MORE_COMPLETE_TO_DEFAULT_SCROLLING_DURATION));
 
                 } else if (attr == R.styleable.SwipeToLoadLayout_default_to_loading_more_scrolling_duration) {
@@ -396,6 +402,15 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
     /**
+     * set {@link #mRefreshCompleteDelayDuration} in milliseconds
+     *
+     * @param duration
+     */
+    public void setRefreshCompleteDelayDuration(int duration) {
+        this.mRefreshCompleteDelayDuration = duration;
+    }
+
+    /**
      * set {@link #mRefreshCompleteToDefaultScrollingDuration} in milliseconds
      *
      * @param duration
@@ -420,6 +435,15 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     public void setReleaseToLoadingMoreScrollingDuration(int duration) {
         this.mReleaseToLoadingMoreScrollingDuration = duration;
+    }
+
+    /**
+     * set {@link #mLoadMoreCompleteDelayDuration} in milliseconds
+     *
+     * @param duration
+     */
+    public void setLoadMoreCompleteDelayDuration(int duration) {
+        this.mLoadMoreCompleteDelayDuration = duration;
     }
 
     /**
