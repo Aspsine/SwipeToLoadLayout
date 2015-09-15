@@ -232,7 +232,6 @@ public abstract class BaseLoopPagerAdapter extends PagerAdapter implements ViewP
     @Override
     public final void onPageScrollStateChanged(int state) {
         if (state == ViewPager.SCROLL_STATE_IDLE) {
-            // if heroes size cannot be smaller than 3
             if (mList.size() > 3) {
                 if (mViewPager.getCurrentItem() == 0) {
                     mViewPager.setCurrentItem(mList.size() - 2, false);
