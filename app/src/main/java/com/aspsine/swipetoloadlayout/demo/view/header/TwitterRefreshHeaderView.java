@@ -98,6 +98,11 @@ public class TwitterRefreshHeaderView extends SwipeRefreshHeaderLayout {
     }
 
     @Override
+    public void onRelease() {
+
+    }
+
+    @Override
     public void complete() {
         Log.d("TwitterRefreshHeader", "complete()");
         rotated = false;

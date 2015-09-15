@@ -63,6 +63,11 @@ public class ClassicLoadMoreFooterView extends SwipeLoadMoreFooterLayout {
     }
 
     @Override
+    public void onRelease() {
+
+    }
+
+    @Override
     public void complete() {
         progressBar.setVisibility(GONE);
         ivSuccess.setVisibility(VISIBLE);

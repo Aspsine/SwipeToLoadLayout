@@ -20,15 +20,20 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     private static final int DEFAULT_RELEASE_TO_REFRESHING_SCROLLING_DURATION = 200;
 
-    private static final int DEFAULT_REFRESHING_TO_DEFAULT_SCROLLING_DURATION = 500;
+    private static final int DEFAULT_REFRESH_COMPLETE_DELAY_DURATION = 300;
+
+    private static final int DEFAULT_REFRESH_COMPLETE_TO_DEFAULT_SCROLLING_DURATION = 500;
 
     private static final int DEFAULT_DEFAULT_TO_REFRESHING_SCROLLING_DURATION = 500;
 
     private static final int DEFAULT_RELEASE_TO_LOADING_MORE_SCROLLING_DURATION = 200;
 
-    private static final int DEFAULT_LOADING_MORE_TO_DEFAULT_SCROLLING_DURATION = 300;
+    private static final int DEFAULT_LOAD_MORE_COMPLETE_DELAY_DURATION = 300;
+
+    private static final int DEFAULT_LOAD_MORE_COMPLETE_TO_DEFAULT_SCROLLING_DURATION = 300;
 
     private static final int DEFAULT_DEFAULT_TO_LOADING_MORE_SCROLLING_DURATION = 300;
+
 
     /**
      * how hard to drag
@@ -152,10 +157,16 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     /**
      * <b>ATTRIBUTE:</b>
-     * Scrolling duration status refreshing -> default
+     * Refresh complete delay duration
+     */
+    private int mRefreshCompleteDelayDuration = DEFAULT_REFRESH_COMPLETE_DELAY_DURATION;
+
+    /**
+     * <b>ATTRIBUTE:</b>
+     * Scrolling duration status refresh complete -> default
      * {@link #setRefreshing(boolean)} false
      */
-    private int mRefreshingToDefaultScrollingDuration = DEFAULT_REFRESHING_TO_DEFAULT_SCROLLING_DURATION;
+    private int mRefreshCompleteToDefaultScrollingDuration = DEFAULT_REFRESH_COMPLETE_TO_DEFAULT_SCROLLING_DURATION;
 
     /**
      * <b>ATTRIBUTE:</b>
@@ -170,12 +181,19 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     private int mReleaseToLoadingMoreScrollingDuration = DEFAULT_RELEASE_TO_LOADING_MORE_SCROLLING_DURATION;
 
+
     /**
      * <b>ATTRIBUTE:</b>
-     * Scrolling duration status loading more -> default
+     * Load more complete delay duration
+     */
+    private int mLoadMoreCompleteDelayDuration = DEFAULT_LOAD_MORE_COMPLETE_DELAY_DURATION;
+
+    /**
+     * <b>ATTRIBUTE:</b>
+     * Scrolling duration status load more complete -> default
      * {@link #setLoadingMore(boolean)} false
      */
-    private int mLoadingMoreToDefaultScrollingDuration = DEFAULT_LOADING_MORE_TO_DEFAULT_SCROLLING_DURATION;
+    private int mLoadMoreCompleteToDefaultScrollingDuration = DEFAULT_LOAD_MORE_COMPLETE_TO_DEFAULT_SCROLLING_DURATION;
 
     /**
      * <b>ATTRIBUTE:</b>
@@ -219,7 +237,7 @@ public class SwipeToLoadLayout extends ViewGroup {
                     setReleaseToRefreshingScrollingDuration(a.getInt(attr, DEFAULT_RELEASE_TO_REFRESHING_SCROLLING_DURATION));
 
                 } else if (attr == R.styleable.SwipeToLoadLayout_refreshing_to_default_scrolling_duration) {
-                    setRefreshingToDefaultScrollingDuration(a.getInt(attr, DEFAULT_REFRESHING_TO_DEFAULT_SCROLLING_DURATION));
+                    setRefreshCompleteToDefaultScrollingDuration(a.getInt(attr, DEFAULT_REFRESH_COMPLETE_TO_DEFAULT_SCROLLING_DURATION));
 
                 } else if (attr == R.styleable.SwipeToLoadLayout_default_to_refreshing_scrolling_duration) {
                     setDefaultToRefreshingScrollingDuration(a.getInt(attr, DEFAULT_DEFAULT_TO_REFRESHING_SCROLLING_DURATION));
@@ -228,7 +246,7 @@ public class SwipeToLoadLayout extends ViewGroup {
                     setReleaseToLoadingMoreScrollingDuration(a.getInt(attr, DEFAULT_RELEASE_TO_LOADING_MORE_SCROLLING_DURATION));
 
                 } else if (attr == R.styleable.SwipeToLoadLayout_loading_more_to_default_scrolling_duration) {
-                    setLoadingMoreToDefaultScrollingDuration(a.getInt(attr, DEFAULT_LOADING_MORE_TO_DEFAULT_SCROLLING_DURATION));
+                    setLoadMoreCompleteToDefaultScrollingDuration(a.getInt(attr, DEFAULT_LOAD_MORE_COMPLETE_TO_DEFAULT_SCROLLING_DURATION));
 
                 } else if (attr == R.styleable.SwipeToLoadLayout_default_to_loading_more_scrolling_duration) {
                     setDefaultToLoadingMoreScrollingDuration(a.getInt(attr, DEFAULT_DEFAULT_TO_LOADING_MORE_SCROLLING_DURATION));
@@ -379,12 +397,12 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
     /**
-     * set {@link #mRefreshingToDefaultScrollingDuration} in milliseconds
+     * set {@link #mRefreshCompleteToDefaultScrollingDuration} in milliseconds
      *
      * @param duration
      */
-    public void setRefreshingToDefaultScrollingDuration(int duration) {
-        this.mRefreshingToDefaultScrollingDuration = duration;
+    public void setRefreshCompleteToDefaultScrollingDuration(int duration) {
+        this.mRefreshCompleteToDefaultScrollingDuration = duration;
     }
 
     /**
@@ -406,12 +424,12 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
     /**
-     * set {@link #mLoadingMoreToDefaultScrollingDuration} in milliseconds
+     * set {@link #mLoadMoreCompleteToDefaultScrollingDuration} in milliseconds
      *
      * @param duration
      */
-    public void setLoadingMoreToDefaultScrollingDuration(int duration) {
-        this.mLoadingMoreToDefaultScrollingDuration = duration;
+    public void setLoadMoreCompleteToDefaultScrollingDuration(int duration) {
+        this.mLoadMoreCompleteToDefaultScrollingDuration = duration;
     }
 
     /**
@@ -468,11 +486,11 @@ public class SwipeToLoadLayout extends ViewGroup {
                 postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mAutoScroller.autoScroll(-mHeaderOffset, mRefreshingToDefaultScrollingDuration);
+                        mAutoScroller.autoScroll(-mHeaderOffset, mRefreshCompleteToDefaultScrollingDuration);
                     }
-                }, 300);
+                }, mRefreshCompleteDelayDuration);
             } else if (STATUS.isSwipingToRefresh(mStatus)) {
-                mAutoScroller.autoScroll(-mHeaderOffset, mRefreshingToDefaultScrollingDuration);
+                mAutoScroller.autoScroll(-mHeaderOffset, mRefreshCompleteToDefaultScrollingDuration);
             }
         }
     }
@@ -504,11 +522,11 @@ public class SwipeToLoadLayout extends ViewGroup {
                 postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mAutoScroller.autoScroll(-mFooterOffset, mLoadingMoreToDefaultScrollingDuration);
+                        mAutoScroller.autoScroll(-mFooterOffset, mLoadMoreCompleteToDefaultScrollingDuration);
                     }
-                }, 300);
+                }, mLoadMoreCompleteDelayDuration);
             } else if (STATUS.isSwipingToLoadMore(mStatus)) {
-                mAutoScroller.autoScroll(-mFooterOffset, mLoadingMoreToDefaultScrollingDuration);
+                mAutoScroller.autoScroll(-mFooterOffset, mLoadMoreCompleteToDefaultScrollingDuration);
             }
         }
     }
@@ -545,6 +563,11 @@ public class SwipeToLoadLayout extends ViewGroup {
                 }
                 ((SwipeTrigger) mHeaderView).onSwipe(y);
             }
+        }
+
+        @Override
+        public void onRelease() {
+
         }
 
         @Override
@@ -591,6 +614,11 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
 
         @Override
+        public void onRelease() {
+
+        }
+
+        @Override
         public void onRefresh() {
             if (mTargetView != null && mTargetView instanceof SwipeRefreshTrigger && STATUS.isRefreshing(mStatus) && mLoading) {
                 ((SwipeRefreshTrigger) mTargetView).onRefresh();
@@ -634,6 +662,11 @@ public class SwipeToLoadLayout extends ViewGroup {
             if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadMoreStatus(mStatus)) {
                 ((SwipeTrigger) mFooterView).onSwipe(y);
             }
+        }
+
+        @Override
+        public void onRelease() {
+
         }
 
         @Override
@@ -981,7 +1014,7 @@ public class SwipeToLoadLayout extends ViewGroup {
                 boolean triggerCondition = (yInitDiff > 0 && moved && onCheckCanRefresh())
                         || (yInitDiff < 0 && moved && onCheckCanLoadMore());
                 if (triggerCondition) {
-                    // the condition trigger refresh or load more is true
+                    // the trigger condition refresh or load more is true
                     // intercept the move action event and pass it to SwipeToLoadLayout#onTouchEvent()
                     return true;
                 }
@@ -1009,7 +1042,7 @@ public class SwipeToLoadLayout extends ViewGroup {
                 mActivePointerId = MotionEventCompat.getPointerId(event, 0);
                 return true;
             case MotionEvent.ACTION_MOVE:
-                // take over the move action event from SwipeToLoadLayout#onInterceptTouchEvent()
+                // take over the ACTION_MOVE event from SwipeToLoadLayout#onInterceptTouchEvent()
                 // if condition is true
                 final float y = getMotionEventY(event, mActivePointerId);
                 final float x = getMotionEventX(event, mActivePointerId);
@@ -1233,9 +1266,11 @@ public class SwipeToLoadLayout extends ViewGroup {
             setLoadingMore(false);
         } else if (STATUS.isReleaseToRefresh(mStatus)) {
             // return to header height and perform refresh
+            mRefreshCallback.onRelease();
             setRefreshing(true);
         } else if (STATUS.isReleaseToLoadMore(mStatus)) {
             // return to footer height and perform loadMore
+            mLoadMoreCallback.onRelease();
             setLoadingMore(true);
         }
     }
