@@ -9,13 +9,17 @@
     app:swipe_style="classic"
     tools:context="com.aspsine.swipetoloadlayout.demo.fragment.TwitterGridViewFragment">
 
-    <include layout="@layout/layout_twitter_header" />
+    <include
+        android:id="@id/swipe_refresh_header"
+        layout="@layout/layout_twitter_header" />
 
-    <com.aspsine.swipetoloadlayout.demo.view.LoadAbleGridView
-        android:id="@+id/gridView"
-        android:numColumns="2"
+    <GridView
+        android:id="@id/swipe_target"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:numColumns="2" />
 
-    <include layout="@layout/layout_classic_footer" />
+    <include
+        android:id="@id/swipe_load_more_footer"
+        layout="@layout/layout_classic_footer" />
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

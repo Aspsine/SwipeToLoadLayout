@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -23,7 +24,6 @@ import com.aspsine.swipetoloadlayout.demo.adapter.LoopViewPagerAdapter;
 import com.aspsine.swipetoloadlayout.demo.adapter.SectionAdapter;
 import com.aspsine.swipetoloadlayout.demo.model.Character;
 import com.aspsine.swipetoloadlayout.demo.model.SectionCharacters;
-import com.aspsine.swipetoloadlayout.demo.view.LoadAbleListView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,7 +35,7 @@ public class TwitterListViewFragment extends Fragment implements OnRefreshListen
 
     private SwipeToLoadLayout swipeToLoadLayout;
 
-    private LoadAbleListView listView;
+    private ListView listView;
 
     private ViewPager viewPager;
 
@@ -69,7 +69,7 @@ public class TwitterListViewFragment extends Fragment implements OnRefreshListen
         super.onViewCreated(view, savedInstanceState);
         View pagerView = LayoutInflater.from(view.getContext()).inflate(R.layout.layout_viewpager, listView, false);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
-        listView = (LoadAbleListView) view.findViewById(R.id.listView);
+        listView = (ListView) view.findViewById(R.id.swipe_target);
         viewPager = (ViewPager) pagerView.findViewById(R.id.viewPager);
         indicators = (ViewGroup) pagerView.findViewById(R.id.indicators);
         viewPager.addOnPageChangeListener(mPagerAdapter);

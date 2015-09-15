@@ -26,7 +26,6 @@ import com.aspsine.swipetoloadlayout.demo.adapter.RecyclerCharactersAdapter;
 import com.aspsine.swipetoloadlayout.demo.adapter.SectionAdapter;
 import com.aspsine.swipetoloadlayout.demo.model.Character;
 import com.aspsine.swipetoloadlayout.demo.model.SectionCharacters;
-import com.aspsine.swipetoloadlayout.demo.view.LoadAbleRecyclerView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,7 +43,7 @@ public class TwitterRecyclerFragment extends BaseFragment implements OnRefreshLi
 
     private SwipeToLoadLayout swipeToLoadLayout;
 
-    private LoadAbleRecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
     private RecyclerCharactersAdapter mAdapter;
 
@@ -82,7 +81,7 @@ public class TwitterRecyclerFragment extends BaseFragment implements OnRefreshLi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
-        recyclerView = (LoadAbleRecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.swipe_target);
         RecyclerView.LayoutManager layoutManager = null;
         if (mType == TYPE_LINEAR) {
             layoutManager = new LinearLayoutManager(getContext());

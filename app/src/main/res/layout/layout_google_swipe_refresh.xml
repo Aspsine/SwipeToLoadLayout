@@ -8,14 +8,18 @@
     app:default_to_refreshing_scrolling_duration="1000"
     app:swipe_style="above">
 
-    <include layout="@layout/layout_google_header" />
+    <include
+        android:id="@id/swipe_refresh_header"
+        layout="@layout/layout_google_header" />
 
-    <com.aspsine.swipetoloadlayout.demo.view.LoadAbleRecyclerView
-        android:id="@+id/recyclerView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@id/swipe_target"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false" />
 
-    <include layout="@layout/layout_classic_footer" />
+    <include
+        android:id="@id/swipe_load_more_footer"
+        layout="@layout/layout_classic_footer" />
 
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

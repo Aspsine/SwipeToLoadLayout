@@ -5,9 +5,12 @@
     android:layout_height="match_parent"
     android:background="@color/style_window_background">
 
-    <include layout="@layout/layout_twitter_header" />
+    <include
+        android:id="@id/swipe_refresh_header"
+        layout="@layout/layout_twitter_header" />
 
-    <com.aspsine.swipetoloadlayout.demo.view.LoadAbleFrameLayout
+    <FrameLayout
+        android:id="@id/swipe_target"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="8dp"
@@ -17,9 +20,11 @@
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:layout_gravity="center" />
-    </com.aspsine.swipetoloadlayout.demo.view.LoadAbleFrameLayout>
+            android:layout_gravity="center"
+            android:textSize="24sp" />
+    </FrameLayout>
 
-    <include layout="@layout/layout_classic_footer" />
+    <include
+        android:id="@id/swipe_load_more_footer"
+        layout="@layout/layout_classic_footer" />
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

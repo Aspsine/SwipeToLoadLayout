@@ -66,9 +66,16 @@ public class TwitterOtherViewFragment extends BaseFragment implements OnRefreshL
         super.onViewCreated(view, savedInstanceState);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
         tvTitle = (TextView) view.findViewById(R.id.tvTitle);
-        ivContent = (ImageView) view.findViewById(R.id.ivContent);
+        View targetView = view.findViewById(R.id.swipe_target);
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
+        if (targetView != null) {
+            if (targetView instanceof TextView) {
+                tvTitle = (TextView) targetView;
+            } else if (targetView instanceof ImageView) {
+                ivContent = (ImageView) targetView;
+            }
+        }
         if (tvTitle != null) {
             tvTitle.setText(mTitle + " Demo");
         }

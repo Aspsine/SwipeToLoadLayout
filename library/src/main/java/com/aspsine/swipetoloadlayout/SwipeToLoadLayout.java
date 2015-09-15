@@ -3,12 +3,14 @@ package com.aspsine.swipetoloadlayout;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v4.view.MotionEventCompat;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Scroller;
 
 /**
@@ -121,6 +123,18 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     /**
      * <b>ATTRIBUTE:</b>
+     * a switcher indicate whither refresh function is enabled
+     */
+    private boolean mRefreshEnabled = true;
+
+    /**
+     * <b>ATTRIBUTE:</b>
+     * a switcher indicate whiter load more function is enabled
+     */
+    private boolean mLoadMoreEnabled = true;
+
+    /**
+     * <b>ATTRIBUTE:</b>
      * the style default classic
      */
     private int mStyle = STYLE.CLASSIC;
@@ -227,7 +241,13 @@ public class SwipeToLoadLayout extends ViewGroup {
             final int N = a.getIndexCount();
             for (int i = 0; i < N; i++) {
                 int attr = a.getIndex(i);
-                if (attr == R.styleable.SwipeToLoadLayout_swipe_style) {
+                if (attr == R.styleable.SwipeToLoadLayout_refresh_enabled) {
+                    setRefreshEnabled(a.getBoolean(attr, true));
+
+                } else if (attr == R.styleable.SwipeToLoadLayout_load_more_enabled) {
+                    setLoadMoreEnabled(a.getBoolean(attr, true));
+
+                } else if (attr == R.styleable.SwipeToLoadLayout_swipe_style) {
                     setSwipeStyle(a.getInt(attr, STYLE.CLASSIC));
 
                 } else if (attr == R.styleable.SwipeToLoadLayout_refresh_final_drag_offset) {
@@ -274,6 +294,24 @@ public class SwipeToLoadLayout extends ViewGroup {
 
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mAutoScroller = new AutoScroller();
+    }
+
+    /**
+     * is refresh function is enabled
+     *
+     * @return
+     */
+    public boolean isRefreshEnabled() {
+        return mRefreshEnabled;
+    }
+
+    /**
+     * is load more function is enabled
+     *
+     * @return
+     */
+    public boolean isLoadMoreEnabled() {
+        return mLoadMoreEnabled;
     }
 
     /**
@@ -332,6 +370,24 @@ public class SwipeToLoadLayout extends ViewGroup {
         } else {
             Log.e(TAG, "Load more footer view must be an implement of SwipeLoadTrigger");
         }
+    }
+
+    /**
+     * switch refresh function on or off
+     *
+     * @param enable
+     */
+    public void setRefreshEnabled(boolean enable) {
+        this.mRefreshEnabled = enable;
+    }
+
+    /**
+     * switch load more function on or off
+     *
+     * @param enable
+     */
+    public void setLoadMoreEnabled(boolean enable) {
+        this.mLoadMoreEnabled = enable;
     }
 
     /**
@@ -488,6 +544,9 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @param refreshing
      */
     public void setRefreshing(boolean refreshing) {
+        if (!isRefreshEnabled() || mHeaderView == null) {
+            return;
+        }
         this.mLoading = refreshing;
         if (refreshing) {
             // can not perform refresh when it is refreshing or loading more
@@ -524,6 +583,9 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @param loadingMore
      */
     public void setLoadingMore(boolean loadingMore) {
+        if (!isLoadMoreEnabled() || mFooterView == null) {
+            return;
+        }
         this.mLoading = loadingMore;
         if (loadingMore) {
             // can not perform load more when it is refreshing or loading more
@@ -615,34 +677,20 @@ public class SwipeToLoadLayout extends ViewGroup {
             // no child return
             return;
         } else if (0 < childNum && childNum < 4) {
-            boolean hasOther = false;
-            for (int i = 0; i < childNum; i++) {
-                View child = getChildAt(i);
-                if (child instanceof SwipeRefreshTrigger) {
-                    mHeaderView = child;
-                } else if (child instanceof RefreshAble || child instanceof LoadMoreAble) {
-                    mTargetView = child;
-                } else if (child instanceof SwipeLoadMoreTrigger) {
-                    mFooterView = child;
-                } else {
-                    hasOther = true;
-                }
-            }
-            if (hasOther) {
-                throw new RuntimeException(new ClassNotFoundException(
-                        "SwipeToLoadLayout must contains three children at most: " +
-                                "the first must be the implement SwipeRefreshTrigger" +
-                                "the second must be the implement of RefreshAble or LoadMoreAble" +
-                                "the third must be the implement of SwipeLoadMoreTrigger"));
-            }
+            mHeaderView = findViewById(R.id.swipe_refresh_header);
+            mTargetView = findViewById(R.id.swipe_target);
+            mFooterView = findViewById(R.id.swipe_load_more_footer);
         } else {
             // more than three children: unsupported!
             throw new IllegalStateException("Children num must equal or less than 3");
         }
-        if (mHeaderView != null) {
+        if (mTargetView == null) {
+            return;
+        }
+        if (mHeaderView != null && mHeaderView instanceof SwipeTrigger) {
             mHeaderView.setVisibility(GONE);
         }
-        if (mFooterView != null) {
+        if (mFooterView != null && mFooterView instanceof SwipeTrigger) {
             mFooterView.setVisibility(GONE);
         }
     }
@@ -671,7 +719,7 @@ public class SwipeToLoadLayout extends ViewGroup {
             measureChildWithMargins(footerView, widthMeasureSpec, 0, heightMeasureSpec, 0);
             MarginLayoutParams lp = ((MarginLayoutParams) footerView.getLayoutParams());
             mFooterHeight = footerView.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
-            if (mLoadMoreTriggerOffset <= mFooterHeight) {
+            if (mLoadMoreTriggerOffset < mFooterHeight) {
                 mLoadMoreTriggerOffset = mFooterHeight;
             }
         }
@@ -805,10 +853,16 @@ public class SwipeToLoadLayout extends ViewGroup {
 
         if (mStyle == STYLE.CLASSIC
                 || mStyle == STYLE.ABOVE) {
-            mHeaderView.bringToFront();
-            mFooterView.bringToFront();
+            if (mHeaderView != null) {
+                mHeaderView.bringToFront();
+            }
+            if (mFooterView != null) {
+                mFooterView.bringToFront();
+            }
         } else if (mStyle == STYLE.BLEW || mStyle == STYLE.SCALE) {
-            mTargetView.bringToFront();
+            if (mTargetView != null) {
+                mTargetView.bringToFront();
+            }
         }
     }
 
@@ -818,11 +872,8 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @return
      */
     private boolean onCheckCanRefresh() {
-        boolean canRefresh = false;
-        if (mTargetView instanceof RefreshAble) {
-            canRefresh = ((RefreshAble) mTargetView).onCheckCanRefresh();
-        }
-        return canRefresh && mHasHeaderView && mRefreshTriggerOffset > 0;
+
+        return mRefreshEnabled && !canChildScrollUp() && mHasHeaderView && mRefreshTriggerOffset > 0;
     }
 
     /**
@@ -831,11 +882,50 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @return
      */
     private boolean onCheckCanLoadMore() {
-        boolean canLoadMore = false;
-        if (mTargetView instanceof LoadMoreAble) {
-            canLoadMore = ((LoadMoreAble) mTargetView).onCheckCanLoadMore();
+
+        return mLoadMoreEnabled && !canChildScrollDown() && mHasFooterView && mLoadMoreTriggerOffset > 0;
+    }
+
+    /**
+     * copy from {@link android.support.v4.widget.SwipeRefreshLayout#canChildScrollUp()}
+     *
+     * @return Whether it is possible for the child view of this layout to
+     * scroll up. Override this if the child view is a custom view.
+     */
+    protected boolean canChildScrollUp() {
+        if (android.os.Build.VERSION.SDK_INT < 14) {
+            if (mTargetView instanceof AbsListView) {
+                final AbsListView absListView = (AbsListView) mTargetView;
+                return absListView.getChildCount() > 0
+                        && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
+                        .getTop() < absListView.getPaddingTop());
+            } else {
+                return ViewCompat.canScrollVertically(mTargetView, -1) || mTargetView.getScrollY() > 0;
+            }
+        } else {
+            return ViewCompat.canScrollVertically(mTargetView, -1);
         }
-        return canLoadMore && mHasFooterView && mLoadMoreTriggerOffset > 0;
+    }
+
+    /**
+     * Whether it is possible for the child view of this layout to
+     * scroll down. Override this if the child view is a custom view.
+     *
+     * @return
+     */
+    protected boolean canChildScrollDown() {
+        if (android.os.Build.VERSION.SDK_INT < 14) {
+            if (mTargetView instanceof AbsListView) {
+                final AbsListView absListView = (AbsListView) mTargetView;
+                return absListView.getChildCount() > 0
+                        && (absListView.getLastVisiblePosition() < absListView.getChildCount() - 1
+                        || absListView.getChildAt(absListView.getChildCount() - 1).getBottom() > absListView.getPaddingBottom());
+            } else {
+                return ViewCompat.canScrollVertically(mTargetView, 1) || mTargetView.getScrollY() < 0;
+            }
+        } else {
+            return ViewCompat.canScrollVertically(mTargetView, 1);
+        }
     }
 
     @Override
@@ -1287,9 +1377,10 @@ public class SwipeToLoadLayout extends ViewGroup {
 
         @Override
         public void onRefresh() {
-            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isRefreshing(mStatus) && mLoading) {
-                ((SwipeRefreshTrigger) mHeaderView).onRefresh();
-
+            if (mHeaderView != null && STATUS.isRefreshing(mStatus) && mLoading) {
+                if (mHeaderView instanceof SwipeRefreshTrigger) {
+                    ((SwipeRefreshTrigger) mHeaderView).onRefresh();
+                }
                 if (mRefreshListener != null) {
                     mRefreshListener.onRefresh();
                 }
@@ -1331,9 +1422,10 @@ public class SwipeToLoadLayout extends ViewGroup {
 
         @Override
         public void onLoadMore() {
-            if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadingMore(mStatus) && mLoading) {
-                ((SwipeLoadMoreTrigger) mFooterView).onLoadMore();
-
+            if (mFooterView != null && STATUS.isLoadingMore(mStatus) && mLoading) {
+                if (mFooterView instanceof SwipeLoadMoreTrigger) {
+                    ((SwipeLoadMoreTrigger) mFooterView).onLoadMore();
+                }
                 if (mLoadMoreListener != null) {
                     mLoadMoreListener.onLoadMore();
                 }

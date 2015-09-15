@@ -5,10 +5,12 @@
     android:layout_height="match_parent"
     android:background="@color/style_window_background">
 
-    <include layout="@layout/layout_twitter_header" />
+    <include
+        android:id="@id/swipe_refresh_header"
+        layout="@layout/layout_twitter_header" />
 
-    <com.aspsine.swipetoloadlayout.demo.view.LoadAbleTextView
-        android:id="@+id/tvTitle"
+    <TextView
+        android:id="@id/swipe_target"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="8dp"
@@ -16,5 +18,7 @@
         android:gravity="center"
         android:textSize="24sp" />
 
-    <include layout="@layout/layout_classic_footer" />
+    <include
+        android:id="@id/swipe_load_more_footer"
+        layout="@layout/layout_classic_footer" />
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

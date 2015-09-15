@@ -3,6 +3,7 @@ package com.aspsine.swipetoloadlayout.demo.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,6 @@ import com.aspsine.swipetoloadlayout.demo.Constants;
 import com.aspsine.swipetoloadlayout.demo.R;
 import com.aspsine.swipetoloadlayout.demo.adapter.RecyclerCharactersAdapter;
 import com.aspsine.swipetoloadlayout.demo.model.SectionCharacters;
-import com.aspsine.swipetoloadlayout.demo.view.LoadAbleRecyclerView;
 
 /**
  * Created by Aspsine on 2015/9/10.
@@ -30,7 +30,7 @@ public class GoogleStyleFragment extends BaseFragment implements OnRefreshListen
 
     private int mType;
     private int mPageNum;
-    private LoadAbleRecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private SwipeToLoadLayout swipeToLoadLayout;
     private RecyclerCharactersAdapter mAdapter;
 
@@ -60,7 +60,7 @@ public class GoogleStyleFragment extends BaseFragment implements OnRefreshListen
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
-        recyclerView = (LoadAbleRecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.swipe_target);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(mAdapter);
         swipeToLoadLayout.setOnRefreshListener(this);

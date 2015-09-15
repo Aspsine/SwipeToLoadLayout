@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -18,14 +17,13 @@ import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.aspsine.swipetoloadlayout.demo.R;
-import com.aspsine.swipetoloadlayout.demo.view.LoadAbleWebView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TwitterWebViewFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener{
     private SwipeToLoadLayout swipeToLoadLayout;
-    private LoadAbleWebView webView;
+    private WebView webView;
 
     public TwitterWebViewFragment() {
         // Required empty public constructor
@@ -43,7 +41,7 @@ public class TwitterWebViewFragment extends BaseFragment implements OnRefreshLis
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
-        webView = (LoadAbleWebView) view.findViewById(R.id.webView);
+        webView = (WebView) view.findViewById(R.id.swipe_target);
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
         webView.setWebViewClient(new WebViewClient(){

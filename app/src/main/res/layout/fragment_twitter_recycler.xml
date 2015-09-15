@@ -9,13 +9,17 @@
     app:swipe_style="classic"
     tools:context="com.aspsine.swipetoloadlayout.demo.fragment.TwitterRecyclerFragment">
 
-    <include layout="@layout/layout_twitter_header" />
+    <include
+        android:id="@id/swipe_refresh_header"
+        layout="@layout/layout_twitter_header" />
 
-    <com.aspsine.swipetoloadlayout.demo.view.LoadAbleRecyclerView
-        android:id="@+id/recyclerView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@id/swipe_target"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false" />
 
-    <include layout="@layout/layout_classic_footer" />
+    <include
+        android:id="@id/swipe_load_more_footer"
+        layout="@layout/layout_classic_footer" />
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

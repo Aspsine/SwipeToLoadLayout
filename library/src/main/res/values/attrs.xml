@@ -1,5 +1,8 @@
 <resources>
     <declare-styleable name="SwipeToLoadLayout">
+        <attr name="refresh_enabled" format="boolean" />
+        <attr name="load_more_enabled" format="boolean" />
+
         <attr name="swipe_style" format="enum">
             <enum name="classic" value="0" />
             <enum name="above" value="1" />

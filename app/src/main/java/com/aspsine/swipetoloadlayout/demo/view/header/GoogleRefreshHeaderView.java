@@ -5,14 +5,13 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
-import com.aspsine.swipetoloadlayout.SwipeRefreshTrigger;
 import com.aspsine.swipetoloadlayout.SwipeTrigger;
 import com.aspsine.swipetoloadlayout.demo.R;
 
 /**
  * Created by aspsine on 15/9/10.
  */
-public class GoogleRefreshHeaderView extends FrameLayout implements SwipeTrigger, SwipeRefreshTrigger {
+public class GoogleRefreshHeaderView extends FrameLayout implements SwipeTrigger {
     private ProgressBar progressBar;
 
     private int mHeaderHeight;
@@ -34,13 +33,13 @@ public class GoogleRefreshHeaderView extends FrameLayout implements SwipeTrigger
     protected void onFinishInflate() {
         super.onFinishInflate();
         progressBar = (ProgressBar) findViewById(R.id.progressbar);
-        progressBar.setMax(mHeaderHeight);
+//        progressBar.setMax(mHeaderHeight);
     }
 
-    @Override
-    public void onRefresh() {
-
-    }
+//    @Override
+//    public void onRefresh() {
+//
+//    }
 
     @Override
     public void onPrepare() {
