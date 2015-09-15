@@ -5,9 +5,10 @@ import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 
 /**
- * Created by aspsine on 15/9/11.
+ * Created by aspsine on 15/9/10.
  */
-public class CircleFloatDrawable extends Drawable {
+public class MeterialHookDrawable extends Drawable {
+    
     @Override
     public void draw(Canvas canvas) {
 
