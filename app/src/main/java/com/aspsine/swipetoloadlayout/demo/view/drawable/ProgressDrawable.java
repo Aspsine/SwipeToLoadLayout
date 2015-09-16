@@ -35,10 +35,10 @@ public abstract class ProgressDrawable extends Drawable implements Animatable {
         return mColors;
     }
 
-    public abstract void setProgress(float progress, boolean isUser);
+    public abstract void setPercent(float progress, boolean isUser);
 
-    public void setProgress(float progress) {
-        setProgress(progress, false);
+    public void setPercent(float progress) {
+        setPercent(progress, false);
     }
 
     public void setRunning(boolean running) {
@@ -80,7 +80,15 @@ public abstract class ProgressDrawable extends Drawable implements Animatable {
             }
         }
         mHandler.postDelayed(runnable, delayMillis);
+
     }
+
+    protected void removeCallBacks(Runnable runnable) {
+        if (mHandler != null) {
+            mHandler.removeCallbacks(runnable);
+        }
+    }
+
 
     protected int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getContext().getResources().getDisplayMetrics());
