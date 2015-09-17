@@ -1,0 +1,439 @@
+{
+  "next": "B-C",
+  "1": [
+    {
+      "alphabet": "1",
+      "id": "74",
+      "title": "3-D Man",
+      "url": "/characters/74/3-d_man"
+    }
+  ],
+  "A": [
+    {
+      "alphabet": "A",
+      "id": "76",
+      "title": "A-Bomb",
+      "url": "/characters/76/a-bomb"
+    },
+    {
+      "alphabet": "A",
+      "id": "77",
+      "title": "A.I.M.",
+      "url": "/characters/77/a.i.m."
+    },
+    {
+      "alphabet": "A",
+      "id": "2809",
+      "title": "Aaron Stack",
+      "url": "/characters/2809/aaron_stack"
+    },
+    {
+      "alphabet": "A",
+      "id": "81",
+      "title": "Abomination",
+      "url": "/characters/81/abomination"
+    },
+    {
+      "alphabet": "A",
+      "id": "84",
+      "title": "Absorbing Man",
+      "url": "/characters/84/absorbing_man"
+    },
+    {
+      "alphabet": "A",
+      "id": "85",
+      "title": "Abyss",
+      "url": "/characters/85/abyss"
+    },
+    {
+      "alphabet": "A",
+      "id": "2902",
+      "title": "Adam Destine",
+      "url": "/characters/2902/adam_destine"
+    },
+    {
+      "alphabet": "A",
+      "id": "2854",
+      "title": "Adam Warlock",
+      "url": "/characters/2854/adam_warlock"
+    },
+    {
+      "alphabet": "A",
+      "id": "95",
+      "title": "Aegis",
+      "url": "/characters/95/aegis"
+    },
+    {
+      "alphabet": "A",
+      "id": "100",
+      "title": "Agent Brand",
+      "url": "/characters/100/agent_brand"
+    },
+    {
+      "alphabet": "A",
+      "id": "101",
+      "title": "Agent X",
+      "url": "/characters/101/agent_x"
+    },
+    {
+      "alphabet": "A",
+      "id": "102",
+      "title": "Agent Zero",
+      "url": "/characters/102/agent_zero"
+    },
+    {
+      "alphabet": "A",
+      "id": "103",
+      "title": "Agents of Atlas",
+      "url": "/characters/103/agents_of_atlas"
+    },
+    {
+      "alphabet": "A",
+      "id": "105",
+      "title": "Aginar",
+      "url": "/characters/105/aginar"
+    },
+    {
+      "alphabet": "A",
+      "id": "109",
+      "title": "Air-Walker",
+      "url": "/characters/109/air-walker"
+    },
+    {
+      "alphabet": "A",
+      "id": "111",
+      "title": "Ajak",
+      "url": "/characters/111/ajak"
+    },
+    {
+      "alphabet": "A",
+      "id": "113",
+      "title": "Ajaxis",
+      "url": "/characters/113/ajaxis"
+    },
+    {
+      "alphabet": "A",
+      "id": "114",
+      "title": "Akemi",
+      "url": "/characters/114/akemi"
+    },
+    {
+      "alphabet": "A",
+      "id": "116",
+      "title": "Alain",
+      "url": "/characters/116/alain"
+    },
+    {
+      "alphabet": "A",
+      "id": "2692",
+      "title": "Albert Cleary",
+      "url": "/characters/2692/albert_cleary"
+    },
+    {
+      "alphabet": "A",
+      "id": "118",
+      "title": "Albion",
+      "url": "/characters/118/albion"
+    },
+    {
+      "alphabet": "A",
+      "id": "1387",
+      "title": "Alex Power",
+      "url": "/characters/1387/alex_power"
+    },
+    {
+      "alphabet": "A",
+      "id": "2820",
+      "title": "Alex Wilder",
+      "url": "/characters/2820/alex_wilder"
+    },
+    {
+      "alphabet": "A",
+      "id": "2892",
+      "title": "Alexa Mendez",
+      "url": "/characters/2892/alexa_mendez"
+    },
+    {
+      "alphabet": "A",
+      "id": "2738",
+      "title": "Alexander Pierce",
+      "url": "/characters/2738/alexander_pierce"
+    },
+    {
+      "alphabet": "A",
+      "id": "122",
+      "title": "Alice",
+      "url": "/characters/122/alice"
+    },
+    {
+      "alphabet": "A",
+      "id": "2732",
+      "title": "Alicia Masters",
+      "url": "/characters/2732/alicia_masters"
+    },
+    {
+      "alphabet": "A",
+      "id": "126",
+      "title": "Alpha Flight",
+      "url": "/characters/126/alpha_flight"
+    },
+    {
+      "alphabet": "A",
+      "id": "2880",
+      "title": "Alvin Maker",
+      "url": "/characters/2880/alvin_maker"
+    },
+    {
+      "alphabet": "A",
+      "id": "2804",
+      "title": "Amadeus Cho",
+      "url": "/characters/2804/amadeus_cho"
+    },
+    {
+      "alphabet": "A",
+      "id": "2755",
+      "title": "Amanda Sefton",
+      "url": "/characters/2755/amanda_sefton"
+    },
+    {
+      "alphabet": "A",
+      "id": "130",
+      "title": "Amazoness",
+      "url": "/characters/130/amazoness"
+    },
+    {
+      "alphabet": "A",
+      "id": "132",
+      "title": "American Eagle",
+      "url": "/characters/132/american_eagle"
+    },
+    {
+      "alphabet": "A",
+      "id": "134",
+      "title": "Amiko",
+      "url": "/characters/134/amiko"
+    },
+    {
+      "alphabet": "A",
+      "id": "136",
+      "title": "Amora",
+      "url": "/characters/136/amora"
+    },
+    {
+      "alphabet": "A",
+      "id": "137",
+      "title": "Amphibian",
+      "url": "/characters/137/amphibian"
+    },
+    {
+      "alphabet": "A",
+      "id": "140",
+      "title": "Amun",
+      "url": "/characters/140/amun"
+    },
+    {
+      "alphabet": "A",
+      "id": "145",
+      "title": "Ancient One",
+      "url": "/characters/145/ancient_one"
+    },
+    {
+      "alphabet": "A",
+      "id": "1",
+      "title": "Angel",
+      "url": "/characters/1/angel"
+    },
+    {
+      "alphabet": "A",
+      "id": "1011396",
+      "title": "Angel (Thomas Halloway)",
+      "url": "/characters/1011396/angel_(thomas_halloway)/featured"
+    },
+    {
+      "alphabet": "A",
+      "id": "3455",
+      "title": "Angela",
+      "url": "/characters/3455/angela"
+    },
+    {
+      "alphabet": "A",
+      "id": "3428",
+      "title": "Anita Blake",
+      "url": "/characters/3428/anita_blake"
+    },
+    {
+      "alphabet": "A",
+      "id": "2714",
+      "title": "Anne Marie Hoag",
+      "url": "/characters/2714/anne_marie_hoag"
+    },
+    {
+      "alphabet": "A",
+      "id": "154",
+      "title": "Annihilus",
+      "url": "/characters/154/annihilus"
+    },
+    {
+      "alphabet": "A",
+      "id": "155",
+      "title": "Anole",
+      "url": "/characters/155/anole"
+    },
+    {
+      "alphabet": "A",
+      "id": "2",
+      "title": "Ant-Man",
+      "url": "/characters/2/ant-man"
+    },
+    {
+      "alphabet": "A",
+      "id": "1010802",
+      "title": "Ant-Man (Eric O'Grady)",
+      "url": "/characters/1010802/ant-man_(eric_o'grady)/featured"
+    },
+    {
+      "alphabet": "A",
+      "id": "158",
+      "title": "Anthem",
+      "url": "/characters/158/anthem"
+    },
+    {
+      "alphabet": "A",
+      "id": "166",
+      "title": "Apocalypse",
+      "url": "/characters/166/apocalypse"
+    },
+    {
+      "alphabet": "A",
+      "id": "169",
+      "title": "Aqueduct",
+      "url": "/characters/169/aqueduct"
+    },
+    {
+      "alphabet": "A",
+      "id": "173",
+      "title": "Arachne",
+      "url": "/characters/173/arachne"
+    },
+    {
+      "alphabet": "A",
+      "id": "176",
+      "title": "Ara?a",
+      "url": "/characters/176/ara"
+    },
+    {
+      "alphabet": "A",
+      "id": "178",
+      "title": "Arcade",
+      "url": "/characters/178/arcade"
+    },
+    {
+      "alphabet": "A",
+      "id": "179",
+      "title": "Arcana",
+      "url": "/characters/179/arcana"
+    },
+    {
+      "alphabet": "A",
+      "id": "182",
+      "title": "Arclight",
+      "url": "/characters/182/arclight"
+    },
+    {
+      "alphabet": "A",
+      "id": "183",
+      "title": "Ares",
+      "url": "/characters/183/ares"
+    },
+    {
+      "alphabet": "A",
+      "id": "184",
+      "title": "Argent",
+      "url": "/characters/184/argent"
+    },
+    {
+      "alphabet": "A",
+      "id": "189",
+      "title": "Armadillo",
+      "url": "/characters/189/armadillo"
+    },
+    {
+      "alphabet": "A",
+      "id": "191",
+      "title": "Armor",
+      "url": "/characters/191/armor"
+    },
+    {
+      "alphabet": "A",
+      "id": "193",
+      "title": "Armory",
+      "url": "/characters/193/armory"
+    },
+    {
+      "alphabet": "A",
+      "id": "2790",
+      "title": "Arnim Zola",
+      "url": "/characters/2790/arnim_zola"
+    },
+    {
+      "alphabet": "A",
+      "id": "197",
+      "title": "Arsenic",
+      "url": "/characters/197/arsenic"
+    },
+    {
+      "alphabet": "A",
+      "id": "198",
+      "title": "Artiee",
+      "url": "/characters/198/artiee"
+    },
+    {
+      "alphabet": "A",
+      "id": "201",
+      "title": "Asgardian",
+      "url": "/characters/201/asgardian"
+    },
+    {
+      "alphabet": "A",
+      "id": "204",
+      "title": "Askew-Tronics",
+      "url": "/characters/204/askew-tronics"
+    },
+    {
+      "alphabet": "A",
+      "id": "211",
+      "title": "Asylum",
+      "url": "/characters/211/asylum"
+    },
+    {
+      "alphabet": "A",
+      "id": "214",
+      "title": "Atlas",
+      "url": "/characters/214/atlas"
+    },
+    {
+      "alphabet": "A",
+      "id": "221",
+      "title": "Aurora",
+      "url": "/characters/221/aurora"
+    },
+    {
+      "alphabet": "A",
+      "id": "222",
+      "title": "Avalanche",
+      "url": "/characters/222/avalanche"
+    },
+    {
+      "alphabet": "A",
+      "id": "68",
+      "title": "Avengers",
+      "url": "/characters/68/avengers"
+    },
+    {
+      "alphabet": "A",
+      "id": "227",
+      "title": "Azazel",
+      "url": "/characters/227/azazel"
+    }
+  ]
+}

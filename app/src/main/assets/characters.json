@@ -1,5 +1,5 @@
 {
-  "heroes": [
+  "characters": [
     {
       "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/9/a0/54adb647b792d.png",
       "name": "Ant-Man"
@@ -23,8 +23,8 @@
   ],
   "sections": [
     {
-      "name": "Top Marvel Heroes",
-      "heroes": [
+      "name": "Top Marvel characters",
+      "characters": [
         {
           "avatar": "http://i.annihil.us/u/prod/marvel/i/mg/9/30/538cd33e15ab7/standard_xlarge.jpg",
           "name": "Spider-Man"
@@ -69,7 +69,7 @@
     },
     {
       "name": "Bring on the Bad Guys",
-      "heroes": [
+      "characters": [
         {
           "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/2/03/537bc76411307/standard_xlarge.jpg",
           "name": "Ultron"
@@ -114,7 +114,7 @@
     },
     {
       "name": "Women of Marvel",
-      "heroes": [
+      "characters": [
         {
           "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/f/30/50fecad1f395b/standard_xlarge.jpg",
           "name": "Black Widow"
@@ -147,7 +147,7 @@
     },
     {
       "name": "Titanic Teams",
-      "heroes": [
+      "characters": [
         {
           "avatar": "http://x.annihil.us/u/prod/marvel/i/mg/3/a0/537ba3793915b/standard_xlarge.jpg",
           "name": "Avengers"

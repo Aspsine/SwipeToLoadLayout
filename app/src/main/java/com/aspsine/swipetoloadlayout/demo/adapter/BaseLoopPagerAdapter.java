@@ -80,21 +80,31 @@ public abstract class BaseLoopPagerAdapter extends PagerAdapter implements ViewP
         int fixedCount = getPagerCount();
         if (fixedCount <= 0) {
             return;
-        }
-        if (fixedCount + 2 != mList.size()) {
-            mList.clear();
-            // add last element in position 0, add all, add first element in last position
-            mList.add(getItem(fixedCount - 1));
-            for (int i = 0; i < fixedCount; i++) {
-                mList.add(getItem(i));
+        } else if (fixedCount == 1) {
+            if (fixedCount != mList.size()) {
+                mList.clear();
+                mList.add(getItem(0));
             }
-            mList.add(getItem(0));
-        }
-
-        if (fixedCount + 2 != mViews.size()) {
-            mViews.clear();
-            for (int i = 0; i < mList.size(); i++) {
+            if (fixedCount != mViews.size()) {
+                mViews.clear();
                 mViews.add(null);
+            }
+        } else if (fixedCount > 1) {
+            if (fixedCount + 2 != mList.size()) {
+                mList.clear();
+                // add last element in position 0, add all, add first element in last position
+                mList.add(getItem(fixedCount - 1));
+                for (int i = 0; i < fixedCount; i++) {
+                    mList.add(getItem(i));
+                }
+                mList.add(getItem(0));
+            }
+
+            if (fixedCount + 2 != mViews.size()) {
+                mViews.clear();
+                for (int i = 0; i < mList.size(); i++) {
+                    mViews.add(null);
+                }
             }
         }
         super.notifyDataSetChanged();
@@ -102,9 +112,10 @@ public abstract class BaseLoopPagerAdapter extends PagerAdapter implements ViewP
         // this is very important
         mChildCount = getCount();
 
-        if (mViewPager.getCurrentItem() == 0) {
+        if (mViewPager.getCurrentItem() == 0 && mChildCount != 1) {
             mViewPager.setCurrentItem(1, false);
         }
+
         stop();
         start();
     }
@@ -221,7 +232,6 @@ public abstract class BaseLoopPagerAdapter extends PagerAdapter implements ViewP
     @Override
     public final void onPageScrollStateChanged(int state) {
         if (state == ViewPager.SCROLL_STATE_IDLE) {
-            // if heroes size cannot be smaller than 3
             if (mList.size() > 3) {
                 if (mViewPager.getCurrentItem() == 0) {
                     mViewPager.setCurrentItem(mList.size() - 2, false);

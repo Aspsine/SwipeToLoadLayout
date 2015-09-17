@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aspsine.swipetoloadlayout.demo.R;
-import com.aspsine.swipetoloadlayout.demo.model.Hero;
+import com.aspsine.swipetoloadlayout.demo.model.Character;
 import com.aspsine.swipetoloadlayout.demo.model.Section;
 import com.squareup.picasso.CircleTransformation;
 import com.squareup.picasso.Picasso;
@@ -19,9 +19,7 @@ import java.util.List;
 /**
  * Created by aspsine on 15/9/4.
  */
-public class SectionAdapter extends BaseGroupAdapter<Section, Hero> {
-
-
+public class SectionAdapter extends BaseGroupAdapter<Section, Character> {
     List<Section> mSections;
 
     public SectionAdapter() {
@@ -54,7 +52,7 @@ public class SectionAdapter extends BaseGroupAdapter<Section, Hero> {
     }
 
     @Override
-    protected View getGroupView(int groupPosition, View convertView, ViewGroup parent) {
+    protected View getGroupView(final int groupPosition, View convertView, ViewGroup parent) {
         HeaderViewHolder holder = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_header, parent, false);
@@ -64,7 +62,7 @@ public class SectionAdapter extends BaseGroupAdapter<Section, Hero> {
         } else {
             holder = (HeaderViewHolder) convertView.getTag();
         }
-        String header = getGroup(groupPosition).getName();
+        final String header = getGroup(groupPosition).getName();
         holder.tvHeader.setText(header);
         return convertView;
     }
@@ -76,16 +74,17 @@ public class SectionAdapter extends BaseGroupAdapter<Section, Hero> {
 
     @Override
     public int getChildCount(int groupPosition) {
-        return getGroup(groupPosition).getHeroes().size();
+        List<Character> characters = getGroup(groupPosition).getCharacters();
+        return characters != null ? characters.size() : 0;
     }
 
     @Override
-    protected Hero getChild(int groupPosition, int childPosition) {
-        return getGroup(groupPosition).getHeroes().get(childPosition);
+    protected Character getChild(int groupPosition, int childPosition) {
+        return getGroup(groupPosition).getCharacters().get(childPosition);
     }
 
     @Override
-    protected View getChildView(int groupPosition, int childPosition, View convertView, ViewGroup parent) {
+    protected View getChildView(final int groupPosition, final int childPosition, View convertView, ViewGroup parent) {
         ChildViewHolder holder = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_hero, parent, false);
@@ -96,16 +95,35 @@ public class SectionAdapter extends BaseGroupAdapter<Section, Hero> {
         } else {
             holder = (ChildViewHolder) convertView.getTag();
         }
-        Hero hero = getChild(groupPosition, childPosition);
-        holder.tvName.setText(hero.getName());
+        final Character character = getChild(groupPosition, childPosition);
+        holder.tvName.setText(character.getName());
         Resources resources = parent.getResources();
         int size = resources.getDimensionPixelOffset(R.dimen.hero_avatar_size);
         int width = resources.getDimensionPixelOffset(R.dimen.hero_avatar_border);
         Picasso.with(parent.getContext())
-                .load(hero.getAvatar())
+                .load(character.getAvatar())
                 .resize(size, size)
                 .transform(new CircleTransformation(width))
                 .into(holder.ivAvatar);
+        final View finalConvertView = convertView;
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnChildItemClickListener != null) {
+                    mOnChildItemClickListener.onChildItemClick(groupPosition, childPosition, character, finalConvertView);
+                }
+            }
+        });
+
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnChildItemLongClickListener != null) {
+                    return mOnChildItemLongClickListener.onClickItemLongClick(groupPosition, childPosition, character, finalConvertView);
+                }
+                return false;
+            }
+        });
         return convertView;
     }
 

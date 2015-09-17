@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<interpolator xmlns:android="http://schemas.android.com/apk/res/android">
+    <cycleInterpolator xmlns:android="http://schemas.android.com/apk/res/android"
+        android:cycles="1" />
+</interpolator>

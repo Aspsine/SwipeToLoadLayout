@@ -1,7 +1,5 @@
 package com.aspsine.swipetoloadlayout.demo.adapter;
 
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
@@ -34,7 +32,7 @@ public abstract class BaseArrayAdapter<T> extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public T getItem(int position) {
         return mList.get(position);
     }
 

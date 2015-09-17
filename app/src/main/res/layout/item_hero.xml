@@ -7,7 +7,7 @@
     android:paddingBottom="8dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:background="@color/white">
+    android:background="@drawable/selector_item_hero">
 
     <ImageView
         android:id="@+id/ivAvatar"

@@ -2,11 +2,18 @@
 <resources>
     <color name="style_color_primary">#d32f2f</color>
     <color name="style_color_primary_dark">#b71c1c</color>
-    <color name="style_color_accent">@color/red</color>
+    <color name="style_color_primary_light">#FFCDD2</color>
+    <color name="style_color_accent">#d32f2f</color>
     <color name="style_window_background">#212121</color>
+    <color name="style_window_background_light">#ffffff</color>
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="red">#ff0000</color>
+
+    <color name="google_blue">#4285F4</color>
+    <color name="google_red">#EA4335</color>
+    <color name="google_green">#34A853</color>
+    <color name="google_yellow">#FBBC05</color>
 
 </resources>

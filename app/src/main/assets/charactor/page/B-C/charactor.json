@@ -1,0 +1,961 @@
+{
+  "next": "D-E",
+  "B": [
+    {
+      "alphabet": "B",
+      "id": "232",
+      "title": "Banshee",
+      "url": "/characters/232/banshee"
+    },
+    {
+      "alphabet": "B",
+      "id": "3240",
+      "title": "Baron Strucker",
+      "url": "/characters/3240/baron_strucker"
+    },
+    {
+      "alphabet": "B",
+      "id": "238",
+      "title": "Baron Zemo",
+      "url": "/characters/238/baron_zemo"
+    },
+    {
+      "alphabet": "B",
+      "id": "2876",
+      "title": "Baroness S'Bak",
+      "url": "/characters/2876/baroness_s'bak"
+    },
+    {
+      "alphabet": "B",
+      "id": "241",
+      "title": "Barracuda",
+      "url": "/characters/241/barracuda"
+    },
+    {
+      "alphabet": "B",
+      "id": "2752",
+      "title": "Bart Rozum",
+      "url": "/characters/2752/bart_rozum"
+    },
+    {
+      "alphabet": "B",
+      "id": "244",
+      "title": "Bastion",
+      "url": "/characters/244/bastion"
+    },
+    {
+      "alphabet": "B",
+      "id": "246",
+      "title": "Batroc the Leaper",
+      "url": "/characters/246/batroc_the_leaper"
+    },
+    {
+      "alphabet": "B",
+      "id": "2685",
+      "title": "Battering Ram",
+      "url": "/characters/2685/battering_ram"
+    },
+    {
+      "alphabet": "B",
+      "id": "249",
+      "title": "Beak",
+      "url": "/characters/249/beak"
+    },
+    {
+      "alphabet": "B",
+      "id": "3",
+      "title": "Beast",
+      "url": "/characters/3/beast"
+    },
+    {
+      "alphabet": "B",
+      "id": "251",
+      "title": "Becatron",
+      "url": "/characters/251/becatron"
+    },
+    {
+      "alphabet": "B",
+      "id": "252",
+      "title": "Bedlam",
+      "url": "/characters/252/bedlam"
+    },
+    {
+      "alphabet": "B",
+      "id": "253",
+      "title": "Beef",
+      "url": "/characters/253/beef"
+    },
+    {
+      "alphabet": "B",
+      "id": "254",
+      "title": "Beetle",
+      "url": "/characters/254/beetle"
+    },
+    {
+      "alphabet": "B",
+      "id": "2763",
+      "title": "Ben Grimm",
+      "url": "/characters/2763/ben_grimm"
+    },
+    {
+      "alphabet": "B",
+      "id": "2737",
+      "title": "Ben Parker",
+      "url": "/characters/2737/ben_parker"
+    },
+    {
+      "alphabet": "B",
+      "id": "2919",
+      "title": "Ben Reilly",
+      "url": "/characters/2919/ben_reilly"
+    },
+    {
+      "alphabet": "B",
+      "id": "2826",
+      "title": "Ben Urich",
+      "url": "/characters/2826/ben_urich"
+    },
+    {
+      "alphabet": "B",
+      "id": "257",
+      "title": "Bengal",
+      "url": "/characters/257/bengal"
+    },
+    {
+      "alphabet": "B",
+      "id": "2686",
+      "title": "Beta-Ray Bill",
+      "url": "/characters/2686/beta-ray_bill"
+    },
+    {
+      "alphabet": "B",
+      "id": "2793",
+      "title": "Betty Brant",
+      "url": "/characters/2793/betty_brant"
+    },
+    {
+      "alphabet": "B",
+      "id": "2751",
+      "title": "Betty Ross",
+      "url": "/characters/2751/betty_ross"
+    },
+    {
+      "alphabet": "B",
+      "id": "260",
+      "title": "Beyonder",
+      "url": "/characters/260/beyonder"
+    },
+    {
+      "alphabet": "B",
+      "id": "261",
+      "title": "Bi-Beast",
+      "url": "/characters/261/bi-beast"
+    },
+    {
+      "alphabet": "B",
+      "id": "2840",
+      "title": "Big Bertha",
+      "url": "/characters/2840/big_bertha"
+    },
+    {
+      "alphabet": "B",
+      "id": "3212",
+      "title": "Big Wheel",
+      "url": "/characters/3212/big_wheel"
+    },
+    {
+      "alphabet": "B",
+      "id": "2900",
+      "title": "Bill Hollister",
+      "url": "/characters/2900/bill_hollister"
+    },
+    {
+      "alphabet": "B",
+      "id": "264",
+      "title": "Bishop",
+      "url": "/characters/264/bishop"
+    },
+    {
+      "alphabet": "B",
+      "id": "269",
+      "title": "Black Bird",
+      "url": "/characters/269/black_bird"
+    },
+    {
+      "alphabet": "B",
+      "id": "4",
+      "title": "Black Bolt",
+      "url": "/characters/4/black_bolt"
+    },
+    {
+      "alphabet": "B",
+      "id": "271",
+      "title": "Black Cat",
+      "url": "/characters/271/black_cat"
+    },
+    {
+      "alphabet": "B",
+      "id": "273",
+      "title": "Black Crow",
+      "url": "/characters/273/black_crow"
+    },
+    {
+      "alphabet": "B",
+      "id": "275",
+      "title": "Black Knight",
+      "url": "/characters/275/black_knight"
+    },
+    {
+      "alphabet": "B",
+      "id": "5",
+      "title": "Black Panther",
+      "url": "/characters/5/black_panther"
+    },
+    {
+      "alphabet": "B",
+      "id": "1011130",
+      "title": "Black Panther (Ultimate)",
+      "url": "/characters/1011130/black_panther_(ultimate)/featured"
+    },
+    {
+      "alphabet": "B",
+      "id": "278",
+      "title": "Black Queen",
+      "url": "/characters/278/black_queen"
+    },
+    {
+      "alphabet": "B",
+      "id": "284",
+      "title": "Black Tarantula",
+      "url": "/characters/284/black_tarantula"
+    },
+    {
+      "alphabet": "B",
+      "id": "286",
+      "title": "Black Tom",
+      "url": "/characters/286/black_tom"
+    },
+    {
+      "alphabet": "B",
+      "id": "6",
+      "title": "Black Widow",
+      "url": "/characters/6/black_widow"
+    },
+    {
+      "alphabet": "B",
+      "id": "289",
+      "title": "Blackheart",
+      "url": "/characters/289/blackheart"
+    },
+    {
+      "alphabet": "B",
+      "id": "290",
+      "title": "Blacklash",
+      "url": "/characters/290/blacklash"
+    },
+    {
+      "alphabet": "B",
+      "id": "291",
+      "title": "Blackout",
+      "url": "/characters/291/blackout"
+    },
+    {
+      "alphabet": "B",
+      "id": "295",
+      "title": "Blade",
+      "url": "/characters/295/blade"
+    },
+    {
+      "alphabet": "B",
+      "id": "298",
+      "title": "Blastaar",
+      "url": "/characters/298/blastaar"
+    },
+    {
+      "alphabet": "B",
+      "id": "2837",
+      "title": "Blazing Skull",
+      "url": "/characters/2837/blazing_skull"
+    },
+    {
+      "alphabet": "B",
+      "id": "300",
+      "title": "Blindfold",
+      "url": "/characters/300/blindfold"
+    },
+    {
+      "alphabet": "B",
+      "id": "303",
+      "title": "Blink",
+      "url": "/characters/303/blink"
+    },
+    {
+      "alphabet": "B",
+      "id": "307",
+      "title": "Blizzard",
+      "url": "/characters/307/blizzard"
+    },
+    {
+      "alphabet": "B",
+      "id": "308",
+      "title": "Blob",
+      "url": "/characters/308/blob"
+    },
+    {
+      "alphabet": "B",
+      "id": "309",
+      "title": "Blockbuster",
+      "url": "/characters/309/blockbuster"
+    },
+    {
+      "alphabet": "B",
+      "id": "310",
+      "title": "Blok",
+      "url": "/characters/310/blok"
+    },
+    {
+      "alphabet": "B",
+      "id": "311",
+      "title": "Bloke",
+      "url": "/characters/311/bloke"
+    },
+    {
+      "alphabet": "B",
+      "id": "312",
+      "title": "Blonde Phantom",
+      "url": "/characters/312/blonde_phantom"
+    },
+    {
+      "alphabet": "B",
+      "id": "316",
+      "title": "Bloodaxe",
+      "url": "/characters/316/bloodaxe"
+    },
+    {
+      "alphabet": "B",
+      "id": "319",
+      "title": "Bloodscream",
+      "url": "/characters/319/bloodscream"
+    },
+    {
+      "alphabet": "B",
+      "id": "321",
+      "title": "Bloodstorm",
+      "url": "/characters/321/bloodstorm"
+    },
+    {
+      "alphabet": "B",
+      "id": "322",
+      "title": "Bloodstrike",
+      "url": "/characters/322/bloodstrike"
+    },
+    {
+      "alphabet": "B",
+      "id": "324",
+      "title": "Blue Blade",
+      "url": "/characters/324/blue_blade"
+    },
+    {
+      "alphabet": "B",
+      "id": "327",
+      "title": "Blue Marvel",
+      "url": "/characters/327/blue_marvel"
+    },
+    {
+      "alphabet": "B",
+      "id": "328",
+      "title": "Blue Shield",
+      "url": "/characters/328/blue_shield"
+    },
+    {
+      "alphabet": "B",
+      "id": "330",
+      "title": "Blur",
+      "url": "/characters/330/blur"
+    },
+    {
+      "alphabet": "B",
+      "id": "332",
+      "title": "Bob, Agent of Hydra",
+      "url": "/characters/332/bob,_agent_of_hydra"
+    },
+    {
+      "alphabet": "B",
+      "id": "2800",
+      "title": "Boom Boom",
+      "url": "/characters/2800/boom_boom"
+    },
+    {
+      "alphabet": "B",
+      "id": "339",
+      "title": "Boomerang",
+      "url": "/characters/339/boomerang"
+    },
+    {
+      "alphabet": "B",
+      "id": "346",
+      "title": "Box",
+      "url": "/characters/346/box"
+    },
+    {
+      "alphabet": "B",
+      "id": "348",
+      "title": "Bride of Nine Spiders",
+      "url": "/characters/348/bride_of_nine_spiders"
+    },
+    {
+      "alphabet": "B",
+      "id": "352",
+      "title": "Bromley",
+      "url": "/characters/352/bromley"
+    },
+    {
+      "alphabet": "B",
+      "id": "353",
+      "title": "Brood",
+      "url": "/characters/353/brood"
+    },
+    {
+      "alphabet": "B",
+      "id": "3430",
+      "title": "Brother Voodoo",
+      "url": "/characters/3430/brother_voodoo"
+    },
+    {
+      "alphabet": "B",
+      "id": "354",
+      "title": "Brotherhood of Evil Mutants",
+      "url": "/characters/354/brotherhood_of_evil_mutants"
+    },
+    {
+      "alphabet": "B",
+      "id": "355",
+      "title": "Brotherhood of Mutants",
+      "url": "/characters/355/brotherhood_of_mutants"
+    },
+    {
+      "alphabet": "B",
+      "id": "2718",
+      "title": "Bruce Banner",
+      "url": "/characters/2718/bruce_banner"
+    },
+    {
+      "alphabet": "B",
+      "id": "360",
+      "title": "Brute",
+      "url": "/characters/360/brute"
+    },
+    {
+      "alphabet": "B",
+      "id": "363",
+      "title": "Bucky",
+      "url": "/characters/363/bucky"
+    },
+    {
+      "alphabet": "B",
+      "id": "364",
+      "title": "Bug",
+      "url": "/characters/364/bug"
+    },
+    {
+      "alphabet": "B",
+      "id": "365",
+      "title": "Bulldozer",
+      "url": "/characters/365/bulldozer"
+    },
+    {
+      "alphabet": "B",
+      "id": "366",
+      "title": "Bullseye",
+      "url": "/characters/366/bullseye"
+    },
+    {
+      "alphabet": "B",
+      "id": "369",
+      "title": "Bushwacker",
+      "url": "/characters/369/bushwacker"
+    },
+    {
+      "alphabet": "B",
+      "id": "370",
+      "title": "Butterfly",
+      "url": "/characters/370/butterfly"
+    }
+  ],
+  "C": [
+    {
+      "alphabet": "C",
+      "id": "7",
+      "title": "Cable",
+      "url": "/characters/7/cable"
+    },
+    {
+      "alphabet": "C",
+      "id": "1017317",
+      "title": "Cable (Deadpool)",
+      "url": "/characters/1017317/cable_(deadpool)/featured"
+    },
+    {
+      "alphabet": "C",
+      "id": "374",
+      "title": "Calamity",
+      "url": "/characters/374/calamity"
+    },
+    {
+      "alphabet": "C",
+      "id": "375",
+      "title": "Caliban",
+      "url": "/characters/375/caliban"
+    },
+    {
+      "alphabet": "C",
+      "id": "376",
+      "title": "Callisto",
+      "url": "/characters/376/callisto"
+    },
+    {
+      "alphabet": "C",
+      "id": "377",
+      "title": "Calypso",
+      "url": "/characters/377/calypso"
+    },
+    {
+      "alphabet": "C",
+      "id": "378",
+      "title": "Cammi",
+      "url": "/characters/378/cammi"
+    },
+    {
+      "alphabet": "C",
+      "id": "379",
+      "title": "Cannonball",
+      "url": "/characters/379/cannonball"
+    },
+    {
+      "alphabet": "C",
+      "id": "2905",
+      "title": "Cap'n Oz",
+      "url": "/characters/2905/cap'n_oz"
+    },
+    {
+      "alphabet": "C",
+      "id": "8",
+      "title": "Captain America",
+      "url": "/characters/8/captain_america"
+    },
+    {
+      "alphabet": "C",
+      "id": "1017575",
+      "title": "Captain America (Sam Wilson)",
+      "url": "/characters/1017575/captain_america_(sam_wilson)/featured"
+    },
+    {
+      "alphabet": "C",
+      "id": "382",
+      "title": "Captain Britain",
+      "url": "/characters/382/captain_britain"
+    },
+    {
+      "alphabet": "C",
+      "id": "383",
+      "title": "Captain Cross",
+      "url": "/characters/383/captain_cross"
+    },
+    {
+      "alphabet": "C",
+      "id": "384",
+      "title": "Captain Flint",
+      "url": "/characters/384/captain_flint"
+    },
+    {
+      "alphabet": "C",
+      "id": "9",
+      "title": "Captain Marvel",
+      "url": "/characters/9/captain_marvel"
+    },
+    {
+      "alphabet": "C",
+      "id": "1009224",
+      "title": "Captain Marvel (Mar-Vell)",
+      "url": "/characters/1009224/captain_marvel_(mar-vell)/featured"
+    },
+    {
+      "alphabet": "C",
+      "id": "386",
+      "title": "Captain Midlands",
+      "url": "/characters/386/captain_midlands"
+    },
+    {
+      "alphabet": "C",
+      "id": "390",
+      "title": "Captain Stacy",
+      "url": "/characters/390/captain_stacy"
+    },
+    {
+      "alphabet": "C",
+      "id": "392",
+      "title": "Captain Universe",
+      "url": "/characters/392/captain_universe"
+    },
+    {
+      "alphabet": "C",
+      "id": "393",
+      "title": "Cardiac",
+      "url": "/characters/393/cardiac"
+    },
+    {
+      "alphabet": "C",
+      "id": "394",
+      "title": "Caretaker",
+      "url": "/characters/394/caretaker"
+    },
+    {
+      "alphabet": "C",
+      "id": "395",
+      "title": "Cargill",
+      "url": "/characters/395/cargill"
+    },
+    {
+      "alphabet": "C",
+      "id": "3431",
+      "title": "Carlie Cooper",
+      "url": "/characters/3431/carlie_cooper"
+    },
+    {
+      "alphabet": "C",
+      "id": "2780",
+      "title": "Carmella Unuscione",
+      "url": "/characters/2780/carmella_unuscione"
+    },
+    {
+      "alphabet": "C",
+      "id": "397",
+      "title": "Carnage",
+      "url": "/characters/397/carnage"
+    },
+    {
+      "alphabet": "C",
+      "id": "2701",
+      "title": "Carol Danvers",
+      "url": "/characters/2701/carol_danvers"
+    },
+    {
+      "alphabet": "C",
+      "id": "2713",
+      "title": "Carol Hines",
+      "url": "/characters/2713/carol_hines"
+    },
+    {
+      "alphabet": "C",
+      "id": "2735",
+      "title": "Cassandra Nova",
+      "url": "/characters/2735/cassandra_nova"
+    },
+    {
+      "alphabet": "C",
+      "id": "403",
+      "title": "Catseye",
+      "url": "/characters/403/catseye"
+    },
+    {
+      "alphabet": "C",
+      "id": "2746",
+      "title": "Cecilia Reyes",
+      "url": "/characters/2746/cecilia_reyes"
+    },
+    {
+      "alphabet": "C",
+      "id": "405",
+      "title": "Celestials",
+      "url": "/characters/405/celestials"
+    },
+    {
+      "alphabet": "C",
+      "id": "407",
+      "title": "Centennial",
+      "url": "/characters/407/centennial"
+    },
+    {
+      "alphabet": "C",
+      "id": "408",
+      "title": "Centurions",
+      "url": "/characters/408/centurions"
+    },
+    {
+      "alphabet": "C",
+      "id": "412",
+      "title": "Cerebro",
+      "url": "/characters/412/cerebro"
+    },
+    {
+      "alphabet": "C",
+      "id": "413",
+      "title": "Cerise",
+      "url": "/characters/413/cerise"
+    },
+    {
+      "alphabet": "C",
+      "id": "416",
+      "title": "Ch'od",
+      "url": "/characters/416/ch'od"
+    },
+    {
+      "alphabet": "C",
+      "id": "417",
+      "title": "Chamber",
+      "url": "/characters/417/chamber"
+    },
+    {
+      "alphabet": "C",
+      "id": "418",
+      "title": "Chameleon",
+      "url": "/characters/418/chameleon"
+    },
+    {
+      "alphabet": "C",
+      "id": "420",
+      "title": "Champions",
+      "url": "/characters/420/champions"
+    },
+    {
+      "alphabet": "C",
+      "id": "421",
+      "title": "Changeling",
+      "url": "/characters/421/changeling"
+    },
+    {
+      "alphabet": "C",
+      "id": "2788",
+      "title": "Charles Xavier",
+      "url": "/characters/2788/charles_xavier"
+    },
+    {
+      "alphabet": "C",
+      "id": "2915",
+      "title": "Charlie Campion",
+      "url": "/characters/2915/charlie_campion"
+    },
+    {
+      "alphabet": "C",
+      "id": "2819",
+      "title": "Chase Stein",
+      "url": "/characters/2819/chase_stein"
+    },
+    {
+      "alphabet": "C",
+      "id": "426",
+      "title": "Chat",
+      "url": "/characters/426/chat"
+    },
+    {
+      "alphabet": "C",
+      "id": "428",
+      "title": "Chimera",
+      "url": "/characters/428/chimera"
+    },
+    {
+      "alphabet": "C",
+      "id": "2888",
+      "title": "Christian Walker",
+      "url": "/characters/2888/christian_walker"
+    },
+    {
+      "alphabet": "C",
+      "id": "432",
+      "title": "Chronomancer",
+      "url": "/characters/432/chronomancer"
+    },
+    {
+      "alphabet": "C",
+      "id": "436",
+      "title": "ClanDestine",
+      "url": "/characters/436/clandestine"
+    },
+    {
+      "alphabet": "C",
+      "id": "438",
+      "title": "Clea",
+      "url": "/characters/438/clea"
+    },
+    {
+      "alphabet": "C",
+      "id": "2833",
+      "title": "Clint Barton",
+      "url": "/characters/2833/clint_barton"
+    },
+    {
+      "alphabet": "C",
+      "id": "440",
+      "title": "Cloak",
+      "url": "/characters/440/cloak"
+    },
+    {
+      "alphabet": "C",
+      "id": "441",
+      "title": "Cloud 9",
+      "url": "/characters/441/cloud_9"
+    },
+    {
+      "alphabet": "C",
+      "id": "444",
+      "title": "Cobalt Man",
+      "url": "/characters/444/cobalt_man"
+    },
+    {
+      "alphabet": "C",
+      "id": "2805",
+      "title": "Colleen Wing",
+      "url": "/characters/2805/colleen_wing"
+    },
+    {
+      "alphabet": "C",
+      "id": "2832",
+      "title": "Colonel America",
+      "url": "/characters/2832/colonel_america"
+    },
+    {
+      "alphabet": "C",
+      "id": "450",
+      "title": "Colossus",
+      "url": "/characters/450/colossus"
+    },
+    {
+      "alphabet": "C",
+      "id": "454",
+      "title": "Confederates of the Curious",
+      "url": "/characters/454/confederates_of_the_curious"
+    },
+    {
+      "alphabet": "C",
+      "id": "455",
+      "title": "Constrictor",
+      "url": "/characters/455/constrictor"
+    },
+    {
+      "alphabet": "C",
+      "id": "457",
+      "title": "Contessa",
+      "url": "/characters/457/contessa"
+    },
+    {
+      "alphabet": "C",
+      "id": "458",
+      "title": "Controller",
+      "url": "/characters/458/controller"
+    },
+    {
+      "alphabet": "C",
+      "id": "460",
+      "title": "Cornelius",
+      "url": "/characters/460/cornelius"
+    },
+    {
+      "alphabet": "C",
+      "id": "465",
+      "title": "Corsair",
+      "url": "/characters/465/corsair"
+    },
+    {
+      "alphabet": "C",
+      "id": "466",
+      "title": "Cosmo",
+      "url": "/characters/466/cosmo"
+    },
+    {
+      "alphabet": "C",
+      "id": "467",
+      "title": "Cottonmouth",
+      "url": "/characters/467/cottonmouth"
+    },
+    {
+      "alphabet": "C",
+      "id": "2696",
+      "title": "Count Nefaria",
+      "url": "/characters/2696/count_nefaria"
+    },
+    {
+      "alphabet": "C",
+      "id": "468",
+      "title": "Countess",
+      "url": "/characters/468/countess"
+    },
+    {
+      "alphabet": "C",
+      "id": "2904",
+      "title": "Crimson Crusader",
+      "url": "/characters/2904/crimson_crusader"
+    },
+    {
+      "alphabet": "C",
+      "id": "2697",
+      "title": "Crimson Dynamo",
+      "url": "/characters/2697/crimson_dynamo"
+    },
+    {
+      "alphabet": "C",
+      "id": "2883",
+      "title": "Crimson King",
+      "url": "/characters/2883/crimson_king"
+    },
+    {
+      "alphabet": "C",
+      "id": "473",
+      "title": "Crossbones",
+      "url": "/characters/473/crossbones"
+    },
+    {
+      "alphabet": "C",
+      "id": "477",
+      "title": "Crule",
+      "url": "/characters/477/crule"
+    },
+    {
+      "alphabet": "C",
+      "id": "2699",
+      "title": "Crusher Hogan",
+      "url": "/characters/2699/crusher_hogan"
+    },
+    {
+      "alphabet": "C",
+      "id": "481",
+      "title": "Crystal",
+      "url": "/characters/481/crystal"
+    },
+    {
+      "alphabet": "C",
+      "id": "482",
+      "title": "Cuckoo",
+      "url": "/characters/482/cuckoo"
+    },
+    {
+      "alphabet": "C",
+      "id": "2694",
+      "title": "Curt Conners",
+      "url": "/characters/2694/curt_conners"
+    },
+    {
+      "alphabet": "C",
+      "id": "483",
+      "title": "Cuthbert",
+      "url": "/characters/483/cuthbert"
+    },
+    {
+      "alphabet": "C",
+      "id": "486",
+      "title": "Cyber",
+      "url": "/characters/486/cyber"
+    },
+    {
+      "alphabet": "C",
+      "id": "10",
+      "title": "Cyclops",
+      "url": "/characters/10/cyclops"
+    },
+    {
+      "alphabet": "C",
+      "id": "491",
+      "title": "Cypher",
+      "url": "/characters/491/cypher"
+    }
+  ]
+}

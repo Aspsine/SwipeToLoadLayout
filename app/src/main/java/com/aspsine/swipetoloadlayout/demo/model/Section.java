@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class Section {
     private String name;
-    private List<Hero> heroes;
+    private List<Character> characters;
 
     public String getName() {
         return name;
@@ -17,11 +17,11 @@ public class Section {
         this.name = name;
     }
 
-    public List<Hero> getHeroes() {
-        return heroes;
+    public List<Character> getCharacters() {
+        return characters;
     }
 
-    public void setHeroes(List<Hero> heroes) {
-        this.heroes = heroes;
+    public void setCharacters(List<Character> characters) {
+        this.characters = characters;
     }
 }

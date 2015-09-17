@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aspsine.swipetoloadlayout.SwipeToLoadLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeToLoadLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/style_window_background">
+
+    <include
+        android:id="@id/swipe_refresh_header"
+        layout="@layout/layout_twitter_header" />
+
+    <LinearLayout
+        android:id="@id/swipe_target"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_margin="8dp"
+        android:background="@color/style_color_primary_light">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <include
+        android:id="@id/swipe_load_more_footer"
+        layout="@layout/layout_classic_footer" />
+</com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

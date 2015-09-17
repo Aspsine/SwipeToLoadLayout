@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_Twitter_style"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Twitter Style" />
+
+        <item
+            android:id="@+id/nav_google_style"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Google Style" />
+
+        <item
+            android:id="@+id/nav_yalantis_phoenix_style"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Yalantis Phoenix Style" />
+
+        <item
+            android:id="@+id/nav_qq_style"
+            android:icon="@mipmap/ic_launcher"
+            android:title="QQ Style" />
+
+        <item
+            android:id="@+id/nav_wechat_style"
+            android:icon="@mipmap/ic_launcher"
+            android:title="WeChat Style" />
+
+        <item
+            android:id="@+id/nav_dazhundianping_style"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Da Zhong Dian Ping Style" />
+
+        <item
+            android:id="@+id/nav_sina_weibo_style"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Sina WeiBo Style" />
+
+        <item
+            android:id="@+id/nav_easy_news_style"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Easy News Style" />
+
+        <item
+            android:id="@+id/nav_souhu_video_style"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Souhu Video Style" />
+
+        <item
+            android:id="@+id/nav_widgets"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Widgets" />
+
+        <item
+            android:id="@+id/nav_set_header_footer_via_code"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Set Header Footer Via Java Code" />
+
+    </group>
+
+    <item android:title="SETTINGS">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@mipmap/ic_launcher"
+                android:title="Settings" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@mipmap/ic_launcher"
+                android:title="About" />
+        </menu>
+    </item>
+</menu>

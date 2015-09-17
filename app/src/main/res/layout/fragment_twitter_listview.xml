@@ -1,0 +1,26 @@
+<com.aspsine.swipetoloadlayout.SwipeToLoadLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeToLoadLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/style_window_background"
+    app:default_to_refreshing_scrolling_duration="1000"
+    app:swipe_style="classic"
+    tools:context="com.aspsine.swipetoloadlayout.demo.fragment.TwitterListViewFragment">
+
+    <include
+        android:id="@id/swipe_refresh_header"
+        layout="@layout/layout_twitter_header" />
+
+    <ListView
+        android:id="@id/swipe_target"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:divider="@null" />
+
+    <include
+        android:id="@id/swipe_load_more_footer"
+        layout="@layout/layout_classic_footer" />
+</com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
