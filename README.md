@@ -1,13 +1,13 @@
 # SwipeToLoadLayout
 SwipeToLoadLayout provides a standered to achieve pull-to-refresh and pull-to-loadmore.
 
-#Supported View
+##Supported View
 Theoretically support all kinds of views.
 
-#Demo
+##Demo
 
-#Demo ScreenShot
+##Demo ScreenShot
 
-#How To Use
+##How To Use
 
 
