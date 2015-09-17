@@ -108,13 +108,7 @@ public class GoogleStyleFragment extends BaseFragment implements OnRefreshListen
                     end = mType + 2;
                 }
                 mAdapter.setList(characters.getCharacters().subList(mType, end), characters.getSections().subList(mType, mType + 1));
-
-                swipeToLoadLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeToLoadLayout.setRefreshing(false);
-                    }
-                }, 5000);
+                swipeToLoadLayout.setRefreshing(false);
                 mPageNum = mType;
             }
         }, new Response.ErrorListener() {
