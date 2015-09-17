@@ -102,14 +102,20 @@ public class GoogleStyleFragment extends BaseFragment implements OnRefreshListen
     public void onRefresh() {
         GsonRequest request = new GsonRequest<SectionCharacters>(Constants.API.CHARACTERS, SectionCharacters.class, new Response.Listener<SectionCharacters>() {
             @Override
-            public void onResponse(SectionCharacters characters) {
+            public void onResponse(final SectionCharacters characters) {
                 int end = mType + 1;
                 if (mType == 3) {
                     end = mType + 2;
                 }
                 mAdapter.setList(characters.getCharacters().subList(mType, end), characters.getSections().subList(mType, mType + 1));
-                swipeToLoadLayout.setRefreshing(false);
                 mPageNum = mType;
+                // here, I use post delay to show more animation, you don't have to.
+                swipeToLoadLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeToLoadLayout.setRefreshing(false);
+                    }
+                }, 4000);
             }
         }, new Response.ErrorListener() {
             @Override

@@ -1,6 +1,7 @@
 package com.aspsine.swipetoloadlayout.demo.view.header;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
@@ -32,7 +33,12 @@ public class GoogleRefreshHeaderView extends FrameLayout implements SwipeTrigger
     public GoogleRefreshHeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         ringProgressDrawable = new RingProgressDrawable(context);
-        ringProgressDrawable.setColors(Color.rgb(0xC9, 0x34, 0x37), Color.rgb(0x37, 0x5B, 0xF1), Color.rgb(0xF7, 0xD2, 0x3E), Color.rgb(0x34, 0xA3, 0x50));
+        Resources res = getResources();
+        ringProgressDrawable.setColors(
+                res.getColor(R.color.google_blue),
+                res.getColor(R.color.google_red),
+                res.getColor(R.color.google_yellow),
+                res.getColor(R.color.google_green));
         mTriggerOffset = context.getResources().getDimensionPixelOffset(R.dimen.refresh_trigger_offset_google);
     }
 

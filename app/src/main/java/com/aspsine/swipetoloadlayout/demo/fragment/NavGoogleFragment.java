@@ -17,7 +17,7 @@ public class NavGoogleFragment extends BaseNavPagerFragment {
 
     @Override
     protected String[] getTitles() {
-        return new String[]{"Top", "Bad guys", "Women", "Teams"};
+        return new String[]{"Ring", "Bad guys", "Women", "Teams"};
     }
 
     @Override
