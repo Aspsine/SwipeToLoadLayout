@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/ivRefresh"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/refresh_drawable_size_google"
+        android:layout_height="@dimen/refresh_drawable_size_google"
         android:layout_gravity="center_horizontal|bottom" />
 </com.aspsine.swipetoloadlayout.demo.view.header.GoogleRefreshHeaderView>

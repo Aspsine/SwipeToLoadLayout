@@ -14,6 +14,12 @@ import android.util.TypedValue;
  */
 public abstract class ProgressDrawable extends Drawable implements Animatable {
 
+    /**
+     * smooth animation requires 60 frame in 1000ms
+     * We can know fresh 1 frame requires 1000/60 ms
+     */
+    public static final int DELAY = 1000 / 60;
+
     private final Context mContext;
 
     private boolean mRunning;

@@ -17,7 +17,7 @@ import com.aspsine.swipetoloadlayout.demo.view.drawable.RingProgressDrawable;
 public class GoogleRefreshHeaderView extends FrameLayout implements SwipeTrigger, SwipeRefreshTrigger {
     private ImageView ivRefresh;
 
-    private int mHeaderHeight;
+    private int mTriggerOffset;
 
     private RingProgressDrawable ringProgressDrawable;
 
@@ -33,7 +33,7 @@ public class GoogleRefreshHeaderView extends FrameLayout implements SwipeTrigger
         super(context, attrs, defStyleAttr);
         ringProgressDrawable = new RingProgressDrawable(context);
         ringProgressDrawable.setColors(Color.rgb(0xC9, 0x34, 0x37), Color.rgb(0x37, 0x5B, 0xF1), Color.rgb(0xF7, 0xD2, 0x3E), Color.rgb(0x34, 0xA3, 0x50));
-        mHeaderHeight = context.getResources().getDimensionPixelOffset(R.dimen.refresh_header_height_google);
+        mTriggerOffset = context.getResources().getDimensionPixelOffset(R.dimen.refresh_trigger_offset_google);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class GoogleRefreshHeaderView extends FrameLayout implements SwipeTrigger
 
     @Override
     public void onRefresh() {
-//        ringProgressDrawable.start();
+        ringProgressDrawable.start();
     }
 
     @Override
@@ -55,7 +55,7 @@ public class GoogleRefreshHeaderView extends FrameLayout implements SwipeTrigger
 
     @Override
     public void onSwipe(int y) {
-        ringProgressDrawable.setPercent(y / ((float) mHeaderHeight));
+        ringProgressDrawable.setPercent(y / (float) mTriggerOffset);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class GoogleRefreshHeaderView extends FrameLayout implements SwipeTrigger
 
     @Override
     public void complete() {
-//        ringProgressDrawable.stop();
+        ringProgressDrawable.stop();
     }
 
     @Override

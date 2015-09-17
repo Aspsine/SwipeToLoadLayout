@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/style_window_background"
     app:default_to_refreshing_scrolling_duration="1000"
-    app:swipe_style="classic">
+    app:refresh_final_drag_offset="@dimen/refresh_final_offset_google"
+    app:refresh_trigger_offset="@dimen/refresh_trigger_offset_google"
+    app:swipe_style="above">
 
     <include
         android:id="@id/swipe_refresh_header"

@@ -35,7 +35,7 @@ public class GsonRequest<T> extends Request<T> {
         String parsed;
         try {
             parsed = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-        } catch (UnsupportedEncodingException var4) {
+        } catch (UnsupportedEncodingException e) {
             parsed = new String(response.data);
         }
         T t = mGson.fromJson(parsed, mClazz);

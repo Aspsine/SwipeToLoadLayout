@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable;
 /**
  * Created by aspsine on 15/9/10.
  */
-public class MeterialHookDrawable extends Drawable {
+public class MaterialHookDrawable extends Drawable {
     
     @Override
     public void draw(Canvas canvas) {
