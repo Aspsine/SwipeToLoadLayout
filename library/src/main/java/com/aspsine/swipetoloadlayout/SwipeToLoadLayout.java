@@ -654,16 +654,25 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
         return new SwipeToLoadLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
         return new SwipeToLoadLayout.LayoutParams(p);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new SwipeToLoadLayout.LayoutParams(getContext(), attrs);
