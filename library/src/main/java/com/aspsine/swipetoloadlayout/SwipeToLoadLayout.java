@@ -942,7 +942,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         final int action = MotionEventCompat.getActionMasked(event);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                // if status is not ing status && not compete status
+                // if status is not ing status && not complete status
                 // abort autoScrolling
                 if (!(STATUS.isRefreshComplete(mStatus) || STATUS.isLoadMoreComplete(mStatus))
                         && !(STATUS.isRefreshing(mStatus) || STATUS.isLoadingMore(mStatus))) {
