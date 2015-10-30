@@ -1378,13 +1378,6 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
 
         @Override
-        public void complete() {
-            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger) {
-                ((SwipeTrigger) mHeaderView).complete();
-            }
-        }
-
-        @Override
         public void onRefresh() {
             if (mHeaderView != null && STATUS.isRefreshing(mStatus) && mLoading) {
                 if (mHeaderView instanceof SwipeRefreshTrigger) {
@@ -1393,6 +1386,13 @@ public class SwipeToLoadLayout extends ViewGroup {
                 if (mRefreshListener != null) {
                     mRefreshListener.onRefresh();
                 }
+            }
+        }
+
+        @Override
+        public void complete() {
+            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger) {
+                ((SwipeTrigger) mHeaderView).complete();
             }
         }
 
@@ -1418,6 +1418,9 @@ public class SwipeToLoadLayout extends ViewGroup {
         @Override
         public void onSwipe(int y) {
             if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadMoreStatus(mStatus)) {
+                if (mFooterView.getVisibility() == GONE || mFooterView.getVisibility() == INVISIBLE) {
+                    mFooterView.setVisibility(VISIBLE);
+                }
                 ((SwipeTrigger) mFooterView).onSwipe(y);
             }
         }
