@@ -654,16 +654,25 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
         return new SwipeToLoadLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
         return new SwipeToLoadLayout.LayoutParams(p);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new SwipeToLoadLayout.LayoutParams(getContext(), attrs);
@@ -933,7 +942,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         final int action = MotionEventCompat.getActionMasked(event);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                // if status is not ing status && not compete status
+                // if status is not ing status && not complete status
                 // abort autoScrolling
                 if (!(STATUS.isRefreshComplete(mStatus) || STATUS.isLoadMoreComplete(mStatus))
                         && !(STATUS.isRefreshing(mStatus) || STATUS.isLoadingMore(mStatus))) {
@@ -1369,13 +1378,6 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
 
         @Override
-        public void complete() {
-            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger) {
-                ((SwipeTrigger) mHeaderView).complete();
-            }
-        }
-
-        @Override
         public void onRefresh() {
             if (mHeaderView != null && STATUS.isRefreshing(mStatus) && mLoading) {
                 if (mHeaderView instanceof SwipeRefreshTrigger) {
@@ -1384,6 +1386,13 @@ public class SwipeToLoadLayout extends ViewGroup {
                 if (mRefreshListener != null) {
                     mRefreshListener.onRefresh();
                 }
+            }
+        }
+
+        @Override
+        public void complete() {
+            if (mHeaderView != null && mHeaderView instanceof SwipeTrigger) {
+                ((SwipeTrigger) mHeaderView).complete();
             }
         }
 
@@ -1409,6 +1418,9 @@ public class SwipeToLoadLayout extends ViewGroup {
         @Override
         public void onSwipe(int y) {
             if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadMoreStatus(mStatus)) {
+                if (mFooterView.getVisibility() == GONE || mFooterView.getVisibility() == INVISIBLE) {
+                    mFooterView.setVisibility(VISIBLE);
+                }
                 ((SwipeTrigger) mFooterView).onSwipe(y);
             }
         }
