@@ -54,6 +54,9 @@ public class JdRefreshHeaderView extends RelativeLayout implements SwipeTrigger,
     public void onRefresh() {
         ivSpeed.setVisibility(VISIBLE);
         ivSpeed.startAnimation(mTwinkleAnim);
+        if (!mAnimDrawable.isRunning()){
+            mAnimDrawable.start();
+        }
     }
 
     @Override
@@ -64,9 +67,6 @@ public class JdRefreshHeaderView extends RelativeLayout implements SwipeTrigger,
 
     @Override
     public void onSwipe(int y) {
-        if (!mAnimDrawable.isRunning()){
-            mAnimDrawable.start();
-        }
     }
 
     @Override
