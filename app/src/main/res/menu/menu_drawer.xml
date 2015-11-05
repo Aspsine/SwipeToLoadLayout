@@ -12,14 +12,14 @@
             android:title="Google Style" />
 
         <item
-            android:id="@+id/nav_yalantis_phoenix_style"
+            android:id="@+id/nav_yalantis_style"
             android:icon="@mipmap/ic_launcher"
-            android:title="Yalantis Phoenix Style" />
+            android:title="Yalantis Style" />
 
         <item
-            android:id="@+id/nav_qq_style"
+            android:id="@+id/nav_jd_style"
             android:icon="@mipmap/ic_launcher"
-            android:title="QQ Style" />
+            android:title="JD Style" />
 
         <item
             android:id="@+id/nav_wechat_style"

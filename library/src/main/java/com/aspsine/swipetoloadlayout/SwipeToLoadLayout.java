@@ -1363,7 +1363,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         @Override
         public void onSwipe(int y) {
             if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isRefreshStatus(mStatus)) {
-                if (mHeaderView.getVisibility() == GONE || mHeaderView.getVisibility() == INVISIBLE) {
+                if (mHeaderView.getVisibility() != VISIBLE) {
                     mHeaderView.setVisibility(VISIBLE);
                 }
                 ((SwipeTrigger) mHeaderView).onSwipe(y);
@@ -1418,7 +1418,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         @Override
         public void onSwipe(int y) {
             if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadMoreStatus(mStatus)) {
-                if (mFooterView.getVisibility() == GONE || mFooterView.getVisibility() == INVISIBLE) {
+                if (mFooterView.getVisibility() != VISIBLE) {
                     mFooterView.setVisibility(VISIBLE);
                 }
                 ((SwipeTrigger) mFooterView).onSwipe(y);

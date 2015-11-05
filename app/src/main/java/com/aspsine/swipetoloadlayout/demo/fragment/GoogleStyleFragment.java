@@ -103,19 +103,19 @@ public class GoogleStyleFragment extends BaseFragment implements OnRefreshListen
         GsonRequest request = new GsonRequest<SectionCharacters>(Constants.API.CHARACTERS, SectionCharacters.class, new Response.Listener<SectionCharacters>() {
             @Override
             public void onResponse(final SectionCharacters characters) {
-                int end = mType + 1;
-                if (mType == 3) {
-                    end = mType + 2;
-                }
-                mAdapter.setList(characters.getCharacters().subList(mType, end), characters.getSections().subList(mType, mType + 1));
-                mPageNum = mType;
                 // here, I use post delay to show more animation, you don't have to.
                 swipeToLoadLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        int end = mType + 1;
+                        if (mType == 3) {
+                            end = mType + 2;
+                        }
+                        mAdapter.setList(characters.getCharacters().subList(mType, end), characters.getSections().subList(mType, mType + 1));
+                        mPageNum = mType;
                         swipeToLoadLayout.setRefreshing(false);
                     }
-                }, 4000);
+                }, 2000);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -131,14 +131,20 @@ public class GoogleStyleFragment extends BaseFragment implements OnRefreshListen
     public void onLoadMore() {
         GsonRequest request = new GsonRequest<SectionCharacters>(Constants.API.CHARACTERS, SectionCharacters.class, new Response.Listener<SectionCharacters>() {
             @Override
-            public void onResponse(SectionCharacters characters) {
-                if (mPageNum < 3) {
-                    mPageNum++;
-                    mAdapter.append(characters.getSections().subList(mPageNum, mPageNum + 1));
-                } else {
-                    Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-                }
-                swipeToLoadLayout.setLoadingMore(false);
+            public void onResponse(final SectionCharacters characters) {
+                // here, I use post delay to show more animation, you don't have to.
+                swipeToLoadLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mPageNum < 3) {
+                            mPageNum++;
+                            mAdapter.append(characters.getSections().subList(mPageNum, mPageNum + 1));
+                        } else {
+                            Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+                        }
+                        swipeToLoadLayout.setLoadingMore(false);
+                    }
+                }, 2000);
             }
         }, new Response.ErrorListener() {
             @Override

@@ -1,14 +1,13 @@
-package com.aspsine.swipetoloadlayout.demo.view.drawable;
+package com.aspsine.swipetoloadlayout.demo.view.drawable.google;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 
 /**
- * Created by aspsine on 15/9/10.
+ * Created by aspsine on 15/9/11.
  */
-public class MaterialHookDrawable extends Drawable {
-    
+public class CircleFoldDrawable extends Drawable {
     @Override
     public void draw(Canvas canvas) {
 

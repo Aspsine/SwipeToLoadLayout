@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aspsine.swipetoloadlayout.demo.view.header.YalantisPhoenixRefreshHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/refresh_header_height_yalantis">
+
+    <ImageView
+        android:id="@+id/ivRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center" />
+</com.aspsine.swipetoloadlayout.demo.view.header.YalantisPhoenixRefreshHeaderView>
