@@ -16,7 +16,9 @@ import android.view.MenuItem;
 import com.aspsine.swipetoloadlayout.demo.fragment.BaseNavigationFragment;
 import com.aspsine.swipetoloadlayout.demo.fragment.BaseToolbarFragment;
 import com.aspsine.swipetoloadlayout.demo.fragment.NavGoogleFragment;
+import com.aspsine.swipetoloadlayout.demo.fragment.NavJDFragment;
 import com.aspsine.swipetoloadlayout.demo.fragment.NavTwitterFragment;
+import com.aspsine.swipetoloadlayout.demo.fragment.NavYalantisFragment;
 
 public class MainActivity extends AppCompatActivity implements BaseToolbarFragment.ToggleDrawerCallBack
         , NavigationView.OnNavigationItemSelectedListener {
@@ -38,8 +40,6 @@ public class MainActivity extends AppCompatActivity implements BaseToolbarFragme
         if (savedInstanceState == null) {
             navigationView.setCheckedItem(R.id.nav_Twitter_style);
             showNavigationFragment(R.id.nav_Twitter_style);
-        } else {
-
         }
     }
 
@@ -99,8 +99,12 @@ public class MainActivity extends AppCompatActivity implements BaseToolbarFragme
                 navigationFragment = new NavGoogleFragment();
                 break;
 
-            case R.id.nav_qq_style:
+            case R.id.nav_yalantis_style:
+                navigationFragment = NavYalantisFragment.newInstance();
+                break;
 
+            case R.id.nav_jd_style:
+                navigationFragment = NavJDFragment.newInstance();
                 break;
 
             case R.id.nav_wechat_style:

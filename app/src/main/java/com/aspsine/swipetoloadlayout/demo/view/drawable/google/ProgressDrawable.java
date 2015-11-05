@@ -1,4 +1,4 @@
-package com.aspsine.swipetoloadlayout.demo.view.drawable;
+package com.aspsine.swipetoloadlayout.demo.view.drawable.google;
 
 import android.content.Context;
 import android.graphics.ColorFilter;

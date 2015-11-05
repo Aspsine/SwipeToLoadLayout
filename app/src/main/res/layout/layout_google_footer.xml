@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aspsine.swipetoloadlayout.demo.view.footer.GoogleLoadMoreFooterView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/load_more_footer_height_google"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/ivLoadMore"
+        android:layout_width="@dimen/load_more_drawable_size_google"
+        android:layout_height="@dimen/load_more_drawable_size_google"
+        android:layout_gravity="center" />
+</com.aspsine.swipetoloadlayout.demo.view.footer.GoogleLoadMoreFooterView>
