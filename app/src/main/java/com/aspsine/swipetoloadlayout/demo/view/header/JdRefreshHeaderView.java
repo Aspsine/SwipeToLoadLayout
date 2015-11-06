@@ -66,7 +66,7 @@ public class JdRefreshHeaderView extends RelativeLayout implements SwipeTrigger,
     }
 
     @Override
-    public void onSwipe(int y) {
+    public void onSwipe(int y, boolean isComplete) {
     }
 
     @Override

@@ -27,8 +27,7 @@
     <dimen name="load_more_drawable_size_google">36dp</dimen>
 
     <!-- yalantis -->
-    <dimen name="refresh_header_height_yalantis">120dp</dimen>
-    <dimen name="refresh_final_offset_yalantis">136dp</dimen>
+    <dimen name="refresh_header_height_yalantis">136dp</dimen>
 
     <!-- jd -->
     <dimen name="refresh_header_height_jd">100dp</dimen>
