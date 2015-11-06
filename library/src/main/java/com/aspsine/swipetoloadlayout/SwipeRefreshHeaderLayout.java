@@ -30,7 +30,7 @@ public class SwipeRefreshHeaderLayout extends FrameLayout implements SwipeRefres
     }
 
     @Override
-    public void onSwipe(int y) {
+    public void onSwipe(int y, boolean isComplete) {
     }
 
     @Override

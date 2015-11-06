@@ -1216,10 +1216,10 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
 
         Log.i(TAG, "mTargetOffset:" + mTargetOffset + "; Status=" + STATUS.getStatus(mStatus));
-        if (mTargetOffset > 0 && !STATUS.isRefreshComplete(mStatus)) {
-            mRefreshCallback.onSwipe(mTargetOffset);
-        } else if (mTargetOffset < 0 && !STATUS.isLoadMoreComplete(mStatus)) {
-            mLoadMoreCallback.onSwipe(mTargetOffset);
+        if (mTargetOffset > 0) {
+            mRefreshCallback.onSwipe(mTargetOffset, STATUS.isRefreshComplete(mStatus));
+        } else if (mTargetOffset < 0) {
+            mLoadMoreCallback.onSwipe(mTargetOffset, STATUS.isLoadMoreComplete(mStatus));
         }
         layoutChildren();
         invalidate();
@@ -1361,12 +1361,12 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
 
         @Override
-        public void onSwipe(int y) {
+        public void onSwipe(int y, boolean isComplete) {
             if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isRefreshStatus(mStatus)) {
                 if (mHeaderView.getVisibility() != VISIBLE) {
                     mHeaderView.setVisibility(VISIBLE);
                 }
-                ((SwipeTrigger) mHeaderView).onSwipe(y);
+                ((SwipeTrigger) mHeaderView).onSwipe(y, isComplete);
             }
         }
 
@@ -1416,12 +1416,12 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
 
         @Override
-        public void onSwipe(int y) {
+        public void onSwipe(int y, boolean isComplete) {
             if (mFooterView != null && mFooterView instanceof SwipeTrigger && STATUS.isLoadMoreStatus(mStatus)) {
                 if (mFooterView.getVisibility() != VISIBLE) {
                     mFooterView.setVisibility(VISIBLE);
                 }
-                ((SwipeTrigger) mFooterView).onSwipe(y);
+                ((SwipeTrigger) mFooterView).onSwipe(y, isComplete);
             }
         }
 
