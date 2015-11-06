@@ -1215,7 +1215,6 @@ public class SwipeToLoadLayout extends ViewGroup {
             }
         }
 
-        Log.i(TAG, "mTargetOffset:" + mTargetOffset + "; Status=" + STATUS.getStatus(mStatus));
         if (mTargetOffset > 0) {
             mRefreshCallback.onSwipe(mTargetOffset, STATUS.isRefreshComplete(mStatus));
         } else if (mTargetOffset < 0) {
