@@ -113,6 +113,6 @@ public class TwitterWebViewFragment extends BaseFragment implements OnRefreshLis
 
     @Override
     public void onRefresh() {
-        webView.loadUrl("http://marvel.com/characters");
+        webView.loadUrl("http://www.weibo.com/");
     }
 }

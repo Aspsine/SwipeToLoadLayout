@@ -48,7 +48,9 @@ public class YalantisPhoenixRefreshHeaderView extends FrameLayout implements Swi
 
     @Override
     public void onRefresh() {
-        mDrawable.start();
+        if (!mDrawable.isRunning()){
+            mDrawable.start();
+        }
     }
 
     @Override
@@ -68,7 +70,9 @@ public class YalantisPhoenixRefreshHeaderView extends FrameLayout implements Swi
 
     @Override
     public void onRelease() {
-
+        if (!mDrawable.isRunning()){
+            mDrawable.start();
+        }
     }
 
     @Override
