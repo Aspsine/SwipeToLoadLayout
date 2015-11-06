@@ -6,7 +6,7 @@ package com.aspsine.swipetoloadlayout;
 public interface SwipeTrigger {
     void onPrepare();
 
-    void onSwipe(int y);
+    void onSwipe(int y, boolean isComplete);
 
     void onRelease();
 

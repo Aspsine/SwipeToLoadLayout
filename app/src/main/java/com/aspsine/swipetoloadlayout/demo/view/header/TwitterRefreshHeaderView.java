@@ -74,26 +74,28 @@ public class TwitterRefreshHeaderView extends SwipeRefreshHeaderLayout {
     }
 
     @Override
-    public void onSwipe(int y) {
+    public void onSwipe(int y, boolean isComplete) {
         Log.d("TwitterRefreshHeader", "onSwipe(" + y + ")");
-        ivArrow.setVisibility(VISIBLE);
-        progressBar.setVisibility(GONE);
-        ivSuccess.setVisibility(GONE);
-        if (y > mHeaderHeight) {
-            tvRefresh.setText("RELEASE TO REFRESH");
-            if (!rotated) {
-                ivArrow.clearAnimation();
-                ivArrow.startAnimation(rotateUp);
-                rotated = true;
-            }
-        } else if (y < mHeaderHeight) {
-            if (rotated) {
-                ivArrow.clearAnimation();
-                ivArrow.startAnimation(rotateDown);
-                rotated = false;
-            }
+        if (!isComplete) {
+            ivArrow.setVisibility(VISIBLE);
+            progressBar.setVisibility(GONE);
+            ivSuccess.setVisibility(GONE);
+            if (y > mHeaderHeight) {
+                tvRefresh.setText("RELEASE TO REFRESH");
+                if (!rotated) {
+                    ivArrow.clearAnimation();
+                    ivArrow.startAnimation(rotateUp);
+                    rotated = true;
+                }
+            } else if (y < mHeaderHeight) {
+                if (rotated) {
+                    ivArrow.clearAnimation();
+                    ivArrow.startAnimation(rotateDown);
+                    rotated = false;
+                }
 
-            tvRefresh.setText("SWIPE TO REFRESH");
+                tvRefresh.setText("SWIPE TO REFRESH");
+            }
         }
     }
 

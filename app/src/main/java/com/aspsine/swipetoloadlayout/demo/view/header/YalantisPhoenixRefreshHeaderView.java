@@ -1,7 +1,6 @@
 package com.aspsine.swipetoloadlayout.demo.view.header;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.FrameLayout;
@@ -25,8 +24,6 @@ public class YalantisPhoenixRefreshHeaderView extends FrameLayout implements Swi
 
     private int mTriggerOffset;
 
-    private int mFinalDragOffset;
-
     public YalantisPhoenixRefreshHeaderView(Context context) {
         this(context, null);
     }
@@ -38,7 +35,6 @@ public class YalantisPhoenixRefreshHeaderView extends FrameLayout implements Swi
     public YalantisPhoenixRefreshHeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mTriggerOffset = getResources().getDimensionPixelOffset(R.dimen.refresh_header_height_yalantis);
-        mFinalDragOffset = getResources().getDimensionPixelOffset(R.dimen.refresh_final_offset_yalantis);
     }
 
     @Override
@@ -60,15 +56,14 @@ public class YalantisPhoenixRefreshHeaderView extends FrameLayout implements Swi
 
     }
 
-    int oldY = 0;
+    private int mOldY = 0;
 
     @Override
-    public void onSwipe(int y) {
-        int delta = y - oldY;
-        Log.i("tag", "delta = "+ delta);
+    public void onSwipe(int y, boolean isComplete) {
+        int delta = y - mOldY;
         mDrawable.offsetTopAndBottom(delta);
         mDrawable.setPercent(y / (float) mTriggerOffset, true);
-        oldY = y;
+        mOldY = y;
     }
 
     @Override
