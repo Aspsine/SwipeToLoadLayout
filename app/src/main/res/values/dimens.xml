@@ -16,8 +16,8 @@
     <dimen name="load_more_footer_height_twitter">60dp</dimen>
 
     <!-- google -->
-    <dimen name="refresh_header_height_google">80dp</dimen>
-    <dimen name="refresh_trigger_offset_google">88dp</dimen>
+    <dimen name="refresh_header_height_google">100dp</dimen>
+    <dimen name="refresh_trigger_offset_google">100dp</dimen>
     <dimen name="refresh_final_offset_google">150dp</dimen>
     <dimen name="refresh_drawable_size_google">40dp</dimen>
 

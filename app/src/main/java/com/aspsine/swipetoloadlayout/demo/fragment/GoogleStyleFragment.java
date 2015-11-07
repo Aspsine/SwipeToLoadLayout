@@ -115,7 +115,7 @@ public class GoogleStyleFragment extends BaseFragment implements OnRefreshListen
                         mPageNum = mType;
                         swipeToLoadLayout.setRefreshing(false);
                     }
-                }, 2000);
+                }, 10000);
             }
         }, new Response.ErrorListener() {
             @Override

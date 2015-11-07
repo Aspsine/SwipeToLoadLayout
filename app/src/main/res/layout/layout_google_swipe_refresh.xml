@@ -17,7 +17,7 @@
 
     <include
         android:id="@id/swipe_refresh_header"
-        layout="@layout/layout_google_header" />
+        layout="@layout/layout_google_hook_header" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@id/swipe_target"

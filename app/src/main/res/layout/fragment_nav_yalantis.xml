@@ -14,10 +14,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black"
+        app:default_to_refreshing_scrolling_duration="500"
         app:refresh_complete_delay_duration="0"
         app:refresh_complete_to_default_scrolling_duration="800"
-        app:release_to_refreshing_scrolling_duration="0"
         app:refresh_final_drag_offset="@dimen/refresh_header_height_yalantis"
+        app:release_to_refreshing_scrolling_duration="0"
         app:swipe_style="blew"
         tools:context="com.aspsine.swipetoloadlayout.demo.fragment.NavYalantisFragment">
 

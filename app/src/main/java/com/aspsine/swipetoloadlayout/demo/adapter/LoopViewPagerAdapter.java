@@ -85,7 +85,6 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.e("TestViewPager", "position = " + position);
         ViewHolder holder = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_viewpager, parent, false);
