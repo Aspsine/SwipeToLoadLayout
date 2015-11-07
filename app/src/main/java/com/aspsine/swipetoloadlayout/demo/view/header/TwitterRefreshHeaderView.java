@@ -60,7 +60,6 @@ public class TwitterRefreshHeaderView extends SwipeRefreshHeaderLayout {
 
     @Override
     public void onRefresh() {
-        Log.d("TwitterRefreshHeader", "onRefresh()");
         ivSuccess.setVisibility(GONE);
         ivArrow.clearAnimation();
         ivArrow.setVisibility(GONE);
@@ -75,7 +74,6 @@ public class TwitterRefreshHeaderView extends SwipeRefreshHeaderLayout {
 
     @Override
     public void onSwipe(int y, boolean isComplete) {
-        Log.d("TwitterRefreshHeader", "onSwipe(" + y + ")");
         if (!isComplete) {
             ivArrow.setVisibility(VISIBLE);
             progressBar.setVisibility(GONE);
@@ -101,12 +99,11 @@ public class TwitterRefreshHeaderView extends SwipeRefreshHeaderLayout {
 
     @Override
     public void onRelease() {
-
+        Log.d("TwitterRefreshHeader", "onRelease()");
     }
 
     @Override
     public void complete() {
-        Log.d("TwitterRefreshHeader", "complete()");
         rotated = false;
         ivSuccess.setVisibility(VISIBLE);
         ivArrow.clearAnimation();
@@ -117,7 +114,6 @@ public class TwitterRefreshHeaderView extends SwipeRefreshHeaderLayout {
 
     @Override
     public void onReset() {
-        Log.d("TwitterRefreshHeader", "onReset()");
         rotated = false;
         ivSuccess.setVisibility(GONE);
         ivArrow.clearAnimation();
