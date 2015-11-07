@@ -410,7 +410,6 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     public void setRefreshTriggerOffset(int offset) {
         mRefreshTriggerOffset = offset;
-//        requestLayout();
     }
 
     /**
@@ -423,7 +422,6 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     public void setLoadMoreTriggerOffset(int offset) {
         mLoadMoreTriggerOffset = offset;
-//        requestLayout();
     }
 
     /**
@@ -938,6 +936,23 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        final int action = MotionEventCompat.getActionMasked(ev);
+        switch (action){
+            case MotionEvent.ACTION_UP:
+                // swipeToRefresh -> finger up -> finger down if the status is still swipeToRefresh
+                // in onInterceptTouchEvent ACTION_DOWN event will stop the scroller
+                // if the event pass to the child view while ACTION_MOVE(condition is false)
+                // in onInterceptTouchEvent ACTION_MOVE the ACTION_UP or ACTION_CANCEL will not be
+                // passed to onInterceptTouchEvent and onTouchEvent. Instead It will be passed to
+                // child view's onTouchEvent. So we must deal this situation in dispatchTouchEvent
+                onActivePointerUp();
+                break;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         final int action = MotionEventCompat.getActionMasked(event);
         switch (action) {
@@ -1065,7 +1080,6 @@ public class SwipeToLoadLayout extends ViewGroup {
                 if (mActivePointerId == INVALID_POINTER) {
                     return false;
                 }
-                onActivePointerUp();
                 mActivePointerId = INVALID_POINTER;
                 break;
             default:
