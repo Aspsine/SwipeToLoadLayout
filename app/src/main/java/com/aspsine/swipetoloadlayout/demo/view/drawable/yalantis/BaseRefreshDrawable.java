@@ -9,6 +9,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 
+/**
+ * Copy from https://github.com/Yalantis/Phoenix
+ * Aspsine makes some changes
+ */
 public abstract class BaseRefreshDrawable extends Drawable implements Drawable.Callback, Animatable {
 
     private boolean mEndOfRefreshing;

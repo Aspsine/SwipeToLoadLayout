@@ -1,6 +1,5 @@
 package com.aspsine.swipetoloadlayout.demo.view.drawable.yalantis;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,7 +9,6 @@ import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.animation.Animation;
 import android.view.animation.Interpolator;
@@ -24,6 +22,9 @@ import com.aspsine.swipetoloadlayout.demo.view.header.YalantisPhoenixRefreshHead
 /**
  * Created by Oleksii Shliama on 22/12/2014.
  * https://dribbble.com/shots/1650317-Pull-to-Refresh-Rentals
+ *
+ * Copy from https://github.com/Yalantis/Phoenix
+ * Aspsine makes some changes
  */
 public class SunRefreshDrawable extends BaseRefreshDrawable implements Animatable {
 
