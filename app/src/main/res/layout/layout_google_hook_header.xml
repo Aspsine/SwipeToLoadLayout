@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aspsine.swipetoloadlayout.demo.view.header.GoogleCircleHookRefreshHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/refresh_header_height_google"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <com.aspsine.swipetoloadlayout.demo.view.GoogleCircleProgressView
+        android:id="@+id/googleProgress"
+        app:gcp_show_arrow="true"
+        app:gcp_progress_stoke_width="3dp"
+        app:gcp_arrow_height="6dp"
+        app:gcp_arrow_width="8dp"
+        android:layout_width="@dimen/refresh_drawable_size_google"
+        android:layout_height="@dimen/refresh_drawable_size_google"
+        android:layout_gravity="center" />
+</com.aspsine.swipetoloadlayout.demo.view.header.GoogleCircleHookRefreshHeaderView>
