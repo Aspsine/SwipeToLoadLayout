@@ -11,13 +11,18 @@ import android.view.View;
  */
 public class NavGoogleFragment extends BaseNavPagerFragment {
 
+    public static BaseNavigationFragment newInstance() {
+        BaseNavigationFragment fragment = new NavGoogleFragment();
+        return fragment;
+    }
+
     public NavGoogleFragment() {
         // Required empty public constructor
     }
 
     @Override
     protected String[] getTitles() {
-        return new String[]{"Ring", "Bad guys", "Women", "Teams"};
+        return new String[]{"Google", "Custom"};
     }
 
     @Override

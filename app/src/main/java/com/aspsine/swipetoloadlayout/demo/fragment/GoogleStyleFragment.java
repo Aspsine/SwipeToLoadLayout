@@ -53,7 +53,13 @@ public class GoogleStyleFragment extends BaseFragment implements OnRefreshListen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.layout_google_swipe_refresh, container, false);
+        final int layoutId;
+        if (mType == 0) {
+            layoutId = R.layout.fragment_google_style;
+        } else {
+            layoutId = R.layout.fragment_google_style_custom;
+        }
+        return inflater.inflate(layoutId, container, false);
     }
 
     @Override
@@ -107,15 +113,11 @@ public class GoogleStyleFragment extends BaseFragment implements OnRefreshListen
                 swipeToLoadLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        int end = mType + 1;
-                        if (mType == 3) {
-                            end = mType + 2;
-                        }
-                        mAdapter.setList(characters.getCharacters().subList(mType, end), characters.getSections().subList(mType, mType + 1));
-                        mPageNum = mType;
+                        mPageNum = 0;
+                        mAdapter.setList(characters.getCharacters(), characters.getSections().subList(0, mPageNum + 1));
                         swipeToLoadLayout.setRefreshing(false);
                     }
-                }, 10000);
+                }, 3000);
             }
         }, new Response.ErrorListener() {
             @Override

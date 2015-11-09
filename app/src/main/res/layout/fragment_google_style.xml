@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aspsine.swipetoloadlayout.SwipeToLoadLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeToLoadLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/style_window_background"
+    app:default_to_loading_more_scrolling_duration="500"
+    app:default_to_refreshing_scrolling_duration="1000"
+    app:load_more_complete_delay_duration="0"
+    app:load_more_final_drag_offset="@dimen/load_more_final_offset_google"
+    app:load_more_trigger_offset="@dimen/load_more_trigger_offset_google"
+    app:refresh_complete_delay_duration="0"
+    app:refresh_final_drag_offset="@dimen/refresh_final_offset_google"
+    app:refresh_trigger_offset="@dimen/refresh_trigger_offset_google"
+    app:swipe_style="above">
+
+    <include
+        android:id="@id/swipe_refresh_header"
+        layout="@layout/layout_google_hook_header" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@id/swipe_target"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false" />
+
+    <include
+        android:id="@id/swipe_load_more_footer"
+        layout="@layout/layout_google_footer" />
+
+</com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

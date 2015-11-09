@@ -17,6 +17,7 @@ import com.aspsine.swipetoloadlayout.demo.fragment.BaseNavigationFragment;
 import com.aspsine.swipetoloadlayout.demo.fragment.BaseToolbarFragment;
 import com.aspsine.swipetoloadlayout.demo.fragment.NavGoogleFragment;
 import com.aspsine.swipetoloadlayout.demo.fragment.NavJDFragment;
+import com.aspsine.swipetoloadlayout.demo.fragment.NavJavaCodeFragment;
 import com.aspsine.swipetoloadlayout.demo.fragment.NavTwitterFragment;
 import com.aspsine.swipetoloadlayout.demo.fragment.NavYalantisFragment;
 
@@ -57,9 +58,7 @@ public class MainActivity extends AppCompatActivity implements BaseToolbarFragme
             @Override
             public void run() {
                 int itemId = menuItem.getItemId();
-                if (itemId == R.id.nav_settings) {
-
-                } else if (itemId == R.id.nav_about) {
+                if (itemId == R.id.nav_about) {
 
                 } else {
                     showNavigationFragment(itemId);
@@ -92,11 +91,11 @@ public class MainActivity extends AppCompatActivity implements BaseToolbarFragme
 
         switch (itemId) {
             case R.id.nav_Twitter_style:
-                navigationFragment = new NavTwitterFragment();
+                navigationFragment = NavTwitterFragment.newInstance();
                 break;
 
             case R.id.nav_google_style:
-                navigationFragment = new NavGoogleFragment();
+                navigationFragment = NavGoogleFragment.newInstance();
                 break;
 
             case R.id.nav_yalantis_style:
@@ -106,30 +105,8 @@ public class MainActivity extends AppCompatActivity implements BaseToolbarFragme
             case R.id.nav_jd_style:
                 navigationFragment = NavJDFragment.newInstance();
                 break;
-
-            case R.id.nav_wechat_style:
-                break;
-
-            case R.id.nav_dazhundianping_style:
-                break;
-
-            case R.id.nav_sina_weibo_style:
-
-                break;
-
-            case R.id.nav_easy_news_style:
-
-                break;
-            case R.id.nav_souhu_video_style:
-
-                break;
-
-            case R.id.nav_widgets:
-
-                break;
-
             case R.id.nav_set_header_footer_via_code:
-
+                navigationFragment = NavJavaCodeFragment.newInstance();
                 break;
         }
         return navigationFragment;
