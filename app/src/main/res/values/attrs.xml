@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GoogleCircleProgressView">
+        <attr name="gcp_inner_radius" format="dimension"/>
+        <attr name="gcp_background_color" format="color"/>
+        <attr name="gcp_progress_color" format="color"/>
+        <attr name="gcp_progress_stoke_width" format="dimension"/>
+        <attr name="gcp_show_arrow" format="boolean"/>
+        <attr name="gcp_enable_circle_background" format="boolean"/>
+        <attr name="gcp_arrow_width" format="dimension"/>
+        <attr name="gcp_arrow_height" format="dimension"/>
+
+        <attr name="gcp_progress" format="integer"/>
+        <attr name="gcp_max" format="integer"/>
+
+
+        <attr name="gcp_progress_text_size" format="dimension"/>
+        <attr name="gcp_progress_text_color" format="color"/>
+
+        <!--<attr name="gcp_progress_text_offset" format="dimension"/>-->
+
+        <attr name="gcp_progress_text_visibility" format="enum">
+            <enum name="visible" value="0"/>
+            <enum name="invisible" value="1"/>
+        </attr>
+    </declare-styleable>
+</resources>
