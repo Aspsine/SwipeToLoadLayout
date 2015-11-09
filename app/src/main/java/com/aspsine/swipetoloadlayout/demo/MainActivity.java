@@ -1,6 +1,7 @@
 package com.aspsine.swipetoloadlayout.demo;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -59,12 +60,12 @@ public class MainActivity extends AppCompatActivity implements BaseToolbarFragme
             public void run() {
                 int itemId = menuItem.getItemId();
                 if (itemId == R.id.nav_about) {
-
+                    startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 } else {
                     showNavigationFragment(itemId);
                 }
             }
-        }, 500);
+        }, 200);
         return true;
     }
 

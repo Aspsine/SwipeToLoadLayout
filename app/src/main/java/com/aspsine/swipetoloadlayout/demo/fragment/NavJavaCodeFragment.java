@@ -152,7 +152,12 @@ public class NavJavaCodeFragment extends BaseNavigationFragment implements OnRef
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            swipeToLoadLayout.requestLayout();
+                            swipeToLoadLayout.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    swipeToLoadLayout.setRefreshing(true);
+                                }
+                            });
                         }
                     }).create();
         }
