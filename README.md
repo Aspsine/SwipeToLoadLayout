@@ -25,8 +25,8 @@ dependencies {
 ```
 
 ##Thanks
-Google SwipeRefreshLayout
-[liaohuqiu android-Ultra-Pull-To-Refresh](https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh)
-[Yalantis Phoenix](https://github.com/Yalantis/Phoenix)
+- Google SwipeRefreshLayout
+- [liaohuqiu android-Ultra-Pull-To-Refresh](https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh)
+- [Yalantis Phoenix](https://github.com/Yalantis/Phoenix)
 
 
