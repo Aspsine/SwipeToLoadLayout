@@ -2,8 +2,11 @@
     <string name="app_name">SwipeToLoadLayout Demo</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_config">Config</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="author">Aspsine</string>
+    <string name="desc">SwipeToLoadLayout provides a standered to achieve pull-to-refresh and pull-to-loadmore.</string>
+    <string name="github">http://github.com/Aspsine/SwipeToLoadLayout</string>
 </resources>

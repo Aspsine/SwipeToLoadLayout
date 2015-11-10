@@ -14,6 +14,11 @@ import com.aspsine.swipetoloadlayout.demo.R;
  */
 public class NavTwitterFragment extends BaseNavPagerFragment {
 
+    public static BaseNavigationFragment newInstance() {
+        BaseNavigationFragment fragment = new NavTwitterFragment();
+        return fragment;
+    }
+
 
     public NavTwitterFragment() {
         // Required empty public constructor
@@ -24,7 +29,7 @@ public class NavTwitterFragment extends BaseNavPagerFragment {
         // override the method
         // delete app:layout_scrollFlags="scroll|enterAlways"
         // delete reason: ListView don't support coordinate scroll
-        // this property lead height measure issue and scroll issue
+        // these property lead height measure issue and scroll issue
         // it's not an bug of SwipeToLoadLayout
         return inflater.inflate(R.layout.fragment_nav_twitter, container, false);
     }
