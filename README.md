@@ -11,9 +11,7 @@ Theoretically support all kinds of views.
 
 ##How to
 
-- Step 1. Add the JitPack repository to your build file
-
-Add it in your build.gradle at the end of repositories:
+- Step 1. Add the JitPack repository in your build.gradle at the end of repositories:
 ```
 repositories {
     maven { url "https://jitpack.io" }
@@ -25,3 +23,10 @@ dependencies {
 	compile 'com.github.Aspsine:SwipeToLoadLayout:v1.0.0'
 }
 ```
+
+##Thanks
+Google SwipeRefreshLayout
+[liaohuqiu android-Ultra-Pull-To-Refresh](https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh)
+[Yalantis Phoenix](https://github.com/Yalantis/Phoenix)
+
+
