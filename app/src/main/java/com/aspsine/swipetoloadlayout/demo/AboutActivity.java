@@ -1,13 +1,13 @@
 package com.aspsine.swipetoloadlayout.demo;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
+import android.view.MenuItem;
+import android.widget.TextView;
 
 
 public class AboutActivity extends AppCompatActivity {
@@ -26,12 +26,30 @@ public class AboutActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle("About");
+        TextView tvVersion = (TextView) findViewById(R.id.tvVersion);
+        tvVersion.setText("V " + getVersion());
+    }
 
+    private String getVersion() {
+        String version = null;
+        try {
+            PackageManager packageManager = getPackageManager();
+            PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
+            version = packInfo.versionName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return version;
+    }
 
-        final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Picasso.with(this).load("https://avatars0.githubusercontent.com/u/1912775?v=3&s=460").into(imageView);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
