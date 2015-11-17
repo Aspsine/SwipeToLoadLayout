@@ -7,7 +7,32 @@ Theoretically support all kinds of views.
 ##Demo
 [Download](https://raw.githubusercontent.com/Aspsine/SwipeToLoadLayout/master/art/demo.apk)
 
-##Demo ScreenShot
+##Demo ScreenShot & Video(Youtube)
+- ListView & GridView
+
+[![ListView & GridView](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://youtu.be/ThIKO3vz6Bs) 
+
+- RecyclerView(With all kinds of layoutManagers)
+
+[![RecyclerView](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://youtu.be/ZVYkoi84Vr8) 
+
+- WebView & ScrollView & Other Views
+
+[![WebView & ScrollView & other views](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://youtu.be/RGtWvdrVmGM) 
+
+- Google SwipeRefreshLayout style
+
+[![Google Style](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://youtu.be/38NbDiUoXmg) 
+
+- JD.com Style
+
+[![JD Style](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://youtu.be/QrsZ5nygTp0) 
+
+- Yalantis Phoenix Style
+
+[![Yalantis Phoenix Style](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://youtu.be/FAqrzSjt85c) 
+
+You can also create your own header and footer. It's very simple.
 
 ##How to
 
