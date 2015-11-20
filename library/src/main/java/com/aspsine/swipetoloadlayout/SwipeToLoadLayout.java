@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -528,6 +530,80 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
     /**
+     * @param listener {@link OnLoadMoreListener#onLoadMore()}
+     */
+    public void setAutoLoadMoreForAbsListView(AbsListView refreshView, OnLoadMoreListener listener) {
+        this.mLoadMoreListener = listener;
+        if (isLoadMoreEnabled()) absListViewLoadMore(refreshView);
+    }
+
+    /**
+     * @param layoutManager {@link RecyclerView.LayoutManager}.
+     */
+    public void setAutoLoadMoreForRecyclerView(RecyclerView recyclerView,
+                                               final RecyclerView.LayoutManager layoutManager,
+                                               OnLoadMoreListener listener) {
+        this.mLoadMoreListener = listener;
+        if (isLoadMoreEnabled())
+            reccyclerviewLoadMore(recyclerView, layoutManager);
+    }
+
+    /**
+     * Auto load for #RecyclerView
+     *
+     * @param recyclerView  recyclerView
+     * @param layoutManager {@link RecyclerView.LayoutManager}.
+     * @see com.aspsine.swipetoloadlayout.SwipeToLoadLayout.LoadMoreCallback
+     */
+    private void reccyclerviewLoadMore(RecyclerView recyclerView, final RecyclerView.LayoutManager layoutManager) {
+        recyclerView.addOnScrollListener(
+                new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        int lastVisibleItem = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                        int totalItemCount = layoutManager.getItemCount();
+                        //lastVisibleItem >= totalItemCount - 4 表示剩下4个item自动加载，各位自由选择
+                        // dy>0 表示向下滑动
+                        if (lastVisibleItem >= totalItemCount - 1 && dy > 0) {
+                            mLoadMoreCallback.onRelease();
+                            setLoadingMore(true);
+                        }
+                    }
+                }
+        );
+    }
+
+    /**
+     * Auto Load for ListView
+     *
+     * @param refreshView AbsListView
+     * @see com.aspsine.swipetoloadlayout.SwipeToLoadLayout.LoadMoreCallback
+     */
+    private void absListViewLoadMore(AbsListView refreshView) {
+        refreshView.setOnScrollListener(
+                new AbsListView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(AbsListView view, int scrollState) {
+                        switch (scrollState) {
+                            case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+                                if (view.getLastVisiblePosition() == (view.getCount() - 1) && isLoadMoreEnabled()) {
+                                    mLoadMoreCallback.onRelease();
+                                    setLoadingMore(true);
+                                }
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+                                         int totalItemCount) {
+                    }
+                }
+        );
+    }
+
+    /**
      * set an {@link OnLoadMoreListener} to listening load more event
      *
      * @param listener
@@ -938,7 +1014,7 @@ public class SwipeToLoadLayout extends ViewGroup {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         final int action = MotionEventCompat.getActionMasked(ev);
-        switch (action){
+        switch (action) {
             case MotionEvent.ACTION_UP:
                 // swipeToRefresh -> finger up -> finger down if the status is still swipeToRefresh
                 // in onInterceptTouchEvent ACTION_DOWN event will stop the scroller
