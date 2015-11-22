@@ -1558,7 +1558,7 @@ public class SwipeToLoadLayout extends ViewGroup {
             return status < STATUS.STATUS_DEFAULT;
         }
 
-        public static boolean isLoadMoreStatus(final int status) {
+        public static boolean isLoadMoreStatus(final byte status) {
             return status > STATUS.STATUS_DEFAULT;
         }
 
@@ -1566,7 +1566,7 @@ public class SwipeToLoadLayout extends ViewGroup {
             return status == STATUS.STATUS_DEFAULT;
         }
 
-        private static String getStatus(int status) {
+        private static String getStatus(byte status) {
             final String statusInfo;
             switch (status) {
                 case STATUS_REFRESH_RETURNING:
@@ -1609,7 +1609,7 @@ public class SwipeToLoadLayout extends ViewGroup {
             return statusInfo;
         }
 
-        private static void printStatus(int status) {
+        private static void printStatus(byte status) {
             Log.d(TAG, "printStatus:" + getStatus(status));
         }
     }
