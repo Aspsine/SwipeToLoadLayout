@@ -531,21 +531,27 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     /**
      * @param listener {@link OnLoadMoreListener#onLoadMore()}
+     *                 TODO only support AbsListView RecyclerView
+     *                 Simultaneously supports only one
+     *
      */
-    public void setAutoLoadMoreForAbsListView(AbsListView refreshView, OnLoadMoreListener listener) {
+    public void setAutoLoadMore(OnLoadMoreListener listener) {
         this.mLoadMoreListener = listener;
-        if (isLoadMoreEnabled()) absListViewLoadMore(refreshView);
-    }
-
-    /**
-     * @param layoutManager {@link RecyclerView.LayoutManager}.
-     */
-    public void setAutoLoadMoreForRecyclerView(RecyclerView recyclerView,
-                                               final RecyclerView.LayoutManager layoutManager,
-                                               OnLoadMoreListener listener) {
-        this.mLoadMoreListener = listener;
-        if (isLoadMoreEnabled())
-            reccyclerviewLoadMore(recyclerView, layoutManager);
+        if (isLoadMoreEnabled()) {
+            int size = getChildCount();
+            for (int i = 0; i < size; i++) {
+                if (getChildAt(i) instanceof AbsListView) {
+                    absListViewLoadMore((AbsListView) getChildAt(i));
+                    break;
+                } else if (getChildAt(i) instanceof RecyclerView) {
+                    if (((RecyclerView) getChildAt(i)).getLayoutManager() instanceof LinearLayoutManager) {
+                        recyclerviewLoadMore((RecyclerView) getChildAt(i),
+                                ((RecyclerView) getChildAt(i)).getLayoutManager());
+                    }
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -555,7 +561,7 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @param layoutManager {@link RecyclerView.LayoutManager}.
      * @see com.aspsine.swipetoloadlayout.SwipeToLoadLayout.LoadMoreCallback
      */
-    private void reccyclerviewLoadMore(RecyclerView recyclerView, final RecyclerView.LayoutManager layoutManager) {
+    private void recyclerviewLoadMore(RecyclerView recyclerView, final RecyclerView.LayoutManager layoutManager) {
         recyclerView.addOnScrollListener(
                 new RecyclerView.OnScrollListener() {
                     @Override
