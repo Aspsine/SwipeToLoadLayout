@@ -6,6 +6,7 @@ import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -14,6 +15,8 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Scroller;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by Aspsine on 2015/8/13.
@@ -531,9 +534,8 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     /**
      * @param listener {@link OnLoadMoreListener#onLoadMore()}
-     *                 TODO only support AbsListView RecyclerView
+     *                 only support AbsListView RecyclerView
      *                 Simultaneously supports only one
-     *
      */
     public void setAutoLoadMore(OnLoadMoreListener listener) {
         this.mLoadMoreListener = listener;
@@ -545,8 +547,7 @@ public class SwipeToLoadLayout extends ViewGroup {
                     break;
                 } else if (getChildAt(i) instanceof RecyclerView) {
                     if (((RecyclerView) getChildAt(i)).getLayoutManager() instanceof LinearLayoutManager) {
-                        recyclerviewLoadMore((RecyclerView) getChildAt(i),
-                                ((RecyclerView) getChildAt(i)).getLayoutManager());
+                        recyclerviewLoadMore((RecyclerView) getChildAt(i));
                     }
                     break;
                 }
@@ -554,30 +555,58 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
     }
 
+
     /**
      * Auto load for #RecyclerView
      *
-     * @param recyclerView  recyclerView
-     * @param layoutManager {@link RecyclerView.LayoutManager}.
+     * @param recyclerView recyclerView
      * @see com.aspsine.swipetoloadlayout.SwipeToLoadLayout.LoadMoreCallback
      */
-    private void recyclerviewLoadMore(RecyclerView recyclerView, final RecyclerView.LayoutManager layoutManager) {
-        recyclerView.addOnScrollListener(
-                new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        int lastVisibleItem = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
-                        int totalItemCount = layoutManager.getItemCount();
-                        //lastVisibleItem >= totalItemCount - 4 表示剩下4个item自动加载，各位自由选择
-                        // dy>0 表示向下滑动
-                        if (lastVisibleItem >= totalItemCount - 1 && dy > 0) {
-                            mLoadMoreCallback.onRelease();
-                            setLoadingMore(true);
-                        }
+    private void recyclerviewLoadMore(RecyclerView recyclerView) {
+        if (recyclerView != null) {
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && shouldHandleRecyclerViewLoadingMore(recyclerView)) {
+                        mLoadMoreCallback.onRelease();
+                        setLoadingMore(true);
                     }
                 }
-        );
+            });
+        }
+    }
+
+    /**
+     * @param recyclerView recyclerView
+     * @return RecyclerView Can loadMore ?
+     */
+    public boolean shouldHandleRecyclerViewLoadingMore(RecyclerView recyclerView) {
+        if (STATUS.isRefreshing(mStatus) || recyclerView.getAdapter() == null || recyclerView.getAdapter().getItemCount() == 0) {
+            return false;
+        }
+
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if (manager == null || manager.getItemCount() == 0) {
+            return false;
+        }
+
+        if (manager instanceof LinearLayoutManager) {
+            LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
+            if (layoutManager.findLastCompletelyVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1) {
+                return true;
+            }
+        } else if (manager instanceof StaggeredGridLayoutManager) {
+            StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) manager;
+
+            int[] out = layoutManager.findLastCompletelyVisibleItemPositions(null);
+            int lastPosition = layoutManager.getItemCount() - 1;
+            for (int position : out) {
+                if (position == lastPosition) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -587,27 +616,37 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @see com.aspsine.swipetoloadlayout.SwipeToLoadLayout.LoadMoreCallback
      */
     private void absListViewLoadMore(AbsListView refreshView) {
-        refreshView.setOnScrollListener(
-                new AbsListView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(AbsListView view, int scrollState) {
-                        switch (scrollState) {
-                            case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
-                                if (view.getLastVisiblePosition() == (view.getCount() - 1) && isLoadMoreEnabled()) {
-                                    mLoadMoreCallback.onRelease();
-                                    setLoadingMore(true);
-                                }
-                                break;
-                        }
+        try {
+            // 通过反射获取自定义的滚动监听器，并将其替换成自己的滚动监听器
+            Field field = AbsListView.class.getDeclaredField("mOnScrollListener");
+            field.setAccessible(true);
+            // 开发者自定义的滚动监听器
+            final AbsListView.OnScrollListener onScrollListener = (AbsListView.OnScrollListener) field.get(refreshView);
+            refreshView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+                    if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING)) {
+                        mLoadMoreCallback.onRelease();
+                        setLoadingMore(true);
                     }
 
-                    @Override
-                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                                         int totalItemCount) {
+                    if (onScrollListener != null) {
+                        onScrollListener.onScrollStateChanged(absListView, scrollState);
                     }
                 }
-        );
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    if (onScrollListener != null) {
+                        onScrollListener.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 
     /**
      * set an {@link OnLoadMoreListener} to listening load more event
@@ -1640,7 +1679,7 @@ public class SwipeToLoadLayout extends ViewGroup {
             return status < STATUS.STATUS_DEFAULT;
         }
 
-        public static boolean isLoadMoreStatus(final int status) {
+        public static boolean isLoadMoreStatus(final byte status) {
             return status > STATUS.STATUS_DEFAULT;
         }
 
@@ -1648,7 +1687,7 @@ public class SwipeToLoadLayout extends ViewGroup {
             return status == STATUS.STATUS_DEFAULT;
         }
 
-        private static String getStatus(int status) {
+        private static String getStatus(byte status) {
             final String statusInfo;
             switch (status) {
                 case STATUS_REFRESH_RETURNING:
@@ -1691,7 +1730,7 @@ public class SwipeToLoadLayout extends ViewGroup {
             return statusInfo;
         }
 
-        private static void printStatus(int status) {
+        private static void printStatus(byte status) {
             Log.d(TAG, "printStatus:" + getStatus(status));
         }
     }
