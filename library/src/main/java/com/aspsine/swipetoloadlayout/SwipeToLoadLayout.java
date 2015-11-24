@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -12,6 +15,8 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Scroller;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by Aspsine on 2015/8/13.
@@ -528,6 +533,122 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
     /**
+     * @param listener {@link OnLoadMoreListener#onLoadMore()}
+     *                 only support AbsListView RecyclerView
+     *                 Simultaneously supports only one
+     */
+    public void setAutoLoadMore(OnLoadMoreListener listener) {
+        this.mLoadMoreListener = listener;
+        if (isLoadMoreEnabled()) {
+            int size = getChildCount();
+            for (int i = 0; i < size; i++) {
+                if (getChildAt(i) instanceof AbsListView) {
+                    absListViewLoadMore((AbsListView) getChildAt(i));
+                    break;
+                } else if (getChildAt(i) instanceof RecyclerView) {
+                    if (((RecyclerView) getChildAt(i)).getLayoutManager() instanceof LinearLayoutManager) {
+                        recyclerviewLoadMore((RecyclerView) getChildAt(i));
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Auto load for #RecyclerView
+     *
+     * @param recyclerView recyclerView
+     * @see com.aspsine.swipetoloadlayout.SwipeToLoadLayout.LoadMoreCallback
+     */
+    private void recyclerviewLoadMore(RecyclerView recyclerView) {
+        if (recyclerView != null) {
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    if ((newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_SETTLING) && shouldHandleRecyclerViewLoadingMore(recyclerView)) {
+                        mLoadMoreCallback.onRelease();
+                        setLoadingMore(true);
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * @param recyclerView recyclerView
+     * @return RecyclerView Can loadMore ?
+     */
+    public boolean shouldHandleRecyclerViewLoadingMore(RecyclerView recyclerView) {
+        if (STATUS.isRefreshing(mStatus) || recyclerView.getAdapter() == null || recyclerView.getAdapter().getItemCount() == 0) {
+            return false;
+        }
+
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if (manager == null || manager.getItemCount() == 0) {
+            return false;
+        }
+
+        if (manager instanceof LinearLayoutManager) {
+            LinearLayoutManager layoutManager = (LinearLayoutManager) manager;
+            if (layoutManager.findLastCompletelyVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1) {
+                return true;
+            }
+        } else if (manager instanceof StaggeredGridLayoutManager) {
+            StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) manager;
+
+            int[] out = layoutManager.findLastCompletelyVisibleItemPositions(null);
+            int lastPosition = layoutManager.getItemCount() - 1;
+            for (int position : out) {
+                if (position == lastPosition) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Auto Load for ListView
+     *
+     * @param refreshView AbsListView
+     * @see com.aspsine.swipetoloadlayout.SwipeToLoadLayout.LoadMoreCallback
+     */
+    private void absListViewLoadMore(AbsListView refreshView) {
+        try {
+            // 通过反射获取自定义的滚动监听器，并将其替换成自己的滚动监听器
+            Field field = AbsListView.class.getDeclaredField("mOnScrollListener");
+            field.setAccessible(true);
+            // 开发者自定义的滚动监听器
+            final AbsListView.OnScrollListener onScrollListener = (AbsListView.OnScrollListener) field.get(refreshView);
+            refreshView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+                    if ((scrollState == SCROLL_STATE_IDLE || scrollState == SCROLL_STATE_FLING)) {
+                        mLoadMoreCallback.onRelease();
+                        setLoadingMore(true);
+                    }
+
+                    if (onScrollListener != null) {
+                        onScrollListener.onScrollStateChanged(absListView, scrollState);
+                    }
+                }
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    if (onScrollListener != null) {
+                        onScrollListener.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
      * set an {@link OnLoadMoreListener} to listening load more event
      *
      * @param listener
@@ -938,7 +1059,7 @@ public class SwipeToLoadLayout extends ViewGroup {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         final int action = MotionEventCompat.getActionMasked(ev);
-        switch (action){
+        switch (action) {
             case MotionEvent.ACTION_UP:
                 // swipeToRefresh -> finger up -> finger down if the status is still swipeToRefresh
                 // in onInterceptTouchEvent ACTION_DOWN event will stop the scroller
