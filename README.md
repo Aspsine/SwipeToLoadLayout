@@ -46,7 +46,7 @@ repositories {
 - Step 2. Add the dependency in the form
 ```
 dependencies {
-	compile 'com.github.Aspsine:SwipeToLoadLayout:v1.0.0'
+	compile 'com.github.Aspsine:SwipeToLoadLayout:v1.0.1'
 }
 ```
 

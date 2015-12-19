@@ -46,7 +46,7 @@ repositories {
 - Step 2. 在你的app build.gradle 的 dependencies 中添加依赖
 ```
 dependencies {
-	compile 'com.github.Aspsine:SwipeToLoadLayout:v1.0.0'
+	compile 'com.github.Aspsine:SwipeToLoadLayout:v1.0.1'
 }
 ```
 
