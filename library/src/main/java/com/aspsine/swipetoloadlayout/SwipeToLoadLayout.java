@@ -938,7 +938,8 @@ public class SwipeToLoadLayout extends ViewGroup {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         final int action = MotionEventCompat.getActionMasked(ev);
-        switch (action){
+        switch (action) {
+            case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 // swipeToRefresh -> finger up -> finger down if the status is still swipeToRefresh
                 // in onInterceptTouchEvent ACTION_DOWN event will stop the scroller
