@@ -67,6 +67,11 @@ public class SwipeToLoadLayout extends ViewGroup {
     private boolean mHasFooterView;
 
     /**
+     * indicate whether in debug mode
+     */
+    private boolean mDebug;
+
+    /**
      * the threshold of the touch event
      */
     private final int mTouchSlop;
@@ -74,7 +79,7 @@ public class SwipeToLoadLayout extends ViewGroup {
     /**
      * status of SwipeToLoadLayout
      */
-    private byte mStatus = STATUS.STATUS_DEFAULT;
+    private int mStatus = STATUS.STATUS_DEFAULT;
 
     /**
      * target view top offset
@@ -294,6 +299,15 @@ public class SwipeToLoadLayout extends ViewGroup {
 
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mAutoScroller = new AutoScroller();
+    }
+
+    /**
+     * set debug mode(default value false)
+     *
+     * @param debug if true log on, false log off
+     */
+    public void setDebug(boolean debug) {
+        this.mDebug = debug;
     }
 
     /**
@@ -1491,9 +1505,11 @@ public class SwipeToLoadLayout extends ViewGroup {
      *
      * @param status
      */
-    private void setStatus(byte status) {
+    private void setStatus(int status) {
         mStatus = status;
-        STATUS.printStatus(status);
+        if (mDebug) {
+            STATUS.printStatus(status);
+        }
     }
 
     /**
@@ -1501,73 +1517,73 @@ public class SwipeToLoadLayout extends ViewGroup {
      * enum of status
      */
     private final static class STATUS {
-        private static final byte STATUS_REFRESH_RETURNING = -5;
-        private static final byte STATS_REFRESH_COMPLETE = -4;
-        private static final byte STATUS_REFRESHING = -3;
-        private static final byte STATUS_RELEASE_TO_REFRESH = -2;
-        private static final byte STATUS_SWIPING_TO_REFRESH = -1;
-        private static final byte STATUS_DEFAULT = 0;
-        private static final byte STATUS_SWIPING_TO_LOAD_MORE = 1;
-        private static final byte STATUS_RELEASE_TO_LOAD_MORE = 2;
-        private static final byte STATUS_LOADING_MORE = 3;
-        private static final byte STATUS_LOAD_MORE_COMPLETE = 4;
-        private static final byte STATUS_LOAD_MORE_RETURNING = 5;
+        private static final int STATUS_REFRESH_RETURNING = -5;
+        private static final int STATS_REFRESH_COMPLETE = -4;
+        private static final int STATUS_REFRESHING = -3;
+        private static final int STATUS_RELEASE_TO_REFRESH = -2;
+        private static final int STATUS_SWIPING_TO_REFRESH = -1;
+        private static final int STATUS_DEFAULT = 0;
+        private static final int STATUS_SWIPING_TO_LOAD_MORE = 1;
+        private static final int STATUS_RELEASE_TO_LOAD_MORE = 2;
+        private static final int STATUS_LOADING_MORE = 3;
+        private static final int STATUS_LOAD_MORE_COMPLETE = 4;
+        private static final int STATUS_LOAD_MORE_RETURNING = 5;
 
-        private static boolean isRefreshing(final byte status) {
+        private static boolean isRefreshing(final int status) {
             return status == STATUS.STATUS_REFRESHING;
         }
 
-        private static boolean isLoadingMore(final byte status) {
+        private static boolean isLoadingMore(final int status) {
             return status == STATUS.STATUS_LOADING_MORE;
         }
 
-        private static boolean isRefreshComplete(final byte status) {
+        private static boolean isRefreshComplete(final int status) {
             return status == STATS_REFRESH_COMPLETE;
         }
 
-        private static boolean isLoadMoreComplete(final byte status) {
+        private static boolean isLoadMoreComplete(final int status) {
             return status == STATUS_LOAD_MORE_COMPLETE;
         }
 
         @SuppressWarnings({"unused"})
-        private static boolean isRefreshReturning(final byte status) {
+        private static boolean isRefreshReturning(final int status) {
             return status == STATUS.STATUS_REFRESH_RETURNING;
         }
 
         @SuppressWarnings({"unused"})
-        private static boolean isLoadMoreReturning(final byte status) {
+        private static boolean isLoadMoreReturning(final int status) {
             return status == STATUS.STATUS_LOAD_MORE_RETURNING;
         }
 
-        private static boolean isReleaseToRefresh(final byte status) {
+        private static boolean isReleaseToRefresh(final int status) {
             return status == STATUS.STATUS_RELEASE_TO_REFRESH;
         }
 
-        private static boolean isReleaseToLoadMore(final byte status) {
+        private static boolean isReleaseToLoadMore(final int status) {
             return status == STATUS.STATUS_RELEASE_TO_LOAD_MORE;
         }
 
-        private static boolean isSwipingToRefresh(final byte status) {
+        private static boolean isSwipingToRefresh(final int status) {
             return status == STATUS.STATUS_SWIPING_TO_REFRESH;
         }
 
-        private static boolean isSwipingToLoadMore(final byte status) {
+        private static boolean isSwipingToLoadMore(final int status) {
             return status == STATUS.STATUS_SWIPING_TO_LOAD_MORE;
         }
 
-        private static boolean isRefreshStatus(final byte status) {
+        private static boolean isRefreshStatus(final int status) {
             return status < STATUS.STATUS_DEFAULT;
         }
 
-        public static boolean isLoadMoreStatus(final byte status) {
+        public static boolean isLoadMoreStatus(final int status) {
             return status > STATUS.STATUS_DEFAULT;
         }
 
-        private static boolean isStatusDefault(final byte status) {
+        private static boolean isStatusDefault(final int status) {
             return status == STATUS.STATUS_DEFAULT;
         }
 
-        private static String getStatus(byte status) {
+        private static String getStatus(int status) {
             final String statusInfo;
             switch (status) {
                 case STATUS_REFRESH_RETURNING:
@@ -1610,7 +1626,7 @@ public class SwipeToLoadLayout extends ViewGroup {
             return statusInfo;
         }
 
-        private static void printStatus(byte status) {
+        private static void printStatus(int status) {
             Log.d(TAG, "printStatus:" + getStatus(status));
         }
     }
