@@ -33,9 +33,7 @@ public class App extends Application {
 
     public static RequestQueue getRequestQueue() {
         if (sRequestQueue == null) {
-            synchronized (App.class) {
-                sRequestQueue = Volley.newRequestQueue(sContext);
-            }
+            sRequestQueue = Volley.newRequestQueue(sContext);
         }
         return sRequestQueue;
     }
