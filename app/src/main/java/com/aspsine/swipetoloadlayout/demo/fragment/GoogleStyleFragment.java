@@ -2,6 +2,7 @@ package com.aspsine.swipetoloadlayout.demo.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -71,6 +72,16 @@ public class GoogleStyleFragment extends BaseFragment implements OnRefreshListen
         recyclerView.setAdapter(mAdapter);
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE ){
+                    if (!ViewCompat.canScrollVertically(recyclerView, 1)){
+                        swipeToLoadLayout.setLoadingMore(true);
+                    }
+                }
+            }
+        });
     }
 
     @Override
