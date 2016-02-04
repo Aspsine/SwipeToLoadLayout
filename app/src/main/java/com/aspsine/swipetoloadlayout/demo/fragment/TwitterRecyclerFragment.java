@@ -4,6 +4,7 @@ package com.aspsine.swipetoloadlayout.demo.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -95,6 +97,17 @@ public class TwitterRecyclerFragment extends BaseFragment implements OnRefreshLi
 
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
+
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE ){
+                    if (!ViewCompat.canScrollVertically(recyclerView, 1)){
+                        swipeToLoadLayout.setLoadingMore(true);
+                    }
+                }
+            }
+        });
     }
 
     @Override

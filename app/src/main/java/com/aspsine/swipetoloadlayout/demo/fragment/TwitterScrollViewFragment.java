@@ -3,10 +3,14 @@ package com.aspsine.swipetoloadlayout.demo.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -32,6 +36,8 @@ public class TwitterScrollViewFragment extends BaseFragment implements OnRefresh
 
     private SwipeToLoadLayout swipeToLoadLayout;
 
+    private ScrollView scrollView;
+
     private TextView tvTitle;
 
     private ImageView[] ivArray;
@@ -52,6 +58,7 @@ public class TwitterScrollViewFragment extends BaseFragment implements OnRefresh
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
+        scrollView = (ScrollView) view.findViewById(R.id.swipe_target);
         tvTitle = (TextView) view.findViewById(R.id.tvTitle);
         ViewGroup viewGroup = (ViewGroup) view.findViewById(R.id.group);
         // use this method find view is not an good way.
@@ -63,7 +70,19 @@ public class TwitterScrollViewFragment extends BaseFragment implements OnRefresh
 
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
+
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(mOnScrollChangedListener);
     }
+
+    ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener = new ViewTreeObserver.OnScrollChangedListener() {
+
+        @Override
+        public void onScrollChanged() {
+            if (scrollView.getChildAt(0).getHeight() < scrollView.getScrollY() + scrollView.getHeight() && !ViewCompat.canScrollVertically(scrollView, 1)) {
+                swipeToLoadLayout.setLoadingMore(true);
+            }
+        }
+    };
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -86,6 +105,12 @@ public class TwitterScrollViewFragment extends BaseFragment implements OnRefresh
         if (swipeToLoadLayout.isLoadingMore()) {
             swipeToLoadLayout.setLoadingMore(false);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        scrollView.getViewTreeObserver().removeOnScrollChangedListener(mOnScrollChangedListener);
+        super.onDestroyView();
     }
 
     @Override
