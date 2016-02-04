@@ -3,6 +3,7 @@ package com.aspsine.swipetoloadlayout.demo.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +79,11 @@ public class TwitterListViewFragment extends Fragment implements OnRefreshListen
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    if (view.getLastVisiblePosition() == view.getCount() - 1 && !ViewCompat.canScrollVertically(view, 1)) {
+                        swipeToLoadLayout.setLoadingMore(true);
+                    }
+                }
             }
 
             @Override

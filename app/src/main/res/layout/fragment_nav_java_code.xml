@@ -16,7 +16,7 @@
         tools:context="com.aspsine.swipetoloadlayout.demo.fragment.NavJavaCodeFragment">
 
         <ListView
-            android:id="@+id/swipe_target"
+            android:id="@id/swipe_target"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
