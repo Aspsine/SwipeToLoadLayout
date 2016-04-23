@@ -2,7 +2,6 @@ package com.aspsine.swipetoloadlayout.demo.view.header;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -61,7 +60,7 @@ public class YalantisPhoenixRefreshHeaderView extends FrameLayout implements Swi
     private int mOldY = 0;
 
     @Override
-    public void onSwipe(int y, boolean isComplete) {
+    public void onMove(int y, boolean isComplete, boolean automatic) {
         int delta = y - mOldY;
         mDrawable.offsetTopAndBottom(delta);
         mDrawable.setPercent(y / (float) mTriggerOffset, true);
@@ -76,7 +75,7 @@ public class YalantisPhoenixRefreshHeaderView extends FrameLayout implements Swi
     }
 
     @Override
-    public void complete() {
+    public void onComplete() {
 
     }
 

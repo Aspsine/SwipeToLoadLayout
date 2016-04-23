@@ -1,10 +1,8 @@
 package com.aspsine.swipetoloadlayout.demo.view.header;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.aspsine.swipetoloadlayout.SwipeRefreshTrigger;
@@ -60,9 +58,8 @@ public class GoogleCircleHookRefreshHeaderView extends FrameLayout implements Sw
     }
 
     @Override
-    public void onSwipe(int y, boolean isComplete) {
+    public void onMove(int y, boolean isComplete, boolean automatic) {
         float alpha = y / (float) mTriggerOffset;
-        Log.i("onSwipe", "alpha= " + alpha);
         ViewCompat.setAlpha(progressView, alpha);
         progressView.setProgressRotation(y / (float) mFinalOffset);
     }
@@ -73,7 +70,7 @@ public class GoogleCircleHookRefreshHeaderView extends FrameLayout implements Sw
     }
 
     @Override
-    public void complete() {
+    public void onComplete() {
         progressView.stop();
     }
 

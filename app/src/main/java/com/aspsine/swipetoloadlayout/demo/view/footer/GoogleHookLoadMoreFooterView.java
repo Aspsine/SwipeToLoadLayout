@@ -3,7 +3,6 @@ package com.aspsine.swipetoloadlayout.demo.view.footer;
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.aspsine.swipetoloadlayout.SwipeLoadMoreTrigger;
@@ -55,9 +54,8 @@ public class GoogleHookLoadMoreFooterView extends FrameLayout implements SwipeTr
     }
 
     @Override
-    public void onSwipe(int y, boolean isComplete) {
+    public void onMove(int y, boolean isComplete, boolean automatic) {
         float alpha = -y / (float) mTriggerOffset;
-        Log.i("onSwipe", "alpha= " + alpha);
         ViewCompat.setAlpha(progressView, alpha);
         if (!isComplete){
             progressView.setProgressRotation(-y * (1f)/ (float) mFinalOffset);
@@ -69,7 +67,7 @@ public class GoogleHookLoadMoreFooterView extends FrameLayout implements SwipeTr
     }
 
     @Override
-    public void complete() {
+    public void onComplete() {
         progressView.stop();
     }
 

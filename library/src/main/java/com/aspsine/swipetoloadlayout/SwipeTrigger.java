@@ -6,11 +6,11 @@ package com.aspsine.swipetoloadlayout;
 public interface SwipeTrigger {
     void onPrepare();
 
-    void onSwipe(int y, boolean isComplete);
+    void onMove(int y, boolean isComplete, boolean automatic);
 
     void onRelease();
 
-    void complete();
+    void onComplete();
 
     void onReset();
 }

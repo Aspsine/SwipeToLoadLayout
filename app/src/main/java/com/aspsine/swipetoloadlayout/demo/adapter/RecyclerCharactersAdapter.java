@@ -2,7 +2,9 @@ package com.aspsine.swipetoloadlayout.demo.adapter;
 
 import android.content.res.Resources;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,6 +104,42 @@ public class RecyclerCharactersAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     @Override
+    public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager instanceof GridLayoutManager) {
+            final GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    RecyclerView.Adapter adapter = recyclerView.getAdapter();
+                    if (isFullSpanType(adapter.getItemViewType(position))) {
+                        return gridLayoutManager.getSpanCount();
+                    }
+                    return 1;
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        int position = holder.getLayoutPosition();
+        int type = getItemViewType(position);
+        if (isFullSpanType(type)) {
+            ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+            if (layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
+                StaggeredGridLayoutManager.LayoutParams lp = (StaggeredGridLayoutManager.LayoutParams) layoutParams;
+                lp.setFullSpan(true);
+            }
+        }
+    }
+
+    private boolean isFullSpanType(int type) {
+        return type == TYPE_VIEWPAGER || type == TYPE_GROUP;
+    }
+
+    @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         int type = getItemViewType(i);
         View itemView = null;
@@ -110,11 +148,7 @@ public class RecyclerCharactersAdapter extends RecyclerView.Adapter<RecyclerView
                 itemView = inflate(viewGroup, R.layout.layout_viewpager);
                 return new ViewPagerHolder(itemView);
             case TYPE_GROUP:
-                if (mType == TwitterRecyclerFragment.TYPE_LINEAR) {
-                    itemView = inflate(viewGroup, R.layout.item_header);
-                } else {
-                    itemView = inflate(viewGroup, R.layout.item_header_grid);
-                }
+                itemView = inflate(viewGroup, R.layout.item_header);
                 return new GroupHolder(itemView);
             case TYPE_CHILD:
                 if (mType == TwitterRecyclerFragment.TYPE_LINEAR) {
