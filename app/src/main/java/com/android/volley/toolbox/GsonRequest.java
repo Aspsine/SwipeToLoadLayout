@@ -39,6 +39,12 @@ public class GsonRequest<T> extends Request<T> {
             parsed = new String(response.data);
         }
         T t = mGson.fromJson(parsed, mClazz);
+        //TODO
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return Response.success(t, HttpHeaderParser.parseCacheHeaders(response));
     }
 

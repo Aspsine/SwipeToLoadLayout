@@ -109,7 +109,11 @@
                 android:layout_height="wrap_content"
                 android:text="Classic style"
                 android:textSize="16sp" />
-
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Google style"
+                android:textSize="16sp" />
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

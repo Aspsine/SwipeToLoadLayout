@@ -7,9 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -220,8 +218,11 @@ public class NavJavaCodeFragment extends BaseNavigationFragment implements OnRef
             case 0:
                 view = mInflater.inflate(R.layout.layout_classic_footer, swipeToLoadLayout, false);
                 break;
-            case 1:
+            case 2:
                 view = mInflater.inflate(R.layout.layout_google_footer, swipeToLoadLayout, false);
+                break;
+            case 1:
+                view = mInflater.inflate(R.layout.layout_google_hook_footer, swipeToLoadLayout, false);
                 break;
         }
         if (view != null) {

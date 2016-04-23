@@ -2,9 +2,7 @@ package com.aspsine.swipetoloadlayout;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 /**
  * Created by Aspsine on 2015/8/13.
@@ -32,7 +30,7 @@ public class SwipeLoadMoreFooterLayout extends FrameLayout implements SwipeLoadM
     }
 
     @Override
-    public void onSwipe(int y, boolean isComplete) {
+    public void onMove(int y, boolean isComplete, boolean automatic) {
     }
 
     @Override
@@ -41,7 +39,7 @@ public class SwipeLoadMoreFooterLayout extends FrameLayout implements SwipeLoadM
     }
 
     @Override
-    public void complete() {
+    public void onComplete() {
 
     }
 

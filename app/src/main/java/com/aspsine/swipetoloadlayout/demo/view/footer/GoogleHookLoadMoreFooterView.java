@@ -1,39 +1,35 @@
-package com.aspsine.swipetoloadlayout.demo.view.header;
+package com.aspsine.swipetoloadlayout.demo.view.footer;
 
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import com.aspsine.swipetoloadlayout.SwipeRefreshTrigger;
+import com.aspsine.swipetoloadlayout.SwipeLoadMoreTrigger;
 import com.aspsine.swipetoloadlayout.SwipeTrigger;
 import com.aspsine.swipetoloadlayout.demo.R;
 import com.aspsine.swipetoloadlayout.demo.view.GoogleCircleProgressView;
 
-/**
- * Created by aspsine on 15/11/7.
- */
-public class GoogleCircleHookRefreshHeaderView extends FrameLayout implements SwipeTrigger, SwipeRefreshTrigger {
+public class GoogleHookLoadMoreFooterView extends FrameLayout implements SwipeTrigger, SwipeLoadMoreTrigger {
+
     private GoogleCircleProgressView progressView;
 
     private int mTriggerOffset;
-
     private int mFinalOffset;
 
-    public GoogleCircleHookRefreshHeaderView(Context context) {
+    public GoogleHookLoadMoreFooterView(Context context) {
         this(context, null);
     }
 
-    public GoogleCircleHookRefreshHeaderView(Context context, AttributeSet attrs) {
+    public GoogleHookLoadMoreFooterView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public GoogleCircleHookRefreshHeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public GoogleHookLoadMoreFooterView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mTriggerOffset = context.getResources().getDimensionPixelOffset(R.dimen.refresh_trigger_offset_google);
-        mFinalOffset = context.getResources().getDimensionPixelOffset(R.dimen.refresh_final_offset_google);
+        mTriggerOffset = context.getResources().getDimensionPixelOffset(R.dimen.load_more_trigger_offset_google);
+        mFinalOffset = context.getResources().getDimensionPixelOffset(R.dimen.load_more_final_offset_google);
     }
-
 
     @Override
     protected void onFinishInflate() {
@@ -48,7 +44,7 @@ public class GoogleCircleHookRefreshHeaderView extends FrameLayout implements Sw
     }
 
     @Override
-    public void onRefresh() {
+    public void onLoadMore() {
         progressView.start();
     }
 
@@ -59,14 +55,15 @@ public class GoogleCircleHookRefreshHeaderView extends FrameLayout implements Sw
 
     @Override
     public void onMove(int y, boolean isComplete, boolean automatic) {
-        float alpha = y / (float) mTriggerOffset;
+        float alpha = -y / (float) mTriggerOffset;
         ViewCompat.setAlpha(progressView, alpha);
-        progressView.setProgressRotation(y / (float) mFinalOffset);
+        if (!isComplete){
+            progressView.setProgressRotation(-y * (1f)/ (float) mFinalOffset);
+        }
     }
 
     @Override
     public void onRelease() {
-
     }
 
     @Override
@@ -78,5 +75,4 @@ public class GoogleCircleHookRefreshHeaderView extends FrameLayout implements Sw
     public void onReset() {
         ViewCompat.setAlpha(progressView, 1f);
     }
-
 }

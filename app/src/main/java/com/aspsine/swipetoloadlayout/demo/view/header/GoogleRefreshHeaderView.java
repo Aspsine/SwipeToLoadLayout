@@ -59,7 +59,7 @@ public class GoogleRefreshHeaderView extends FrameLayout implements SwipeTrigger
     }
 
     @Override
-    public void onSwipe(int y, boolean isComplete) {
+    public void onMove(int y, boolean isComplete, boolean automatic) {
         if (!isComplete) {
             ringProgressDrawable.setPercent(y / (float) mTriggerOffset);
         }
@@ -71,7 +71,7 @@ public class GoogleRefreshHeaderView extends FrameLayout implements SwipeTrigger
     }
 
     @Override
-    public void complete() {
+    public void onComplete() {
         ringProgressDrawable.stop();
     }
 
