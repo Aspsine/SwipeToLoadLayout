@@ -619,7 +619,7 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
     private void scrollSwipingToLoadMoreToDefault() {
-        mAutoScroller.autoScroll(-mFooterOffset, mSwipingToRefreshToDefaultScrollingDuration);
+        mAutoScroller.autoScroll(-mFooterOffset, mSwipingToLoadMoreToDefaultScrollingDuration);
     }
 
     private void scrollReleaseToRefreshToRefreshing() {
@@ -631,7 +631,7 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
     private void scrollRefreshingToDefault() {
-        mAutoScroller.autoScroll(-mHeaderOffset, mSwipingToRefreshToDefaultScrollingDuration);
+        mAutoScroller.autoScroll(-mHeaderOffset, mRefreshCompleteToDefaultScrollingDuration);
     }
 
     private void scrollLoadingMoreToDefault() {
@@ -1295,7 +1295,7 @@ public class SwipeToLoadLayout extends ViewGroup {
 
         } else if (STATUS.isSwipingToLoadMore(mStatus)) {
             // simply return
-            scrollLoadingMoreToDefault();
+            scrollSwipingToLoadMoreToDefault();
 
         } else if (STATUS.isReleaseToRefresh(mStatus)) {
             // return to header height and perform refresh
