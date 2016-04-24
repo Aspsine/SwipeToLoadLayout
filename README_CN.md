@@ -1,6 +1,6 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwipeToLoadLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2812)
 # SwipeToLoadLayout
-利用SwipeToLoadLayout可以非常容易的实现下拉刷新和加载更多。
+SwipeToLoadLayout是一个可以帮助你实现下拉刷新和加载更多的Layout
 
 ##支持的View
 理论上支持所有的View
@@ -46,9 +46,10 @@ repositories {
 - Step 2. 在你的app build.gradle 的 dependencies 中添加依赖
 ```
 dependencies {
-	compile 'com.github.Aspsine:SwipeToLoadLayout:v1.0.2'
+	compile 'com.github.Aspsine:SwipeToLoadLayout:1.0.3'
 }
 ```
+- Step 3. 查看[快速集成文档](https://github.com/Aspsine/SwipeToLoadLayout/wiki/Quick-Setup)
 
 ##致谢
 - Google SwipeRefreshLayout
