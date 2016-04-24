@@ -1,6 +1,6 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwipeToLoadLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2812)
 # SwipeToLoadLayout
-SwipeToLoadLayout provides a standered to achieve pull-to-refresh and pull-to-loadmore.
+SwipeToLoadLayout is a reusable pull-to-refresh and pull-to-load-more widget.
 
 ##Supported View
 Theoretically support all kinds of views.
