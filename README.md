@@ -1,6 +1,6 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwipeToLoadLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2812)
 # SwipeToLoadLayout
-SwipeToLoadLayout provides a standered to achieve pull-to-refresh and pull-to-loadmore.
+SwipeToLoadLayout is a reusable pull-to-refresh and pull-to-load-more widget.
 
 ##Supported View
 Theoretically support all kinds of views.
@@ -46,9 +46,12 @@ repositories {
 - Step 2. Add the dependency in the form
 ```
 dependencies {
-	compile 'com.github.Aspsine:SwipeToLoadLayout:v1.0.2'
+	compile 'com.github.Aspsine:SwipeToLoadLayout:v1.0.3'
 }
 ```
+- Step 3.
+Look over [Quick Setup](https://github.com/Aspsine/SwipeToLoadLayout/wiki/Quick-Setup) for more details.
+You can find more customized header view and footer view in the demo app.
 
 ##Thanks
 - Google SwipeRefreshLayout
@@ -58,6 +61,7 @@ dependencies {
 ##Contact Me
 - Github:   github.com/aspsine
 - Email:    littleximail@gmail.com
+- WeiBo:    [@Aspsine](http://weibo.com/wetze)
 - Linkedin: cn.linkedin.com/in/aspsine
 
 ##License

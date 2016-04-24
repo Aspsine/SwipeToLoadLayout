@@ -10,26 +10,31 @@ import com.aspsine.swipetoloadlayout.SwipeTrigger;
 import com.aspsine.swipetoloadlayout.demo.R;
 import com.aspsine.swipetoloadlayout.demo.view.GoogleCircleProgressView;
 
-public class GoogleHookLoadMoreFooterView extends FrameLayout implements SwipeTrigger, SwipeLoadMoreTrigger {
+/**
+ * Created by aspsine on 16/1/27.
+ */
+public class GoogleCircleHookLoadMoreFooterView extends FrameLayout implements SwipeTrigger, SwipeLoadMoreTrigger {
 
     private GoogleCircleProgressView progressView;
 
     private int mTriggerOffset;
+
     private int mFinalOffset;
 
-    public GoogleHookLoadMoreFooterView(Context context) {
+    public GoogleCircleHookLoadMoreFooterView(Context context) {
         this(context, null);
     }
 
-    public GoogleHookLoadMoreFooterView(Context context, AttributeSet attrs) {
+    public GoogleCircleHookLoadMoreFooterView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public GoogleHookLoadMoreFooterView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public GoogleCircleHookLoadMoreFooterView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mTriggerOffset = context.getResources().getDimensionPixelOffset(R.dimen.load_more_trigger_offset_google);
+        mTriggerOffset = context.getResources().getDimensionPixelOffset(R.dimen.load_more_footer_height_google);
         mFinalOffset = context.getResources().getDimensionPixelOffset(R.dimen.load_more_final_offset_google);
     }
+
 
     @Override
     protected void onFinishInflate() {
@@ -57,22 +62,24 @@ public class GoogleHookLoadMoreFooterView extends FrameLayout implements SwipeTr
     public void onMove(int y, boolean isComplete, boolean automatic) {
         float alpha = -y / (float) mTriggerOffset;
         ViewCompat.setAlpha(progressView, alpha);
-        if (!isComplete){
-            progressView.setProgressRotation(-y * (1f)/ (float) mFinalOffset);
+        if (!isComplete) {
+            progressView.setProgressRotation(-y / (float) mFinalOffset);
         }
     }
 
     @Override
     public void onRelease() {
+
     }
 
     @Override
     public void onComplete() {
-        progressView.stop();
     }
 
     @Override
     public void onReset() {
+        progressView.stop();
         ViewCompat.setAlpha(progressView, 1f);
     }
+
 }
