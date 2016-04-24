@@ -1,6 +1,8 @@
 package com.aspsine.swipetoloadlayout.demo.view.header;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
@@ -30,7 +32,7 @@ public class GoogleCircleHookRefreshHeaderView extends FrameLayout implements Sw
 
     public GoogleCircleHookRefreshHeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mTriggerOffset = context.getResources().getDimensionPixelOffset(R.dimen.refresh_trigger_offset_google);
+        mTriggerOffset = context.getResources().getDimensionPixelOffset(R.dimen.refresh_header_height_google);
         mFinalOffset = context.getResources().getDimensionPixelOffset(R.dimen.refresh_final_offset_google);
     }
 
@@ -61,7 +63,9 @@ public class GoogleCircleHookRefreshHeaderView extends FrameLayout implements Sw
     public void onMove(int y, boolean isComplete, boolean automatic) {
         float alpha = y / (float) mTriggerOffset;
         ViewCompat.setAlpha(progressView, alpha);
-        progressView.setProgressRotation(y / (float) mFinalOffset);
+        if (!isComplete) {
+            progressView.setProgressRotation(y / (float) mFinalOffset);
+        }
     }
 
     @Override
@@ -69,14 +73,18 @@ public class GoogleCircleHookRefreshHeaderView extends FrameLayout implements Sw
 
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
     public void onComplete() {
-        progressView.stop();
+        progressView.animate().scaleX(0).scaleY(0).setDuration(300);
     }
 
     @Override
     public void onReset() {
+        progressView.stop();
         ViewCompat.setAlpha(progressView, 1f);
+        ViewCompat.setScaleX(progressView, 1f);
+        ViewCompat.setScaleY(progressView, 1f);
     }
 
 }
