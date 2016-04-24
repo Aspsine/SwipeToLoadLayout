@@ -46,9 +46,12 @@ repositories {
 - Step 2. Add the dependency in the form
 ```
 dependencies {
-	compile 'com.github.Aspsine:SwipeToLoadLayout:v1.0.2'
+	compile 'com.github.Aspsine:SwipeToLoadLayout:v1.0.3'
 }
 ```
+- Step 3.
+Look over [Quick Setup](https://github.com/Aspsine/SwipeToLoadLayout/wiki/Quick-Setup) for more details.
+You can find more customized header view and footer view in the demo app.
 
 ##Thanks
 - Google SwipeRefreshLayout
