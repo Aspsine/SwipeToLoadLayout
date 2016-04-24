@@ -61,6 +61,7 @@ You can find more customized header view and footer view in the demo app.
 ##Contact Me
 - Github:   github.com/aspsine
 - Email:    littleximail@gmail.com
+- WeiBo:    [@Aspsine](http://weibo.com/wetze)
 - Linkedin: cn.linkedin.com/in/aspsine
 
 ##License
