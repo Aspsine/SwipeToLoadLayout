@@ -24,6 +24,8 @@ import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.aspsine.swipetoloadlayout.demo.App;
 import com.aspsine.swipetoloadlayout.demo.Constants;
 import com.aspsine.swipetoloadlayout.demo.R;
+import com.aspsine.swipetoloadlayout.demo.adapter.OnChildItemClickListener;
+import com.aspsine.swipetoloadlayout.demo.adapter.OnChildItemLongClickListener;
 import com.aspsine.swipetoloadlayout.demo.adapter.RecyclerCharactersAdapter;
 import com.aspsine.swipetoloadlayout.demo.adapter.SectionAdapter;
 import com.aspsine.swipetoloadlayout.demo.model.Character;
@@ -33,8 +35,8 @@ import com.aspsine.swipetoloadlayout.demo.model.SectionCharacters;
  * A simple {@link Fragment} subclass.
  */
 public class TwitterRecyclerFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener,
-        SectionAdapter.OnChildItemClickListener<Character>,
-        SectionAdapter.OnChildItemLongClickListener<Character> {
+        OnChildItemClickListener<Character>,
+        OnChildItemLongClickListener<Character> {
     private static final String TAG = TwitterRecyclerFragment.class.getSimpleName();
 
     public static final int TYPE_LINEAR = 0;

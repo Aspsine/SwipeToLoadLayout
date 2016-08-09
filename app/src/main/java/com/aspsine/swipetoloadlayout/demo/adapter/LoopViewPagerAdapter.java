@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aspsine.swipetoloadlayout.demo.R;
 import com.aspsine.swipetoloadlayout.demo.model.Character;
@@ -84,7 +85,7 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_viewpager, parent, false);
@@ -95,6 +96,12 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), mHeroes.get(position).getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
         Character character = mHeroes.get(position);
         holder.tvName.setText(character.getName().replace(" ", System.getProperty("line.separator")));
         Picasso.with(parent.getContext()).load(character.getAvatar()).into(holder.ivBanner);

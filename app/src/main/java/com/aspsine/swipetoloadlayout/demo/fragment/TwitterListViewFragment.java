@@ -22,6 +22,8 @@ import com.aspsine.swipetoloadlayout.demo.App;
 import com.aspsine.swipetoloadlayout.demo.Constants;
 import com.aspsine.swipetoloadlayout.demo.R;
 import com.aspsine.swipetoloadlayout.demo.adapter.LoopViewPagerAdapter;
+import com.aspsine.swipetoloadlayout.demo.adapter.OnChildItemClickListener;
+import com.aspsine.swipetoloadlayout.demo.adapter.OnChildItemLongClickListener;
 import com.aspsine.swipetoloadlayout.demo.adapter.SectionAdapter;
 import com.aspsine.swipetoloadlayout.demo.model.Character;
 import com.aspsine.swipetoloadlayout.demo.model.SectionCharacters;
@@ -30,8 +32,8 @@ import com.aspsine.swipetoloadlayout.demo.model.SectionCharacters;
  * A simple {@link Fragment} subclass.
  */
 public class TwitterListViewFragment extends Fragment implements OnRefreshListener, OnLoadMoreListener,
-        SectionAdapter.OnChildItemClickListener<Character>,
-        SectionAdapter.OnChildItemLongClickListener<Character> {
+        OnChildItemClickListener<Character>,
+        OnChildItemLongClickListener<Character> {
     public static final String TAG = TwitterListViewFragment.class.getSimpleName();
 
     private SwipeToLoadLayout swipeToLoadLayout;

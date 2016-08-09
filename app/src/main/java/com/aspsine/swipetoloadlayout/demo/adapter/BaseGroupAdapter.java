@@ -22,22 +22,6 @@ public abstract class BaseGroupAdapter<G, C> extends BaseAdapter {
 
     protected OnChildItemLongClickListener mOnChildItemLongClickListener;
 
-    public interface OnGroupItemClickListener<G> {
-        void onGroupItemClick(int groupPosition, G g, View view);
-    }
-
-    public interface OnGroupItemLongClickListener<G> {
-        boolean onGroupLongClick(int groupPosition, G g, View view);
-    }
-
-    public interface OnChildItemClickListener<C> {
-        void onChildItemClick(int groupPosition, int childPosition, C c, View view);
-    }
-
-    public interface OnChildItemLongClickListener<C> {
-        boolean onClickItemLongClick(int groupPosition, int childPosition, C c, View view);
-    }
-
     public void setOnGroupItemClickListener(OnGroupItemClickListener onGroupItemClickListener) {
         this.mOnGroupItemClickListener = onGroupItemClickListener;
     }

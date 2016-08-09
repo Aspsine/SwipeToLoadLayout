@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aspsine.swipetoloadlayout.demo.R;
 import com.aspsine.swipetoloadlayout.demo.fragment.TwitterRecyclerFragment;
@@ -37,6 +38,14 @@ public class RecyclerCharactersAdapter extends RecyclerView.Adapter<RecyclerView
     private final List<Integer> mGroupPositions;
 
     private LoopViewPagerAdapter mPagerAdapter;
+
+    protected OnGroupItemClickListener mOnGroupItemClickListener;
+
+    protected OnGroupItemLongClickListener mOnGroupItemLongClickListener;
+
+    protected OnChildItemClickListener mOnChildItemClickListener;
+
+    protected OnChildItemLongClickListener mOnChildItemLongClickListener;
 
     private final int mType;
 
@@ -156,7 +165,18 @@ public class RecyclerCharactersAdapter extends RecyclerView.Adapter<RecyclerView
                 } else {
                     itemView = inflate(viewGroup, R.layout.item_hero_grid);
                 }
-                return new ChildHolder(itemView);
+                final ChildHolder holder = new ChildHolder(itemView);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int absolutePosition = holder.getAdapterPosition();
+                        int groupPosition = getGroupPosition(absolutePosition);
+                        int childPosition = getChildPosition(absolutePosition);
+                        Character character = mSections.get(groupPosition).getCharacters().get(childPosition);
+                        Toast.makeText(view.getContext(), character.getName(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return holder;
         }
         throw new IllegalArgumentException("Wrong type!");
     }
