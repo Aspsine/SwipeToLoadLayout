@@ -934,16 +934,17 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @param loadingMore
      */
     public void setLoadingMore(boolean loadingMore) {
-        if (!isLoadMoreEnabled() || mFooterView == null) {
+        if (mFooterView == null) {
             return;
         }
-        this.mAutoLoading = loadingMore;
-        if (loadingMore) {
+        if (loadingMore && isLoadMoreEnabled()) {
+            mAutoLoading = true;
             if (STATUS.isStatusDefault(mStatus)) {
                 setStatus(STATUS.STATUS_SWIPING_TO_LOAD_MORE);
                 scrollDefaultToLoadingMore();
             }
         } else {
+            mAutoLoading = false;
             if (STATUS.isLoadingMore(mStatus)) {
                 mLoadMoreCallback.onComplete();
                 postDelayed(new Runnable() {
