@@ -18,7 +18,7 @@ import android.widget.Scroller;
 /**
  * Created by Aspsine on 2015/8/13.
  */
-public class SwipeToLoadLayout extends ViewGroup implements NestedScrollingParent, NestedScrollingChild{
+public class SwipeToLoadLayout extends ViewGroup implements NestedScrollingParent, NestedScrollingChild {
 
     private static final String TAG = SwipeToLoadLayout.class.getSimpleName();
 
@@ -443,12 +443,6 @@ public class SwipeToLoadLayout extends ViewGroup implements NestedScrollingParen
         switch (action) {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                // swipeToRefresh -> finger up -> finger down if the status is still swipeToRefresh
-                // in onInterceptTouchEvent ACTION_DOWN event will stop the scroller
-                // if the event pass to the child view while ACTION_MOVE(condition is false)
-                // in onInterceptTouchEvent ACTION_MOVE the ACTION_UP or ACTION_CANCEL will not be
-                // passed to onInterceptTouchEvent and onTouchEvent. Instead It will be passed to
-                // child view's onTouchEvent. So we must deal this situation in dispatchTouchEvent
                 onActivePointerUp();
                 break;
         }
@@ -465,27 +459,24 @@ public class SwipeToLoadLayout extends ViewGroup implements NestedScrollingParen
                 mInitDownY = mLastY = getMotionEventY(event, mActivePointerId);
                 mInitDownX = mLastX = getMotionEventX(event, mActivePointerId);
 
-                // if it isn't an ing status or default status
+                // if it's auto-scrolling state
                 if (STATUS.isSwipingToRefresh(mStatus) || STATUS.isSwipingToLoadMore(mStatus) ||
                         STATUS.isReleaseToRefresh(mStatus) || STATUS.isReleaseToLoadMore(mStatus)) {
-                    // abort autoScrolling, not trigger the method #autoScrollFinished()
+                    // abort autoScrolling, shouldn't trigger the method #autoScrollFinished()
                     mAutoScroller.abortIfRunning();
                     if (mDebug) {
                         Log.i(TAG, "Another finger down, abort auto scrolling, let the new finger handle");
                     }
+                    return true; // intercept touch event
                 }
 
-                if (STATUS.isSwipingToRefresh(mStatus) || STATUS.isReleaseToRefresh(mStatus)
-                        || STATUS.isSwipingToLoadMore(mStatus) || STATUS.isReleaseToLoadMore(mStatus)) {
-                    return true;
-                }
-
-                // let children view handle the ACTION_DOWN;
+                // else
+                // let children view handle the ACTION_DOWN:
 
                 // 1. children consumed:
                 // if at least one of children onTouchEvent() ACTION_DOWN return true.
                 // ACTION_DOWN event will not return to SwipeToLoadLayout#onTouchEvent().
-                // but the others action can be handled by SwipeToLoadLayout#onInterceptTouchEvent()
+                // but the others action can still be handled by SwipeToLoadLayout#onInterceptTouchEvent()
 
                 // 2. children not consumed:
                 // if children onTouchEvent() ACTION_DOWN return false.
@@ -511,7 +502,7 @@ public class SwipeToLoadLayout extends ViewGroup implements NestedScrollingParen
                                 //load more trigger condition
                                 (yInitDiff < 0 && moved && onCheckCanLoadMore());
                 if (triggerCondition) {
-                    // if the refresh's or load more's trigger condition  is true,
+                    // if the refresh or load more trigger condition is true,
                     // intercept the move action event and pass it to SwipeToLoadLayout#onTouchEvent()
                     return true;
                 }
@@ -549,10 +540,6 @@ public class SwipeToLoadLayout extends ViewGroup implements NestedScrollingParen
                 final float xDiff = x - mLastX;
                 mLastY = y;
                 mLastX = x;
-
-                if (Math.abs(xDiff) > Math.abs(yDiff) && Math.abs(xDiff) > mTouchSlop) {
-                    return false;
-                }
 
                 if (STATUS.isStatusDefault(mStatus)) {
                     if (yDiff > 0 && onCheckCanRefresh()) {
