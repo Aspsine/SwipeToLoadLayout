@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
+
 android {
     compileSdkVersion 24
     buildToolsVersion '24.0.1'
@@ -8,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 24
-        versionCode 3
-        versionName "1.0.3"
+        versionCode 1
+        versionName "0.0.1"
     }
     buildTypes {
         release {
@@ -17,6 +16,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
 }
 
 dependencies {
