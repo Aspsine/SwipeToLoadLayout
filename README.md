@@ -60,7 +60,7 @@ dependencies {
 }
 ```
 - Step 3.
-Look over [Quick Setup](https://github.com/PigFlyy/SwipeToLoadLayout/wiki/Quick-Setup) for more details.
+Look over [Quick Setup](https://github.com/Aspsine/SwipeToLoadLayout/wiki/Quick-Setup) for more details.
 You can find more customized header view and footer view in the demo app.
 
 ##Thanks
