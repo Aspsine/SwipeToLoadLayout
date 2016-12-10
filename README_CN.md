@@ -1,3 +1,11 @@
+####【写在前面】
+##这个项目是克隆自 Aspsine的 SwipeToLoadLayout ,我不是这个项目的原作者，如果你想了解更多关于原作品的信息，请访问 ##https://github.com/Aspsine/SwipeToLoadLayout
+##我创建这个分支是因为我觉得原作者更新太慢，如果你也喜欢这个作品并且希望它能变得更好，欢迎Star我或者提交你的idea到这个项目，我会尽我最快的速度更新！
+
+
+###【区别】
+##1、添加一个选择器，可以当你上拉刷新或者加载更多时隐藏头布局或者尾布局，而不是一直保持它们。
+
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwipeToLoadLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2812)
 # SwipeToLoadLayout
 SwipeToLoadLayout是一个可以帮助你实现下拉刷新和加载更多的Layout
@@ -5,8 +13,7 @@ SwipeToLoadLayout是一个可以帮助你实现下拉刷新和加载更多的Lay
 ##支持的View
 理论上支持所有的View
 
-##Demo
-[Download](https://raw.githubusercontent.com/Aspsine/SwipeToLoadLayout/master/art/demo.apk)
+
 
 ##Demo 截图 & 视频(Youku)
 - ListView & GridView
@@ -46,13 +53,13 @@ repositories {
 - Step 2. 在你的app build.gradle 的 dependencies 中添加依赖
 ```
 dependencies {
-	compile 'com.github.Aspsine:SwipeToLoadLayout:1.0.3'
+	compile 'com.github.PigFlyy:SwipeToLoadLayout:v0.0.1'
 }
 ```
-- Step 3. 查看[快速集成文档](https://github.com/Aspsine/SwipeToLoadLayout/wiki/Quick-Setup)
+- Step 3. 查看[快速集成文档](https://github.com/PigFlyy/SwipeToLoadLayout/wiki/Quick-Setup)
 
 ##致谢
-- Google SwipeRefreshLayout
+- Aspsine SwipeRefreshLayout
 - [liaohuqiu android-Ultra-Pull-To-Refresh](https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh)
 - [Yalantis Phoenix](https://github.com/Yalantis/Phoenix)
 
