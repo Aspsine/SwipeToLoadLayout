@@ -4,8 +4,7 @@
 ##I create this branch because I think Aspsine update slowly, If you like this project and want  to make it better and better,please ##star me or pull your idea!I will merge it quickly as my best!
 
 ###【The Difference】
-#1、Add a switcher to hide headerView/footView while refreshing/loadingmore.
-
+# 1、Add a switcher to hide headerView/footView while refreshing/loadingmore,not keep them always! 
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwipeToLoadLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2812)
 # SwipeToLoadLayout
