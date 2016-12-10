@@ -56,7 +56,7 @@ dependencies {
 	compile 'com.github.PigFlyy:SwipeToLoadLayout:v0.0.1'
 }
 ```
-- Step 3. 查看[快速集成文档](https://github.com/PigFlyy/SwipeToLoadLayout/wiki/Quick-Setup)
+- Step 3. 查看[快速集成文档](https://github.com/Aspsine/SwipeToLoadLayout/wiki/Quick-Setup)
 
 ##致谢
 - Aspsine SwipeRefreshLayout
