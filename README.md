@@ -1,6 +1,6 @@
-First of all, this project is cloned from Aspsine's SwipeToLoadLayout because it update slowly,I'm not the author of it.if you want to know more about it,please visit https://github.com/Aspsine/SwipeToLoadLayout
+First of all, this project is cloned from Aspsine's SwipeToLoadLayout ,I'm not the author of it.if you want to know more about it,please visit https://github.com/Aspsine/SwipeToLoadLayout
 
-If you like this job,we can do it together to make it better and better,please star me or pull your idea!I will merge it quickly as my best!
+I create this branch because I think Aspsine update slowly, If you like this project and want  to make it better and better,please star me or pull your idea!I will merge it quickly as my best!
 
 【The Difference】
 1、Add a switcher to hide headerView/footView while refreshing/loadingmore.
@@ -56,7 +56,7 @@ dependencies {
 }
 ```
 - Step 3.
-Look over [Quick Setup](https://github.com/Aspsine/SwipeToLoadLayout/wiki/Quick-Setup) for more details.
+Look over [Quick Setup](https://github.com/PigFlyy/SwipeToLoadLayout/wiki/Quick-Setup) for more details.
 You can find more customized header view and footer view in the demo app.
 
 ##Thanks
