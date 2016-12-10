@@ -1,9 +1,10 @@
-First of all, this project is cloned from Aspsine's SwipeToLoadLayout ,I'm not the author of it.if you want to know more about it,please visit https://github.com/Aspsine/SwipeToLoadLayout
+###【First of all】
+##this project is cloned from Aspsine's SwipeToLoadLayout ,I'm not the author of it.if you want to know more about it,please visit https://github.com/Aspsine/SwipeToLoadLayout
 
-I create this branch because I think Aspsine update slowly, If you like this project and want  to make it better and better,please star me or pull your idea!I will merge it quickly as my best!
+##I create this branch because I think Aspsine update slowly, If you like this project and want  to make it better and better,please ##star me or pull your idea!I will merge it quickly as my best!
 
-【The Difference】
-1、Add a switcher to hide headerView/footView while refreshing/loadingmore.
+###【The Difference】
+#1、Add a switcher to hide headerView/footView while refreshing/loadingmore.
 
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwipeToLoadLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2812)
