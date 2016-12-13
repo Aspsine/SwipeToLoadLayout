@@ -58,7 +58,9 @@ public class SwipeToLoadLayout extends ViewGroup {
     private View mHeaderView;
 
     private View mTargetView;
-
+    
+    private View mTargetViewContainer;
+    
     private View mFooterView;
 
     private int mHeaderHeight;
@@ -346,6 +348,22 @@ public class SwipeToLoadLayout extends ViewGroup {
         } else if (0 < childNum && childNum < 4) {
             mHeaderView = findViewById(R.id.swipe_refresh_header);
             mTargetView = findViewById(R.id.swipe_target);
+              try {
+ +                mTargetViewContainer = (View) mTargetView.getParent();
+ +                if(mTargetViewContainer instanceof SwipeToLoadLayout) {
+ +                    mTargetViewContainer = null;
+ +                }else{
+ +                    while(mTargetViewContainer.getParent() != null){
+ +                        if(mTargetViewContainer.getParent() instanceof SwipeToLoadLayout){
+ +                            break;
+ +                        }
+ +                        mTargetViewContainer = (View) mTargetViewContainer.getParent();
+ +                    }
+ +                }
+ +            } catch (Exception e) {
+ +                e.printStackTrace();
+ +                mTargetViewContainer = null;
+ +            }
             mFooterView = findViewById(R.id.swipe_load_more_footer);
         } else {
             // more than three children: unsupported!
@@ -377,7 +395,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         }
         // target
         if (mTargetView != null) {
-            final View targetView = mTargetView;
+            final View targetView = mTargetViewContainer == null ? mTargetView : mTargetViewContainer;
             measureChildWithMargins(targetView, widthMeasureSpec, 0, heightMeasureSpec, 0);
         }
         // footer
@@ -979,16 +997,18 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @param loadingMore
      */
     public void setLoadingMore(boolean loadingMore) {
-        if (!isLoadMoreEnabled() || mFooterView == null) {
-            return;
-        }
+       if (mFooterView == null) {
+              return;
+          }
         this.mAutoLoading = loadingMore;
-        if (loadingMore) {
+        if (loadingMore && isLoadMoreEnabled()) {
+ +            mAutoLoading = true;
             if (STATUS.isStatusDefault(mStatus)) {
                 setStatus(STATUS.STATUS_SWIPING_TO_LOAD_MORE);
                 scrollDefaultToLoadingMore();
             }
         } else {
+             mAutoLoading = false;
             if (STATUS.isLoadingMore(mStatus)) {
                 mLoadMoreCallback.onComplete();
                 postDelayed(new Runnable() {
@@ -1095,7 +1115,7 @@ public class SwipeToLoadLayout extends ViewGroup {
 
         // layout target
         if (mTargetView != null) {
-            final View targetView = mTargetView;
+             final View targetView = mTargetViewContainer == null ? mTargetView : mTargetViewContainer;
             MarginLayoutParams lp = (MarginLayoutParams) targetView.getLayoutParams();
             final int targetLeft = paddingLeft + lp.leftMargin;
             final int targetTop;
@@ -1170,7 +1190,10 @@ public class SwipeToLoadLayout extends ViewGroup {
                 mFooterView.bringToFront();
             }
         } else if (mStyle == STYLE.BLEW || mStyle == STYLE.SCALE) {
-            if (mTargetView != null) {
+            if(mTargetViewContainer != null){
+ +                mTargetViewContainer.bringToFront();
+ +            }
+ +            else if (mTargetView != null) {
                 mTargetView.bringToFront();
             }
         }
