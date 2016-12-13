@@ -1,3 +1,15 @@
+#【First of all】
+
+###this project is cloned from Aspsine's SwipeToLoadLayout ,I'm not the author of it.if you want to know more about it,please visit https://github.com/Aspsine/SwipeToLoadLayout
+
+###I create this branch because I think Aspsine update slowly, If you like this project and want  to make it better and better,please ###star me or pull your idea!I will merge it quickly as my best!
+
+#【The Difference】
+
+### 1、Add a switcher to hide headerView/footView while refreshing/loadingmore,not keep them always! 
+
+
+
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwipeToLoadLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2812)
 # SwipeToLoadLayout
 SwipeToLoadLayout is a reusable pull-to-refresh and pull-to-load-more widget.
@@ -5,8 +17,6 @@ SwipeToLoadLayout is a reusable pull-to-refresh and pull-to-load-more widget.
 ##Supported View
 Theoretically support all kinds of views.
 
-##Demo
-[Download](https://raw.githubusercontent.com/Aspsine/SwipeToLoadLayout/master/art/demo.apk)
 
 ##Demo ScreenShot & Video(Youtube)
 - ListView & GridView
@@ -46,7 +56,7 @@ repositories {
 - Step 2. Add the dependency in the form
 ```
 dependencies {
-	compile 'com.github.Aspsine:SwipeToLoadLayout:1.0.3'
+	compile 'com.github.PigFlyy:SwipeToLoadLayout:v0.0.1'
 }
 ```
 - Step 3.
@@ -54,15 +64,14 @@ Look over [Quick Setup](https://github.com/Aspsine/SwipeToLoadLayout/wiki/Quick-
 You can find more customized header view and footer view in the demo app.
 
 ##Thanks
-- Google SwipeRefreshLayout
+- Aspsine SwipeToLoadLayout
 - [liaohuqiu android-Ultra-Pull-To-Refresh](https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh)
 - [Yalantis Phoenix](https://github.com/Yalantis/Phoenix)
 
 ##Contact Me
-- Github:   github.com/aspsine
-- Email:    littleximail@gmail.com
-- WeiBo:    [@Aspsine](http://weibo.com/wetze)
-- Linkedin: cn.linkedin.com/in/aspsine
+- Github:   github.com/PigFlyy
+- Email:    1015121748@qq.com
+
 
 ##License
 
