@@ -236,6 +236,11 @@ public class SwipeToLoadLayout extends ViewGroup {
     private int mDefaultToLoadingMoreScrollingDuration = DEFAULT_DEFAULT_TO_LOADING_MORE_SCROLLING_DURATION;
 
     /**
+     *true : the target is vertically scroll
+     */
+    private boolean mIsVertically = true;
+
+    /**
      * the style enum
      */
     public static final class STYLE {
