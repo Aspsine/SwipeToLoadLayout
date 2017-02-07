@@ -32,4 +32,8 @@
     <!-- jd -->
     <dimen name="refresh_header_height_jd">100dp</dimen>
 
+
+    <dimen name="refresh_header_height">40dp</dimen>
+    <dimen name="refresh_footer_height">40dp</dimen>
+
 </resources>

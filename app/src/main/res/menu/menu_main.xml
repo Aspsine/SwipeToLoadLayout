@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".VerActivity">
     <item android:id="@+id/action_config" android:title="@string/action_config"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>
