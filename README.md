@@ -2,13 +2,13 @@
 # SwipeToLoadLayout
 SwipeToLoadLayout is a reusable pull-to-refresh and pull-to-load-more widget.
 
-##Supported View
+## Supported View
 Theoretically support all kinds of views.
 
-##Demo
+## Demo
 [Download](https://raw.githubusercontent.com/Aspsine/SwipeToLoadLayout/master/art/demo.apk)
 
-##Demo ScreenShot & Video(Youtube)
+## Demo ScreenShot & Video(Youtube)
 - ListView & GridView
 
 [![ListView & GridView](http://img.youtube.com/vi/ThIKO3vz6Bs/0.jpg)](https://youtu.be/ThIKO3vz6Bs) 
@@ -35,7 +35,7 @@ Theoretically support all kinds of views.
 
 You can also create your own header and footer. It's very simple.
 
-##How to
+## How to
 
 - Step 1. Add the JitPack repository in your build.gradle at the end of repositories:
 ```
@@ -53,18 +53,18 @@ dependencies {
 Look over [Quick Setup](https://github.com/Aspsine/SwipeToLoadLayout/wiki/Quick-Setup) for more details.
 You can find more customized header view and footer view in the demo app.
 
-##Thanks
+## Thanks
 - Google SwipeRefreshLayout
 - [liaohuqiu android-Ultra-Pull-To-Refresh](https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh)
 - [Yalantis Phoenix](https://github.com/Yalantis/Phoenix)
 
-##Contact Me
+## Contact Me
 - Github:   github.com/aspsine
 - Email:    littleximail@gmail.com
 - WeiBo:    [@Aspsine](http://weibo.com/wetze)
 - Linkedin: cn.linkedin.com/in/aspsine
 
-##License
+## License
 
     Copyright 2015 Aspsine. All rights reserved.
 

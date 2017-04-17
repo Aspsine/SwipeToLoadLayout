@@ -2,13 +2,13 @@
 # SwipeToLoadLayout
 SwipeToLoadLayout是一个可以帮助你实现下拉刷新和加载更多的Layout
 
-##支持的View
+## 支持的View
 理论上支持所有的View
 
-##Demo
+## Demo
 [Download](https://raw.githubusercontent.com/Aspsine/SwipeToLoadLayout/master/art/demo.apk)
 
-##Demo 截图 & 视频(Youku)
+## Demo 截图 & 视频(Youku)
 - ListView & GridView
 
 [![ListView & GridView](http://img.youtube.com/vi/ThIKO3vz6Bs/0.jpg)](http://player.youku.com/embed/XMTM5MjA1MTIyOA==) 
@@ -35,7 +35,7 @@ SwipeToLoadLayout是一个可以帮助你实现下拉刷新和加载更多的Lay
 
 你也可以自定义自己喜欢的头部和尾部，插件试替换，非常简单哦！
 
-##How to
+## How to
 
 - Step 1. 把 JitPack repository 添加到build.gradle文件中 repositories的末尾:
 ```
@@ -51,17 +51,17 @@ dependencies {
 ```
 - Step 3. 查看[快速集成文档](https://github.com/Aspsine/SwipeToLoadLayout/wiki/Quick-Setup)
 
-##致谢
+## 致谢
 - Google SwipeRefreshLayout
 - [liaohuqiu android-Ultra-Pull-To-Refresh](https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh)
 - [Yalantis Phoenix](https://github.com/Yalantis/Phoenix)
 
-##联系我
+## 联系我
 - Github:   github.com/aspsine
 - Email:    littleximail@gmail.com
 - Linkedin: cn.linkedin.com/in/aspsine
 
-##License
+## License
 
     Copyright 2015 Aspsine. All rights reserved.
 
