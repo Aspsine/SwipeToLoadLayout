@@ -141,6 +141,18 @@ public class SwipeToLoadLayout extends ViewGroup {
     private boolean mLoadMoreEnabled = true;
 
     /**
+     * a switcher whither hiding headerView when refreshing
+     */
+
+    private boolean isHideHeaderWhenRefreshing = false;
+
+    /**
+     * a switcher whither hiding footerView when loadingmore
+     */
+
+    private boolean isHideFooterWhenLoadingMore = false;
+
+    /**
      * <b>ATTRIBUTE:</b>
      * the style default classic
      */
@@ -496,6 +508,19 @@ public class SwipeToLoadLayout extends ViewGroup {
                 if (mActivePointerId == INVALID_POINTER) {
                     return false;
                 }
+
+                //hide headerView when refreshing , it will improve the user experience
+                if (mHasHeaderView && isRefreshing() && isHideHeaderWhenRefreshing){
+                    mRefreshCallback.onReset();
+                    scrollRefreshingToDefault();
+                }
+
+                //hide footerView when loadingmore , it will improve the user experience
+                if (mHasFooterView && isLoadingMore() && isHideFooterWhenLoadingMore){
+                    mLoadMoreCallback.onReset();
+                    scrollLoadingMoreToDefault();
+                }
+
                 float y = getMotionEventY(event, mActivePointerId);
                 float x = getMotionEventX(event, mActivePointerId);
                 final float yInitDiff = y - mInitDownY;
@@ -514,6 +539,7 @@ public class SwipeToLoadLayout extends ViewGroup {
                     // intercept the move action event and pass it to SwipeToLoadLayout#onTouchEvent()
                     return true;
                 }
+
                 break;
             case MotionEvent.ACTION_POINTER_UP: {
                 onSecondaryPointerUp(event);
@@ -539,6 +565,7 @@ public class SwipeToLoadLayout extends ViewGroup {
                 return true;
 
             case MotionEvent.ACTION_MOVE:
+
                 // take over the ACTION_MOVE event from SwipeToLoadLayout#onInterceptTouchEvent()
                 // if condition is true
                 final float y = getMotionEventY(event, mActivePointerId);
@@ -686,6 +713,24 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     public boolean isLoadingMore() {
         return STATUS.isLoadingMore(mStatus);
+    }
+
+    /**
+     * a switcher whither hiding headerView when refreshing
+     *
+     * @param hideable
+     */
+    public void setHideHeaderWhenRefreshing(boolean hideable) {
+        this.isHideHeaderWhenRefreshing = hideable;
+    }
+
+    /**
+     * a switcher whither hiding footerView when loadingmore
+     *
+     * @param hideable
+     */
+    public void setHideFooterWhenLoadingMore(boolean hideable) {
+        this.isHideFooterWhenLoadingMore = hideable;
     }
 
     /**
