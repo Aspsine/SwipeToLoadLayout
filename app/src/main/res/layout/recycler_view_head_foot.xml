@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/swipe_refresh_header"
-        layout="@layout/layout_refresh_header_view"/>
+        layout="@layout/layout_refresh_header_hor_view"/>
 
 
     <android.support.v7.widget.RecyclerView
@@ -21,6 +21,6 @@
 
     <include
         android:id="@+id/swipe_load_more_footer"
-        layout="@layout/layout_refresh_footer_view"/>
+        layout="@layout/layout_refresh_footer_hor_view"/>
 
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
