@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -61,9 +62,9 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     private View mFooterView;
 
-    private int mHeaderHeight;
+    private int mHeaderLength;
 
-    private int mFooterHeight;
+    private int mFooterLength;
 
     private boolean mHasHeaderView;
 
@@ -236,6 +237,11 @@ public class SwipeToLoadLayout extends ViewGroup {
     private int mDefaultToLoadingMoreScrollingDuration = DEFAULT_DEFAULT_TO_LOADING_MORE_SCROLLING_DURATION;
 
     /**
+     * true : the target is vertically scroll
+     */
+    private boolean mIsVertically = true;
+
+    /**
      * the style enum
      */
     public static final class STYLE {
@@ -313,7 +319,8 @@ public class SwipeToLoadLayout extends ViewGroup {
 
                 } else if (attr == R.styleable.SwipeToLoadLayout_default_to_loading_more_scrolling_duration) {
                     setDefaultToLoadingMoreScrollingDuration(a.getInt(attr, DEFAULT_DEFAULT_TO_LOADING_MORE_SCROLLING_DURATION));
-
+                } else if (attr == R.styleable.SwipeToLoadLayout_swipe_vertically) {
+                    mIsVertically = a.getBoolean(attr, mIsVertically);
                 }
             }
         } finally {
@@ -358,9 +365,9 @@ public class SwipeToLoadLayout extends ViewGroup {
             final View headerView = mHeaderView;
             measureChildWithMargins(headerView, widthMeasureSpec, 0, heightMeasureSpec, 0);
             MarginLayoutParams lp = ((MarginLayoutParams) headerView.getLayoutParams());
-            mHeaderHeight = headerView.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
-            if (mRefreshTriggerOffset < mHeaderHeight) {
-                mRefreshTriggerOffset = mHeaderHeight;
+            mHeaderLength = mIsVertically ? (headerView.getMeasuredHeight() + lp.topMargin + lp.bottomMargin) : (headerView.getMeasuredWidth() + lp.leftMargin + lp.rightMargin);
+            if (mRefreshTriggerOffset < mHeaderLength) {
+                mRefreshTriggerOffset = mHeaderLength;
             }
         }
         // target
@@ -373,16 +380,20 @@ public class SwipeToLoadLayout extends ViewGroup {
             final View footerView = mFooterView;
             measureChildWithMargins(footerView, widthMeasureSpec, 0, heightMeasureSpec, 0);
             MarginLayoutParams lp = ((MarginLayoutParams) footerView.getLayoutParams());
-            mFooterHeight = footerView.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
-            if (mLoadMoreTriggerOffset < mFooterHeight) {
-                mLoadMoreTriggerOffset = mFooterHeight;
+            mFooterLength = mIsVertically ? (footerView.getMeasuredHeight() + lp.topMargin + lp.bottomMargin) : (footerView.getMeasuredWidth() + lp.leftMargin + lp.rightMargin);
+            if (mLoadMoreTriggerOffset < mFooterLength) {
+                mLoadMoreTriggerOffset = mFooterLength;
             }
         }
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        layoutChildren();
+        if (mIsVertically) {
+            layoutVerChildren();
+        }else {
+            layoutHorChildren();
+        }
 
         mHasHeaderView = (mHeaderView != null);
         mHasFooterView = (mFooterView != null);
@@ -498,8 +509,15 @@ public class SwipeToLoadLayout extends ViewGroup {
                 }
                 float y = getMotionEventY(event, mActivePointerId);
                 float x = getMotionEventX(event, mActivePointerId);
-                final float yInitDiff = y - mInitDownY;
-                final float xInitDiff = x - mInitDownX;
+                final float yInitDiff;
+                final float xInitDiff;
+                if (mIsVertically) {
+                    yInitDiff = y - mInitDownY;
+                    xInitDiff = x - mInitDownX;
+                } else {
+                    yInitDiff = x - mInitDownX;
+                    xInitDiff = y - mInitDownY;
+                }
                 mLastY = y;
                 mLastX = x;
                 boolean moved = Math.abs(yInitDiff) > Math.abs(xInitDiff)
@@ -544,8 +562,15 @@ public class SwipeToLoadLayout extends ViewGroup {
                 final float y = getMotionEventY(event, mActivePointerId);
                 final float x = getMotionEventX(event, mActivePointerId);
 
-                final float yDiff = y - mLastY;
-                final float xDiff = x - mLastX;
+                final float yDiff;
+                final float xDiff;
+                if (mIsVertically) {
+                    yDiff = y - mLastY;
+                    xDiff = x - mLastX;
+                } else {
+                    yDiff = x - mLastX;
+                    xDiff = y - mLastY;
+                }
                 mLastY = y;
                 mLastX = x;
 
@@ -738,6 +763,11 @@ public class SwipeToLoadLayout extends ViewGroup {
         requestLayout();
     }
 
+    public void setVertically(boolean vertically) {
+        mIsVertically = vertically;
+        requestLayout();
+    }
+
     /**
      * set how hard to drag. bigger easier, smaller harder;
      *
@@ -749,9 +779,9 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     /**
      * set the value of {@link #mRefreshTriggerOffset}.
-     * Default value is the refresh header view height {@link #mHeaderHeight}<p/>
-     * If the offset you set is smaller than {@link #mHeaderHeight} or not set,
-     * using {@link #mHeaderHeight} as default value
+     * Default value is the refresh header view height {@link #mHeaderLength}<p/>
+     * If the offset you set is smaller than {@link #mHeaderLength} or not set,
+     * using {@link #mHeaderLength} as default value
      *
      * @param offset
      */
@@ -761,9 +791,9 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     /**
      * set the value of {@link #mLoadMoreTriggerOffset}.
-     * Default value is the load more footer view height {@link #mFooterHeight}<p/>
-     * If the offset you set is smaller than {@link #mFooterHeight} or not set,
-     * using {@link #mFooterHeight} as default value
+     * Default value is the load more footer view height {@link #mFooterLength}<p/>
+     * If the offset you set is smaller than {@link #mFooterLength} or not set,
+     * using {@link #mFooterLength} as default value
      *
      * @param offset
      */
@@ -964,17 +994,34 @@ public class SwipeToLoadLayout extends ViewGroup {
      * scroll up. Override this if the child view is a custom view.
      */
     protected boolean canChildScrollUp() {
-        if (android.os.Build.VERSION.SDK_INT < 14) {
+        if (mTargetView instanceof ViewPager) {
+            ViewPager pager = (ViewPager) mTargetView;
+            return pager.getCurrentItem() > 0;
+        } else if (android.os.Build.VERSION.SDK_INT < 14) {
             if (mTargetView instanceof AbsListView) {
                 final AbsListView absListView = (AbsListView) mTargetView;
-                return absListView.getChildCount() > 0
-                        && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
-                        .getTop() < absListView.getPaddingTop());
+                if (mIsVertically) {
+                    return absListView.getChildCount() > 0
+                            && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
+                            .getTop() < absListView.getPaddingTop());
+                } else {
+                    return absListView.getChildCount() > 0
+                            && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
+                            .getLeft() < absListView.getPaddingLeft());
+                }
             } else {
-                return ViewCompat.canScrollVertically(mTargetView, -1) || mTargetView.getScrollY() > 0;
+                if (mIsVertically) {
+                    return ViewCompat.canScrollVertically(mTargetView, -1) || mTargetView.getScrollY() > 0;
+                } else {
+                    return ViewCompat.canScrollHorizontally(mTargetView, -1) || mTargetView.getScrollX() > 0;
+                }
             }
         } else {
-            return ViewCompat.canScrollVertically(mTargetView, -1);
+            if (mIsVertically) {
+                return ViewCompat.canScrollVertically(mTargetView, -1);
+            } else {
+                return ViewCompat.canScrollHorizontally(mTargetView, -1);
+            }
         }
     }
 
@@ -985,24 +1032,41 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @return
      */
     protected boolean canChildScrollDown() {
-        if (android.os.Build.VERSION.SDK_INT < 14) {
+        if (mTargetView instanceof ViewPager) {
+            ViewPager pager = (ViewPager) mTargetView;
+            return pager.getCurrentItem() < pager.getAdapter().getCount() - 1;
+        } else if (android.os.Build.VERSION.SDK_INT < 14) {
             if (mTargetView instanceof AbsListView) {
                 final AbsListView absListView = (AbsListView) mTargetView;
-                return absListView.getChildCount() > 0
-                        && (absListView.getLastVisiblePosition() < absListView.getChildCount() - 1
-                        || absListView.getChildAt(absListView.getChildCount() - 1).getBottom() > absListView.getPaddingBottom());
+                if (mIsVertically) {
+                    return absListView.getChildCount() > 0
+                            && (absListView.getLastVisiblePosition() < absListView.getChildCount() - 1
+                            || absListView.getChildAt(absListView.getChildCount() - 1).getBottom() > absListView.getPaddingBottom());
+                } else {
+                    return absListView.getChildCount() > 0
+                            && (absListView.getLastVisiblePosition() < absListView.getChildCount() - 1
+                            || absListView.getChildAt(absListView.getChildCount() - 1).getRight() > absListView.getPaddingRight());
+                }
             } else {
-                return ViewCompat.canScrollVertically(mTargetView, 1) || mTargetView.getScrollY() < 0;
+                if (mIsVertically) {
+                    return ViewCompat.canScrollVertically(mTargetView, 1) || mTargetView.getScrollY() < 0;
+                } else {
+                    return ViewCompat.canScrollHorizontally(mTargetView, 1) || mTargetView.getScrollX() < 0;
+                }
             }
         } else {
-            return ViewCompat.canScrollVertically(mTargetView, 1);
+            if (mIsVertically) {
+                return ViewCompat.canScrollVertically(mTargetView, 1);
+            } else {
+                return ViewCompat.canScrollHorizontally(mTargetView, 1);
+            }
         }
     }
 
     /**
      * @see #onLayout(boolean, int, int, int, int)
      */
-    private void layoutChildren() {
+    private void layoutVerChildren() {
         final int width = getMeasuredWidth();
         final int height = getMeasuredHeight();
 
@@ -1024,11 +1088,11 @@ public class SwipeToLoadLayout extends ViewGroup {
             switch (mStyle) {
                 case STYLE.CLASSIC:
                     // classic
-                    headerTop = paddingTop + lp.topMargin - mHeaderHeight + mHeaderOffset;
+                    headerTop = paddingTop + lp.topMargin - mHeaderLength + mHeaderOffset;
                     break;
                 case STYLE.ABOVE:
                     // classic
-                    headerTop = paddingTop + lp.topMargin - mHeaderHeight + mHeaderOffset;
+                    headerTop = paddingTop + lp.topMargin - mHeaderLength + mHeaderOffset;
                     break;
                 case STYLE.BLEW:
                     // blew
@@ -1036,11 +1100,11 @@ public class SwipeToLoadLayout extends ViewGroup {
                     break;
                 case STYLE.SCALE:
                     // scale
-                    headerTop = paddingTop + lp.topMargin - mHeaderHeight / 2 + mHeaderOffset / 2;
+                    headerTop = paddingTop + lp.topMargin - mHeaderLength / 2 + mHeaderOffset / 2;
                     break;
                 default:
                     // classic
-                    headerTop = paddingTop + lp.topMargin - mHeaderHeight + mHeaderOffset;
+                    headerTop = paddingTop + lp.topMargin - mHeaderLength + mHeaderOffset;
                     break;
             }
             final int headerRight = headerLeft + headerView.getMeasuredWidth();
@@ -1092,11 +1156,11 @@ public class SwipeToLoadLayout extends ViewGroup {
             switch (mStyle) {
                 case STYLE.CLASSIC:
                     // classic
-                    footerBottom = height - paddingBottom - lp.bottomMargin + mFooterHeight + mFooterOffset;
+                    footerBottom = height - paddingBottom - lp.bottomMargin + mFooterLength + mFooterOffset;
                     break;
                 case STYLE.ABOVE:
                     // classic
-                    footerBottom = height - paddingBottom - lp.bottomMargin + mFooterHeight + mFooterOffset;
+                    footerBottom = height - paddingBottom - lp.bottomMargin + mFooterLength + mFooterOffset;
                     break;
                 case STYLE.BLEW:
                     // blew
@@ -1104,15 +1168,148 @@ public class SwipeToLoadLayout extends ViewGroup {
                     break;
                 case STYLE.SCALE:
                     // scale
-                    footerBottom = height - paddingBottom - lp.bottomMargin + mFooterHeight / 2 + mFooterOffset / 2;
+                    footerBottom = height - paddingBottom - lp.bottomMargin + mFooterLength / 2 + mFooterOffset / 2;
                     break;
                 default:
                     // classic
-                    footerBottom = height - paddingBottom - lp.bottomMargin + mFooterHeight + mFooterOffset;
+                    footerBottom = height - paddingBottom - lp.bottomMargin + mFooterLength + mFooterOffset;
                     break;
             }
             final int footerTop = footerBottom - footerView.getMeasuredHeight();
             final int footerRight = footerLeft + footerView.getMeasuredWidth();
+
+            footerView.layout(footerLeft, footerTop, footerRight, footerBottom);
+        }
+
+        if (mStyle == STYLE.CLASSIC
+                || mStyle == STYLE.ABOVE) {
+            if (mHeaderView != null) {
+                mHeaderView.bringToFront();
+            }
+            if (mFooterView != null) {
+                mFooterView.bringToFront();
+            }
+        } else if (mStyle == STYLE.BLEW || mStyle == STYLE.SCALE) {
+            if (mTargetView != null) {
+                mTargetView.bringToFront();
+            }
+        }
+    }
+
+    /**
+     * @see #onLayout(boolean, int, int, int, int)
+     */
+    private void layoutHorChildren() {
+        final int width = getMeasuredWidth();
+        final int height = getMeasuredHeight();
+
+        final int paddingLeft = getPaddingLeft();
+        final int paddingTop = getPaddingTop();
+        final int paddingRight = getPaddingRight();
+        final int paddingBottom = getPaddingBottom();
+
+        if (mTargetView == null) {
+            return;
+        }
+
+        // layout header
+        if (mHeaderView != null) {
+            final View headerView = mHeaderView;
+            MarginLayoutParams lp = (MarginLayoutParams) headerView.getLayoutParams();
+            final int headerLeft;
+            final int headerTop = paddingTop + lp.topMargin;
+            switch (mStyle) {
+                case STYLE.CLASSIC:
+                    // classic
+                    headerLeft = paddingLeft + lp.leftMargin - mHeaderLength + mHeaderOffset;
+                    break;
+                case STYLE.ABOVE:
+                    // classic
+                    headerLeft = paddingLeft + lp.leftMargin - mHeaderLength + mHeaderOffset;
+                    break;
+                case STYLE.BLEW:
+                    // blew
+                    headerLeft = paddingLeft + lp.leftMargin;
+                    break;
+                case STYLE.SCALE:
+                    // scale
+                    headerLeft = paddingLeft + lp.leftMargin - mHeaderLength / 2 + mHeaderOffset / 2;
+                    break;
+                default:
+                    // classic
+                    headerLeft = paddingLeft + lp.leftMargin - mHeaderLength + mHeaderOffset;
+                    break;
+            }
+            final int headerRight = headerLeft + headerView.getMeasuredWidth();
+            final int headerBottom = headerTop + headerView.getMeasuredHeight();
+            headerView.layout(headerLeft, headerTop, headerRight, headerBottom);
+        }
+
+
+        // layout target
+        if (mTargetView != null) {
+            final View targetView = mTargetView;
+            MarginLayoutParams lp = (MarginLayoutParams) targetView.getLayoutParams();
+            final int targetLeft;
+            final int targetTop = paddingTop + lp.topMargin;
+
+            switch (mStyle) {
+                case STYLE.CLASSIC:
+                    // classic
+                    targetLeft = paddingLeft + lp.leftMargin + mTargetOffset;
+                    break;
+                case STYLE.ABOVE:
+                    // above
+                    targetLeft = paddingLeft + lp.leftMargin;
+                    break;
+                case STYLE.BLEW:
+                    // classic
+                    targetLeft = paddingLeft + lp.leftMargin + mTargetOffset;
+                    break;
+                case STYLE.SCALE:
+                    // classic
+                    targetLeft = paddingLeft + lp.leftMargin + mTargetOffset;
+                    break;
+                default:
+                    // classic
+                    targetLeft = paddingLeft + lp.leftMargin + mTargetOffset;
+                    break;
+            }
+            final int targetRight = targetLeft + targetView.getMeasuredWidth();
+            final int targetBottom = targetTop + targetView.getMeasuredHeight();
+            targetView.layout(targetLeft, targetTop, targetRight, targetBottom);
+        }
+
+        // layout footer
+        if (mFooterView != null) {
+            final View footerView = mFooterView;
+            MarginLayoutParams lp = (MarginLayoutParams) footerView.getLayoutParams();
+            final int footerRight;
+            final int footerTop = paddingTop + lp.topMargin;
+            switch (mStyle) {
+                case STYLE.CLASSIC:
+                    // classic
+                    footerRight = width - paddingRight - lp.rightMargin + mHeaderLength + mFooterOffset;
+                    break;
+                case STYLE.ABOVE:
+                    // classic
+                    footerRight = width - paddingRight - lp.rightMargin + mHeaderLength + mFooterOffset;
+                    break;
+                case STYLE.BLEW:
+                    // blew
+                    footerRight = width - paddingRight - lp.rightMargin;
+                    break;
+                case STYLE.SCALE:
+                    // scale
+                    footerRight = width - paddingRight - lp.rightMargin + mHeaderLength / 2 + mFooterOffset / 2;
+                    break;
+                default:
+                    // classic
+                    footerRight = width - paddingRight - lp.rightMargin + mHeaderLength + mFooterOffset;
+                    break;
+            }
+            final int footerLeft = footerRight - footerView.getMeasuredWidth();
+            final int footerBottom = footerTop + footerView.getMeasuredHeight();
 
             footerView.layout(footerLeft, footerTop, footerRight, footerBottom);
         }
@@ -1137,19 +1334,31 @@ public class SwipeToLoadLayout extends ViewGroup {
             mTargetOffset = (int) (mRefreshTriggerOffset + 0.5f);
             mHeaderOffset = mTargetOffset;
             mFooterOffset = 0;
-            layoutChildren();
+            if (mIsVertically) {
+                layoutVerChildren();
+            }else {
+                layoutHorChildren();
+            }
             invalidate();
         } else if (STATUS.isStatusDefault(mStatus)) {
             mTargetOffset = 0;
             mHeaderOffset = 0;
             mFooterOffset = 0;
-            layoutChildren();
+            if (mIsVertically) {
+                layoutVerChildren();
+            }else {
+                layoutHorChildren();
+            }
             invalidate();
         } else if (STATUS.isLoadingMore(mStatus)) {
             mTargetOffset = -(int) (mLoadMoreTriggerOffset + 0.5f);
             mHeaderOffset = 0;
             mFooterOffset = mTargetOffset;
-            layoutChildren();
+            if (mIsVertically) {
+                layoutVerChildren();
+            }else {
+                layoutHorChildren();
+            }
             invalidate();
         }
     }
@@ -1231,7 +1440,11 @@ public class SwipeToLoadLayout extends ViewGroup {
         if (mDebug) {
             Log.i(TAG, "mTargetOffset = " + mTargetOffset);
         }
-        layoutChildren();
+        if (mIsVertically) {
+            layoutVerChildren();
+        }else {
+            layoutHorChildren();
+        }
         invalidate();
     }
 
@@ -1293,11 +1506,11 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
     private void scrollReleaseToRefreshToRefreshing() {
-        mAutoScroller.autoScroll(mHeaderHeight - mHeaderOffset, mReleaseToRefreshToRefreshingScrollingDuration);
+        mAutoScroller.autoScroll(mHeaderLength - mHeaderOffset, mReleaseToRefreshToRefreshingScrollingDuration);
     }
 
     private void scrollReleaseToLoadMoreToLoadingMore() {
-        mAutoScroller.autoScroll(-mFooterOffset - mFooterHeight, mReleaseToLoadMoreToLoadingMoreScrollingDuration);
+        mAutoScroller.autoScroll(-mFooterOffset - mFooterLength, mReleaseToLoadMoreToLoadingMoreScrollingDuration);
     }
 
     private void scrollRefreshingToDefault() {
@@ -1526,7 +1739,7 @@ public class SwipeToLoadLayout extends ViewGroup {
 
         private Scroller mScroller;
 
-        private int mmLastY;
+        private int mmLastPoint;
 
         private boolean mRunning = false;
 
@@ -1539,13 +1752,13 @@ public class SwipeToLoadLayout extends ViewGroup {
         @Override
         public void run() {
             boolean finish = !mScroller.computeScrollOffset() || mScroller.isFinished();
-            int currY = mScroller.getCurrY();
-            int yDiff = currY - mmLastY;
+            int currPoint = mIsVertically ? mScroller.getCurrY() : mScroller.getCurrX();
+            int diff = currPoint - mmLastPoint;
             if (finish) {
                 finish();
             } else {
-                mmLastY = currY;
-                SwipeToLoadLayout.this.autoScroll(yDiff);
+                mmLastPoint = currPoint;
+                SwipeToLoadLayout.this.autoScroll(diff);
                 post(this);
             }
         }
@@ -1554,7 +1767,7 @@ public class SwipeToLoadLayout extends ViewGroup {
          * remove the post callbacks and reset default values
          */
         private void finish() {
-            mmLastY = 0;
+            mmLastPoint = 0;
             mRunning = false;
             removeCallbacks(this);
             // if abort by user, don't call
@@ -1582,16 +1795,20 @@ public class SwipeToLoadLayout extends ViewGroup {
          * It's just like the yScrolled param in the
          * {@link #updateScroll(float yScrolled)}
          *
-         * @param yScrolled
+         * @param scrolled
          * @param duration
          */
-        private void autoScroll(int yScrolled, int duration) {
+        private void autoScroll(int scrolled, int duration) {
             removeCallbacks(this);
-            mmLastY = 0;
+            mmLastPoint = 0;
             if (!mScroller.isFinished()) {
                 mScroller.forceFinished(true);
             }
-            mScroller.startScroll(0, 0, 0, yScrolled, duration);
+            if (mIsVertically) {
+                mScroller.startScroll(0, 0, 0, scrolled, duration);
+            } else {
+                mScroller.startScroll(0, 0, scrolled, 0, duration);
+            }
             post(this);
             mRunning = true;
         }

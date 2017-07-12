@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aspsine.swipetoloadlayout.SwipeToLoadLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/load_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:swipe_vertically="false">
+
+    <include
+        android:id="@+id/swipe_refresh_header"
+        layout="@layout/layout_refresh_header_hor_view"/>
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/swipe_target"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v4.view.ViewPager>
+
+    <include
+        android:id="@+id/swipe_load_more_footer"
+        layout="@layout/layout_refresh_footer_hor_view"/>
+
+</com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

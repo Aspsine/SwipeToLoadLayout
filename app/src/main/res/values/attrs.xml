@@ -24,4 +24,16 @@
             <enum name="invisible" value="1"/>
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="VerticalTextView2">
+        <attr name="ver_text" format="reference|string"/>
+        <attr name="ver_textColor" format="color"/>
+        <attr name="ver_textSize" format="dimension"/>
+        <attr name="ver_textNum" format="integer"/>
+        <attr name="ver_lineSpacing" format="dimension"/>
+        <attr name="ver_textStartAlign" format="enum">
+            <enum name="left" value="0"/>
+            <enum name="right" value="0"/>
+        </attr>
+    </declare-styleable>
 </resources>

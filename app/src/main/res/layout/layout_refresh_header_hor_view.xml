@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aspsine.swipetoloadlayout.demo.view.header.WRefreshHeaderView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/refresh_header_height"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <com.aspsine.swipetoloadlayout.demo.view.VerticalTextView2
+        android:id="@+id/refresh_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:ver_text="右滑刷新"
+        app:ver_textColor="#777"
+        app:ver_textSize="12sp"/>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip">
+
+        <ImageView
+            android:id="@+id/arrow_img"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:rotation="270"
+            android:src="@mipmap/refresh_head_arrow"/>
+
+        <ImageView
+            android:id="@+id/success_img"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:background="@mipmap/refresh_success" />
+
+        <ImageView
+            android:id="@+id/loading_img"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/refresh_loading"/>
+
+    </FrameLayout>
+</com.aspsine.swipetoloadlayout.demo.view.header.WRefreshHeaderView>
