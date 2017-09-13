@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion rootProject.ext.sdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 25
+        compileSdkVersion rootProject.ext.sdkVersion
         versionCode 4
         versionName "1.0.4"
     }
@@ -21,5 +21,6 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:support-compat:25.1.0'
+    compile "com.android.support:support-compat:$supportLibVersion"
+    compile project(':materialloadingprogressbar')
 }
