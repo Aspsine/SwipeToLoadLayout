@@ -346,8 +346,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         if (mTargetView == null) {
             return;
         }
-	    setRefreshHeaderView(mSwipeViewFactory.createHeaderView(this));
-	    setLoadMoreFooterView(mSwipeViewFactory.createFooterView(this));
+        resetHeaderAndFooter();
         if (mHeaderView != null && mHeaderView instanceof SwipeTrigger) {
             mHeaderView.setVisibility(GONE);
         }
@@ -695,7 +694,19 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
 	public void setSwipeViewFactory(SwipeViewFactory swipeViewFactory) {
+		boolean needResetView = mSwipeViewFactory!=swipeViewFactory;
 		mSwipeViewFactory = swipeViewFactory;
+		if(needResetView){
+			resetHeaderAndFooter();
+		}
+	}
+
+	private void resetHeaderAndFooter(){
+		if(mSwipeViewFactory==null){
+			return;
+		}
+		setRefreshHeaderView(mSwipeViewFactory.createHeaderView(this));
+		setLoadMoreFooterView(mSwipeViewFactory.createFooterView(this));
 	}
 
 	/**
@@ -705,6 +716,13 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @param view
      */
     public void setRefreshHeaderView(View view) {
+	    if(view==null){
+		    if (mHeaderView != null) {
+			    removeView(mHeaderView);
+		    }
+		    mHeaderView = null ;
+		    return;
+	    }
         if (view instanceof SwipeRefreshTrigger) {
             if (mHeaderView != null && mHeaderView != view) {
                 removeView(mHeaderView);
@@ -725,6 +743,13 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @param view
      */
     public void setLoadMoreFooterView(View view) {
+	    if(view==null){
+		    if (mFooterView != null) {
+			    removeView(mFooterView);
+		    }
+		    mFooterView = null ;
+		    return;
+	    }
         if (view instanceof SwipeLoadMoreTrigger) {
             if (mFooterView != null && mFooterView != view) {
                 removeView(mFooterView);
