@@ -8,17 +8,9 @@
     app:swipe_style="classic"
     tools:context="com.aspsine.swipetoloadlayout.demo.fragment.TwitterWebViewFragment">
 
-    <include
-        android:id="@id/swipe_refresh_header"
-        layout="@layout/layout_twitter_header" />
-
-
     <WebView
         android:id="@id/swipe_target"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <include
-        android:id="@id/swipe_load_more_footer"
-        layout="@layout/layout_classic_footer" />
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

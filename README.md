@@ -5,6 +5,11 @@ SwipeToLoadLayout is a reusable pull-to-refresh and pull-to-load-more widget.
 ## Supported View
 Theoretically support all kinds of views.
 
+## Update
+1、add [SwipeViewFactory](https://github.com/liyzay/SwipeToLoadLayout/blob/master/library/src/main/java/com/aspsine/swipetoloadlayout/SwipeViewFactory.java) to generate HeaderView and FooterView
+
+2、add default Google Style HeaderView FooterView(use [GoogleStyleSwipeViewFactory](https://github.com/liyzay/SwipeToLoadLayout/blob/master/library/src/main/java/com/aspsine/swipetoloadlayout/GoogleStyleSwipeViewFactory.java) by default)
+
 ## Demo
 [Download](https://raw.githubusercontent.com/Aspsine/SwipeToLoadLayout/master/art/demo.apk)
 

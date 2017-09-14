@@ -17,6 +17,7 @@ import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.aspsine.swipetoloadlayout.demo.R;
+import com.aspsine.swipetoloadlayout.demo.viewfactory.TwitterRefreshSwipeViewFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +42,7 @@ public class TwitterWebViewFragment extends BaseFragment implements OnRefreshLis
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
+	    swipeToLoadLayout.setSwipeViewFactory(new TwitterRefreshSwipeViewFactory(getContext()));
         webView = (WebView) view.findViewById(R.id.swipe_target);
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);

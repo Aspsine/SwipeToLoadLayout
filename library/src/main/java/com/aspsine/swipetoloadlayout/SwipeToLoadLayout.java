@@ -55,6 +55,8 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     private OnLoadMoreListener mLoadMoreListener;
 
+	private SwipeViewFactory mSwipeViewFactory ;
+
     private View mHeaderView;
 
     private View mTargetView;
@@ -322,6 +324,8 @@ public class SwipeToLoadLayout extends ViewGroup {
 
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mAutoScroller = new AutoScroller();
+
+	    mSwipeViewFactory = new GoogleStyleSwipeViewFactory(context);
     }
 
     @Override
@@ -331,17 +335,18 @@ public class SwipeToLoadLayout extends ViewGroup {
         if (childNum == 0) {
             // no child return
             return;
-        } else if (0 < childNum && childNum < 4) {
-            mHeaderView = findViewById(R.id.swipe_refresh_header);
-            mTargetView = findViewById(R.id.swipe_target);
-            mFooterView = findViewById(R.id.swipe_load_more_footer);
+        } else if (childNum==1) {
+//            mHeaderView = findViewById(R.id.swipe_refresh_header);
+            mTargetView = getChildAt(0);
+//            mFooterView = findViewById(R.id.swipe_load_more_footer);
         } else {
             // more than three children: unsupported!
-            throw new IllegalStateException("Children num must equal or less than 3");
+            throw new IllegalStateException("SwipeToLoadLayout can host only one direct child");
         }
         if (mTargetView == null) {
             return;
         }
+        resetHeaderAndFooter();
         if (mHeaderView != null && mHeaderView instanceof SwipeTrigger) {
             mHeaderView.setVisibility(GONE);
         }
@@ -688,13 +693,36 @@ public class SwipeToLoadLayout extends ViewGroup {
         return STATUS.isLoadingMore(mStatus);
     }
 
-    /**
+	public void setSwipeViewFactory(SwipeViewFactory swipeViewFactory) {
+		boolean needResetView = mSwipeViewFactory!=swipeViewFactory;
+		mSwipeViewFactory = swipeViewFactory;
+		if(needResetView){
+			resetHeaderAndFooter();
+		}
+	}
+
+	private void resetHeaderAndFooter(){
+		if(mSwipeViewFactory==null){
+			return;
+		}
+		setRefreshHeaderView(mSwipeViewFactory.createHeaderView(this));
+		setLoadMoreFooterView(mSwipeViewFactory.createFooterView(this));
+	}
+
+	/**
      * set refresh header view, the view must at lease be an implement of {@code SwipeRefreshTrigger}.
      * the view can also implement {@code SwipeTrigger} for more extension functions
      *
      * @param view
      */
     public void setRefreshHeaderView(View view) {
+	    if(view==null){
+		    if (mHeaderView != null) {
+			    removeView(mHeaderView);
+		    }
+		    mHeaderView = null ;
+		    return;
+	    }
         if (view instanceof SwipeRefreshTrigger) {
             if (mHeaderView != null && mHeaderView != view) {
                 removeView(mHeaderView);
@@ -715,6 +743,13 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @param view
      */
     public void setLoadMoreFooterView(View view) {
+	    if(view==null){
+		    if (mFooterView != null) {
+			    removeView(mFooterView);
+		    }
+		    mFooterView = null ;
+		    return;
+	    }
         if (view instanceof SwipeLoadMoreTrigger) {
             if (mFooterView != null && mFooterView != view) {
                 removeView(mFooterView);

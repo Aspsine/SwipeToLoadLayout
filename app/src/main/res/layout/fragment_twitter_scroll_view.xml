@@ -8,10 +8,6 @@
     app:swipe_style="classic"
     tools:context="com.aspsine.swipetoloadlayout.demo.fragment.TwitterScrollViewFragment">
 
-    <include
-        android:id="@id/swipe_refresh_header"
-        layout="@layout/layout_twitter_header" />
-
     <ScrollView
         android:id="@id/swipe_target"
         android:layout_width="match_parent"
@@ -75,7 +71,4 @@
         </LinearLayout>
     </ScrollView>
 
-    <include
-        android:id="@id/swipe_load_more_footer"
-        layout="@layout/layout_classic_footer" />
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

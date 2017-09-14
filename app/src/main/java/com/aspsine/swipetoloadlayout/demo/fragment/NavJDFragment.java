@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.aspsine.swipetoloadlayout.demo.R;
+import com.aspsine.swipetoloadlayout.demo.viewfactory.JDSwipeViewFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +50,7 @@ public class NavJDFragment extends BaseNavigationFragment implements OnRefreshLi
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
+	    swipeToLoadLayout.setSwipeViewFactory(new JDSwipeViewFactory(getContext()));
         swipeToLoadLayout.setOnRefreshListener(this);
     }
 

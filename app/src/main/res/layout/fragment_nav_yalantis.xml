@@ -22,10 +22,6 @@
         app:swipe_style="blew"
         tools:context="com.aspsine.swipetoloadlayout.demo.fragment.NavYalantisFragment">
 
-        <include
-            android:id="@id/swipe_refresh_header"
-            layout="@layout/layout_yalantis_header" />
-
         <ListView
             android:id="@id/swipe_target"
             android:layout_width="match_parent"

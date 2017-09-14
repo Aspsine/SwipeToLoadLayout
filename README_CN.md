@@ -5,6 +5,11 @@ SwipeToLoadLayout是一个可以帮助你实现下拉刷新和加载更多的Lay
 ## 支持的View
 理论上支持所有的View
 
+## 修改
+1、添加[SwipeViewFactory](https://github.com/liyzay/SwipeToLoadLayout/blob/master/library/src/main/java/com/aspsine/swipetoloadlayout/SwipeViewFactory.java)接口，用于生成HeaderView和FooterView
+
+2、添加内置的Google Style的HeaderView和FooterView（默认使用[GoogleStyleSwipeViewFactory](https://github.com/liyzay/SwipeToLoadLayout/blob/master/library/src/main/java/com/aspsine/swipetoloadlayout/GoogleStyleSwipeViewFactory.java)）
+
 ## Demo
 [Download](https://raw.githubusercontent.com/Aspsine/SwipeToLoadLayout/master/art/demo.apk)
 

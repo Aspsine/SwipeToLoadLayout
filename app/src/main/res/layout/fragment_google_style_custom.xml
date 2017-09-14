@@ -15,18 +15,10 @@
     app:refresh_trigger_offset="@dimen/refresh_trigger_offset_google"
     app:swipe_style="above">
 
-    <include
-        android:id="@id/swipe_refresh_header"
-        layout="@layout/layout_google_header" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@id/swipe_target"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false" />
-
-    <include
-        android:id="@id/swipe_load_more_footer"
-        layout="@layout/layout_google_footer" />
 
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

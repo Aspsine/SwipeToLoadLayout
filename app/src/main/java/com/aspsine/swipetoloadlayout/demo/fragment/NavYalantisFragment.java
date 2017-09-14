@@ -15,6 +15,7 @@ import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.aspsine.swipetoloadlayout.demo.R;
 import com.aspsine.swipetoloadlayout.demo.adapter.BaseArrayAdapter;
+import com.aspsine.swipetoloadlayout.demo.viewfactory.YalantisSwipeViewFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,6 +87,7 @@ public class NavYalantisFragment extends BaseNavigationFragment implements OnRef
         super.onViewCreated(view, savedInstanceState);
         setTitle("Yalantis Style");
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
+	    swipeToLoadLayout.setSwipeViewFactory(new YalantisSwipeViewFactory(getContext()));
         swipeToLoadLayout.setOnRefreshListener(this);
         ListView listView = (ListView) view.findViewById(R.id.swipe_target);
         BaseArrayAdapter adapter = new SampleAdapter();

@@ -13,6 +13,7 @@ import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.aspsine.swipetoloadlayout.demo.R;
+import com.aspsine.swipetoloadlayout.demo.viewfactory.TwitterRefreshSwipeViewFactory;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -65,6 +66,7 @@ public class TwitterOtherViewFragment extends BaseFragment implements OnRefreshL
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
+	    swipeToLoadLayout.setSwipeViewFactory(new TwitterRefreshSwipeViewFactory(getContext()));
         tvTitle = (TextView) view.findViewById(R.id.tvTitle);
         View targetView = view.findViewById(R.id.swipe_target);
         swipeToLoadLayout.setOnRefreshListener(this);

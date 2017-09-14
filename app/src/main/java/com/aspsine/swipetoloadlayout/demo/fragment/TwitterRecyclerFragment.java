@@ -12,7 +12,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -27,9 +26,9 @@ import com.aspsine.swipetoloadlayout.demo.R;
 import com.aspsine.swipetoloadlayout.demo.adapter.OnChildItemClickListener;
 import com.aspsine.swipetoloadlayout.demo.adapter.OnChildItemLongClickListener;
 import com.aspsine.swipetoloadlayout.demo.adapter.RecyclerCharactersAdapter;
-import com.aspsine.swipetoloadlayout.demo.adapter.SectionAdapter;
 import com.aspsine.swipetoloadlayout.demo.model.Character;
 import com.aspsine.swipetoloadlayout.demo.model.SectionCharacters;
+import com.aspsine.swipetoloadlayout.demo.viewfactory.TwitterRefreshSwipeViewFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,6 +84,7 @@ public class TwitterRecyclerFragment extends BaseFragment implements OnRefreshLi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
+	    swipeToLoadLayout.setSwipeViewFactory(new TwitterRefreshSwipeViewFactory(getContext()));
         recyclerView = (RecyclerView) view.findViewById(R.id.swipe_target);
         RecyclerView.LayoutManager layoutManager = null;
         if (mType == TYPE_LINEAR) {

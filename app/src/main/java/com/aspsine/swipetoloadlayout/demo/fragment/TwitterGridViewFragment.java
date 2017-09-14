@@ -22,6 +22,7 @@ import com.aspsine.swipetoloadlayout.demo.Constants;
 import com.aspsine.swipetoloadlayout.demo.R;
 import com.aspsine.swipetoloadlayout.demo.adapter.CharacterAdapter;
 import com.aspsine.swipetoloadlayout.demo.model.SectionCharacters;
+import com.aspsine.swipetoloadlayout.demo.viewfactory.TwitterRefreshSwipeViewFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,6 +61,7 @@ public class TwitterGridViewFragment extends BaseFragment implements OnRefreshLi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
+	    swipeToLoadLayout.setSwipeViewFactory(new TwitterRefreshSwipeViewFactory(getContext()));
         gridView = (GridView) view.findViewById(R.id.swipe_target);
 
         swipeToLoadLayout.setOnRefreshListener(this);
