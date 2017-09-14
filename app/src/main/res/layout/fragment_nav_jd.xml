@@ -5,10 +5,6 @@
     android:layout_height="match_parent"
     tools:context="com.aspsine.swipetoloadlayout.demo.fragment.NavJDFragment">
 
-    <include
-        android:id="@id/swipe_refresh_header"
-        layout="@layout/layout_jd_header" />
-
     <LinearLayout
         android:id="@id/swipe_target"
         android:layout_width="match_parent"

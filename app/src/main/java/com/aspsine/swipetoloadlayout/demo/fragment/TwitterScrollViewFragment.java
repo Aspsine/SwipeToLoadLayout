@@ -4,7 +4,6 @@ package com.aspsine.swipetoloadlayout.demo.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,7 @@ import com.aspsine.swipetoloadlayout.demo.Constants;
 import com.aspsine.swipetoloadlayout.demo.R;
 import com.aspsine.swipetoloadlayout.demo.model.Character;
 import com.aspsine.swipetoloadlayout.demo.model.SectionCharacters;
+import com.aspsine.swipetoloadlayout.demo.viewfactory.TwitterRefreshSwipeViewFactory;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -58,6 +58,7 @@ public class TwitterScrollViewFragment extends BaseFragment implements OnRefresh
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
+	    swipeToLoadLayout.setSwipeViewFactory(new TwitterRefreshSwipeViewFactory(getContext()));
         scrollView = (ScrollView) view.findViewById(R.id.swipe_target);
         tvTitle = (TextView) view.findViewById(R.id.tvTitle);
         ViewGroup viewGroup = (ViewGroup) view.findViewById(R.id.group);

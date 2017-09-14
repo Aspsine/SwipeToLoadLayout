@@ -27,6 +27,7 @@ import com.aspsine.swipetoloadlayout.demo.adapter.OnChildItemLongClickListener;
 import com.aspsine.swipetoloadlayout.demo.adapter.SectionAdapter;
 import com.aspsine.swipetoloadlayout.demo.model.Character;
 import com.aspsine.swipetoloadlayout.demo.model.SectionCharacters;
+import com.aspsine.swipetoloadlayout.demo.viewfactory.TwitterRefreshSwipeViewFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,6 +73,7 @@ public class TwitterListViewFragment extends Fragment implements OnRefreshListen
         super.onViewCreated(view, savedInstanceState);
         View pagerView = LayoutInflater.from(view.getContext()).inflate(R.layout.layout_viewpager, listView, false);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
+	    swipeToLoadLayout.setSwipeViewFactory(new TwitterRefreshSwipeViewFactory(getContext()));
         listView = (ListView) view.findViewById(R.id.swipe_target);
         viewPager = (ViewPager) pagerView.findViewById(R.id.viewPager);
         indicators = (ViewGroup) pagerView.findViewById(R.id.indicators);

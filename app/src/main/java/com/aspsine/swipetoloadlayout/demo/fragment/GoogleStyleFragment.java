@@ -21,6 +21,7 @@ import com.aspsine.swipetoloadlayout.demo.Constants;
 import com.aspsine.swipetoloadlayout.demo.R;
 import com.aspsine.swipetoloadlayout.demo.adapter.RecyclerCharactersAdapter;
 import com.aspsine.swipetoloadlayout.demo.model.SectionCharacters;
+import com.aspsine.swipetoloadlayout.demo.viewfactory.GoogleRingSwipeViewFactory;
 
 /**
  * Created by Aspsine on 2015/9/10.
@@ -67,6 +68,9 @@ public class GoogleStyleFragment extends BaseFragment implements OnRefreshListen
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
+	    if(mType!=0){
+		    swipeToLoadLayout.setSwipeViewFactory(new GoogleRingSwipeViewFactory(getContext()));
+	    }
         recyclerView = (RecyclerView) view.findViewById(R.id.swipe_target);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(mAdapter);

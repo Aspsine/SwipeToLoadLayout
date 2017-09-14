@@ -5,10 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/style_window_background">
 
-    <include
-        android:id="@id/swipe_refresh_header"
-        layout="@layout/layout_twitter_header" />
-
     <FrameLayout
         android:id="@id/swipe_target"
         android:layout_width="match_parent"
@@ -24,7 +20,4 @@
             android:textSize="24sp" />
     </FrameLayout>
 
-    <include
-        android:id="@id/swipe_load_more_footer"
-        layout="@layout/layout_classic_footer" />
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
