@@ -36,11 +36,6 @@ public class GoogleCircleHookRefreshHeaderView extends FrameLayout implements Sw
     protected void onFinishInflate() {
         super.onFinishInflate();
         progressView = (GoogleCircleProgressView) findViewById(R.id.googleProgress);
-        progressView.setColorSchemeResources(
-                R.color.google_blue,
-                R.color.google_red,
-                R.color.google_yellow,
-                R.color.google_green);
         progressView.setStartEndTrim(0, (float) 0.75);
     }
 
@@ -81,5 +76,13 @@ public class GoogleCircleHookRefreshHeaderView extends FrameLayout implements Sw
         ViewCompat.setScaleX(progressView, 1f);
         ViewCompat.setScaleY(progressView, 1f);
     }
+
+	public void setColorSchemeResources(int... colorResIds) {
+		progressView.setColorSchemeResources(colorResIds);
+	}
+
+	public void setColorSchemeColors(int... colors) {
+		progressView.setColorSchemeColors(colors);
+	}
 
 }

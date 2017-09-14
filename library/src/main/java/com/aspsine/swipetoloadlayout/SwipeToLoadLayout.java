@@ -325,7 +325,7 @@ public class SwipeToLoadLayout extends ViewGroup {
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mAutoScroller = new AutoScroller();
 
-	    mSwipeViewFactory = new GoogleSwipeViewFactory(context);
+	    mSwipeViewFactory = new GoogleStyleSwipeViewFactory(context);
     }
 
     @Override
