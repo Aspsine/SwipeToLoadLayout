@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aspsine.swipetoloadlayout.SwipeToLoadLayout
+    android:id="@+id/swipe_load_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:default_to_loading_more_scrolling_duration="500"
+    app:load_more_complete_delay_duration="0"
+    app:load_more_final_drag_offset="@dimen/load_more_final_offset_google"
+    app:load_more_trigger_offset="@dimen/load_more_trigger_offset_google"
+    app:refresh_final_drag_offset="@dimen/refresh_final_offset_google"
+    app:refresh_trigger_offset="@dimen/refresh_trigger_offset_google"
+    app:swipe_style="above">
+
+    <include
+        android:id="@id/swipe_target"
+        layout="@layout/recycler_view"/>
+
+</com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
