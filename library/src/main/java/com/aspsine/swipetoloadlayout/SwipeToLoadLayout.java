@@ -1068,6 +1068,14 @@ public class SwipeToLoadLayout extends ViewGroup implements NestedScrollingParen
             }
             final int targetRight = targetLeft + targetView.getMeasuredWidth();
             final int targetBottom = targetTop + targetView.getMeasuredHeight();
+            //make the scrollable targetView show the loaded items
+            if (STATUS.isLoadingMore(mStatus)) {
+                int scroll = targetTop - targetView.getTop();
+                if (scroll != 0 && canChildScrollUp()) {
+                    targetView.scrollBy(0, scroll);
+                }
+            }
+            
             targetView.layout(targetLeft, targetTop, targetRight, targetBottom);
         }
 
