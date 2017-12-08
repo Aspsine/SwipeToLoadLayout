@@ -327,6 +327,13 @@ public class SwipeToLoadLayout extends ViewGroup {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        refreshViewIdentity();
+    }
+
+    /*
+    *   根据 id 或者位置判断header target footer
+    * */
+    public void refreshViewIdentity(){
         final int childNum = getChildCount();
         if (childNum == 0) {
             // no child return
@@ -335,6 +342,29 @@ public class SwipeToLoadLayout extends ViewGroup {
             mHeaderView = findViewById(R.id.swipe_refresh_header);
             mTargetView = findViewById(R.id.swipe_target);
             mFooterView = findViewById(R.id.swipe_load_more_footer);
+            if (mTargetView==null){
+                switch (childNum){
+                    case 1:{
+                        mTargetView=getChildAt(0);
+                        break;
+                    }
+                    case 2:{
+                        if (mFooterView!=null){
+                            mTargetView=getChildAt(0);
+                        }else {
+                            mHeaderView=getChildAt(0);
+                            mTargetView=getChildAt(1);
+                        }
+                        break;
+                    }
+                    case 3:{
+                        mHeaderView=getChildAt(0);
+                        mTargetView=getChildAt(1);
+                        mFooterView=getChildAt(2);
+                        break;
+                    }
+                }
+            }
         } else {
             // more than three children: unsupported!
             throw new IllegalStateException("Children num must equal or less than 3");
