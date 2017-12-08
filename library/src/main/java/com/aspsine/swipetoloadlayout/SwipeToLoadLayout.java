@@ -327,6 +327,13 @@ public class SwipeToLoadLayout extends ViewGroup {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        refreshViewIdentity();
+    }
+
+    /*
+    *   根据 id 或者位置判断header target footer
+    * */
+    public void refreshViewIdentity(){
         final int childNum = getChildCount();
         if (childNum == 0) {
             // no child return
