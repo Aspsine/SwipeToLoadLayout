@@ -59,6 +59,8 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     private View mTargetView;
 
+    private View mTouchView;
+
     private View mFooterView;
 
     private int mHeaderHeight;
@@ -245,6 +247,14 @@ public class SwipeToLoadLayout extends ViewGroup {
         public static final int SCALE = 3;
     }
 
+    /**
+     * 为了减少计算
+     * >0 在 touchView 上
+     * =0 无效
+     * <0 在其他view 上
+     */
+    private int touchInViewState;
+
     public SwipeToLoadLayout(Context context) {
         this(context, null);
     }
@@ -333,14 +343,24 @@ public class SwipeToLoadLayout extends ViewGroup {
             return;
         } else if (0 < childNum && childNum < 4) {
             mHeaderView = findViewById(R.id.swipe_refresh_header);
-            mTargetView = findViewById(R.id.swipe_target);
             mFooterView = findViewById(R.id.swipe_load_more_footer);
+            View target = findViewById(R.id.swipe_target);
+            View touch = findViewById(R.id.swipe_target_touch);
+            setTagetAndTouchView(target,touch);
         } else {
             // more than three children: unsupported!
             throw new IllegalStateException("Children num must equal or less than 3");
         }
-        if (mTargetView == null) {
+
+    }
+    public void setTagetAndTouchView(View target,View touch) {
+        if(target == null){
             return;
+        }
+        this.mTargetView = target;
+        this.mTouchView = touch;
+        if (this.mTouchView == null) {
+            this.mTouchView = this.mTargetView;
         }
         if (mHeaderView != null && mHeaderView instanceof SwipeTrigger) {
             mHeaderView.setVisibility(GONE);
@@ -496,6 +516,12 @@ public class SwipeToLoadLayout extends ViewGroup {
                 if (mActivePointerId == INVALID_POINTER) {
                     return false;
                 }
+                if(touchInViewState==0){
+                    isInView(event,mTouchView);
+                }
+                if(touchInViewState<=0){
+                    return false;
+                }
                 float y = getMotionEventY(event, mActivePointerId);
                 float x = getMotionEventX(event, mActivePointerId);
                 final float yInitDiff = y - mInitDownY;
@@ -536,8 +562,11 @@ public class SwipeToLoadLayout extends ViewGroup {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 mActivePointerId = MotionEventCompat.getPointerId(event, 0);
-                return true;
-
+                if(isInView(event,mTouchView)){
+                    return true;
+                }
+                touchInViewState = 0;
+                break;
             case MotionEvent.ACTION_MOVE:
                 // take over the ACTION_MOVE event from SwipeToLoadLayout#onInterceptTouchEvent()
                 // if condition is true
@@ -623,6 +652,27 @@ public class SwipeToLoadLayout extends ViewGroup {
                 break;
         }
         return super.onTouchEvent(event);
+    }
+
+    /**
+     * 点击在范围内
+     */
+    private boolean isInView(MotionEvent e,View view){
+        if(view==null){
+            touchInViewState =0;
+            return false;
+        }
+        int[] position = new int[2];
+        view.getLocationInWindow(position);
+        float x = e.getRawX();
+        float y = e.getRawY();
+        if(position[0]<x&&x<position[0]+view.getWidth()
+                &&position[1]<y&&y<position[1]+view.getHeight()){
+            touchInViewState =1;
+            return true;
+        }
+        touchInViewState =-1;
+        return false;
     }
 
     /**
@@ -965,16 +1015,16 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     protected boolean canChildScrollUp() {
         if (android.os.Build.VERSION.SDK_INT < 14) {
-            if (mTargetView instanceof AbsListView) {
-                final AbsListView absListView = (AbsListView) mTargetView;
+            if (mTouchView instanceof AbsListView) {
+                final AbsListView absListView = (AbsListView) mTouchView;
                 return absListView.getChildCount() > 0
                         && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
                         .getTop() < absListView.getPaddingTop());
             } else {
-                return ViewCompat.canScrollVertically(mTargetView, -1) || mTargetView.getScrollY() > 0;
+                return ViewCompat.canScrollVertically(mTouchView, -1) || mTouchView.getScrollY() > 0;
             }
         } else {
-            return ViewCompat.canScrollVertically(mTargetView, -1);
+            return ViewCompat.canScrollVertically(mTouchView, -1);
         }
     }
 
@@ -986,16 +1036,16 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     protected boolean canChildScrollDown() {
         if (android.os.Build.VERSION.SDK_INT < 14) {
-            if (mTargetView instanceof AbsListView) {
-                final AbsListView absListView = (AbsListView) mTargetView;
+            if (mTouchView instanceof AbsListView) {
+                final AbsListView absListView = (AbsListView) mTouchView;
                 return absListView.getChildCount() > 0
                         && (absListView.getLastVisiblePosition() < absListView.getChildCount() - 1
                         || absListView.getChildAt(absListView.getChildCount() - 1).getBottom() > absListView.getPaddingBottom());
             } else {
-                return ViewCompat.canScrollVertically(mTargetView, 1) || mTargetView.getScrollY() < 0;
+                return ViewCompat.canScrollVertically(mTouchView, 1) || mTouchView.getScrollY() < 0;
             }
         } else {
-            return ViewCompat.canScrollVertically(mTargetView, 1);
+            return ViewCompat.canScrollVertically(mTouchView, 1);
         }
     }
 
@@ -1239,6 +1289,7 @@ public class SwipeToLoadLayout extends ViewGroup {
      * on active finger up
      */
     private void onActivePointerUp() {
+        touchInViewState = 0;
         if (STATUS.isSwipingToRefresh(mStatus)) {
             // simply return
             scrollSwipingToRefreshToDefault();
