@@ -247,13 +247,14 @@ public class SwipeToLoadLayout extends ViewGroup {
         public static final int SCALE = 3;
     }
 
+    private boolean isWhetherTouchInTargetView;
     /**
      * 为了减少计算
      * >0 在 touchView 上
      * =0 无效
      * <0 在其他view 上
      */
-    private int touchInViewState;
+    private int mTouchInViewState;
 
     public SwipeToLoadLayout(Context context) {
         this(context, null);
@@ -324,6 +325,8 @@ public class SwipeToLoadLayout extends ViewGroup {
                 } else if (attr == R.styleable.SwipeToLoadLayout_default_to_loading_more_scrolling_duration) {
                     setDefaultToLoadingMoreScrollingDuration(a.getInt(attr, DEFAULT_DEFAULT_TO_LOADING_MORE_SCROLLING_DURATION));
 
+                }else if(attr == R.styleable.SwipeToLoadLayout_whether_touch_in_taget_view){
+                    setWhetherTouchInTargetView(a.getBoolean(attr, false));
                 }
             }
         } finally {
@@ -369,7 +372,9 @@ public class SwipeToLoadLayout extends ViewGroup {
             mFooterView.setVisibility(GONE);
         }
     }
-
+    public void setWhetherTouchInTargetView(boolean whetherTouchInTargetView) {
+        isWhetherTouchInTargetView = whetherTouchInTargetView;
+    }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -516,10 +521,10 @@ public class SwipeToLoadLayout extends ViewGroup {
                 if (mActivePointerId == INVALID_POINTER) {
                     return false;
                 }
-                if(touchInViewState==0){
+                if(mTouchInViewState==0){
                     isInView(event,mTouchView);
                 }
-                if(touchInViewState<=0){
+                if(mTouchInViewState<=0){
                     return false;
                 }
                 float y = getMotionEventY(event, mActivePointerId);
@@ -562,10 +567,11 @@ public class SwipeToLoadLayout extends ViewGroup {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 mActivePointerId = MotionEventCompat.getPointerId(event, 0);
-                if(isInView(event,mTouchView)){
+                boolean inView = isInView(event, mTouchView);
+                mTouchInViewState = 0;
+                if(inView){
                     return true;
                 }
-                touchInViewState = 0;
                 break;
             case MotionEvent.ACTION_MOVE:
                 // take over the ACTION_MOVE event from SwipeToLoadLayout#onInterceptTouchEvent()
@@ -658,8 +664,12 @@ public class SwipeToLoadLayout extends ViewGroup {
      * 点击在范围内
      */
     private boolean isInView(MotionEvent e,View view){
+        if(!isWhetherTouchInTargetView){
+            mTouchInViewState =1;
+            return true;
+        }
         if(view==null){
-            touchInViewState =0;
+            mTouchInViewState =0;
             return false;
         }
         int[] position = new int[2];
@@ -668,10 +678,10 @@ public class SwipeToLoadLayout extends ViewGroup {
         float y = e.getRawY();
         if(position[0]<x&&x<position[0]+view.getWidth()
                 &&position[1]<y&&y<position[1]+view.getHeight()){
-            touchInViewState =1;
+            mTouchInViewState =1;
             return true;
         }
-        touchInViewState =-1;
+        mTouchInViewState =-1;
         return false;
     }
 
@@ -1289,7 +1299,7 @@ public class SwipeToLoadLayout extends ViewGroup {
      * on active finger up
      */
     private void onActivePointerUp() {
-        touchInViewState = 0;
+        mTouchInViewState = 0;
         if (STATUS.isSwipingToRefresh(mStatus)) {
             // simply return
             scrollSwipingToRefreshToDefault();
