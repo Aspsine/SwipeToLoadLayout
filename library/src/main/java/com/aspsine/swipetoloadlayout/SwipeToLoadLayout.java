@@ -2,7 +2,6 @@ package com.aspsine.swipetoloadlayout;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -462,7 +461,7 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        final int action = MotionEventCompat.getActionMasked(ev);
+        final int action = ev.getActionMasked();
         switch (action) {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
@@ -480,11 +479,11 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        final int action = MotionEventCompat.getActionMasked(event);
+        final int action = event.getActionMasked();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
 
-                mActivePointerId = MotionEventCompat.getPointerId(event, 0);
+                mActivePointerId = event.getPointerId( 0);
                 mInitDownY = mLastY = getMotionEventY(event, mActivePointerId);
                 mInitDownX = mLastX = getMotionEventX(event, mActivePointerId);
 
@@ -562,11 +561,11 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        final int action = MotionEventCompat.getActionMasked(event);
+        final int action = event.getActionMasked();
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                mActivePointerId = MotionEventCompat.getPointerId(event, 0);
+                mActivePointerId = event.getPointerId( 0);
                 boolean inView = isInView(event, mTouchView);
                 mTouchInViewState = 0;
                 if(inView){
@@ -632,8 +631,8 @@ public class SwipeToLoadLayout extends ViewGroup {
                 return true;
 
             case MotionEvent.ACTION_POINTER_DOWN: {
-                final int pointerIndex = MotionEventCompat.getActionIndex(event);
-                final int pointerId = MotionEventCompat.getPointerId(event, pointerIndex);
+                final int pointerIndex = event.getActionIndex();
+                final int pointerId = event.getPointerId(pointerIndex);
                 if (pointerId != INVALID_POINTER) {
                     mActivePointerId = pointerId;
                 }
@@ -1327,13 +1326,13 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @param ev
      */
     private void onSecondaryPointerUp(MotionEvent ev) {
-        final int pointerIndex = MotionEventCompat.getActionIndex(ev);
-        final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
+        final int pointerIndex = ev.getActionIndex();
+        final int pointerId = ev.getPointerId(pointerIndex);
         if (pointerId == mActivePointerId) {
             // This was our active pointer going up. Choose a new
             // active pointer and adjust accordingly.
             final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
-            mActivePointerId = MotionEventCompat.getPointerId(ev, newPointerIndex);
+            mActivePointerId = ev.getPointerId(newPointerIndex);
         }
     }
 
@@ -1447,19 +1446,19 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
     private float getMotionEventY(MotionEvent event, int activePointerId) {
-        final int index = MotionEventCompat.findPointerIndex(event, activePointerId);
+        final int index = event.findPointerIndex(activePointerId);
         if (index < 0) {
             return INVALID_COORDINATE;
         }
-        return MotionEventCompat.getY(event, index);
+        return event.getY(index);
     }
 
     private float getMotionEventX(MotionEvent event, int activePointId) {
-        final int index = MotionEventCompat.findPointerIndex(event, activePointId);
+        final int index = event.findPointerIndex(activePointId);
         if (index < 0) {
             return INVALID_COORDINATE;
         }
-        return MotionEventCompat.getX(event, index);
+        return event.getX(index);
     }
 
     RefreshCallback mRefreshCallback = new RefreshCallback() {
