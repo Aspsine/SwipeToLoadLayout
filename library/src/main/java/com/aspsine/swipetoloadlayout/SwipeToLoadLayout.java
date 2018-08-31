@@ -2,6 +2,8 @@ package com.aspsine.swipetoloadlayout;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.view.NestedScrollingChild;
+import android.support.v4.view.NestedScrollingParent;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -15,7 +17,7 @@ import android.widget.Scroller;
 /**
  * Created by Aspsine on 2015/8/13.
  */
-public class SwipeToLoadLayout extends ViewGroup {
+public class SwipeToLoadLayout extends ViewGroup implements NestedScrollingParent, NestedScrollingChild {
 
     private static final String TAG = SwipeToLoadLayout.class.getSimpleName();
 
