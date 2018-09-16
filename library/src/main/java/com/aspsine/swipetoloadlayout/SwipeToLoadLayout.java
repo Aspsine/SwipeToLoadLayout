@@ -25,7 +25,7 @@ public class SwipeToLoadLayout extends ViewGroup implements NestedScrollingParen
 
     private static final int DEFAULT_RELEASE_TO_REFRESHING_SCROLLING_DURATION = 200;
 
-    private static final int DEFAULT_REFRESH_COMPLETE_DELAY_DURATION = 300;
+    private static final int DEFAULT_REFRESH_COMPLETE_DELAY_DURATION = 500;
 
     private static final int DEFAULT_REFRESH_COMPLETE_TO_DEFAULT_SCROLLING_DURATION = 500;
 
@@ -141,7 +141,7 @@ public class SwipeToLoadLayout extends ViewGroup implements NestedScrollingParen
      * <b>ATTRIBUTE:</b>
      * a switcher indicate whiter load more function is enabled
      */
-    private boolean mLoadMoreEnabled = true;
+    private boolean mLoadMoreEnabled = false;
 
     /**
      * <b>ATTRIBUTE:</b>
@@ -348,6 +348,18 @@ public class SwipeToLoadLayout extends ViewGroup implements NestedScrollingParen
         } else if (0 < childNum && childNum < 4) {
             mHeaderView = findViewById(R.id.swipe_refresh_header);
             mFooterView = findViewById(R.id.swipe_load_more_footer);
+            if (mHeaderView==null){
+                mHeaderView = inflate(getContext(),R.layout.swipe_header,null);
+                LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                mHeaderView.setLayoutParams(lp);
+                addView(mHeaderView);
+            }
+            if (mFooterView==null){
+                mFooterView = inflate(getContext(),R.layout.swipe_footer,null);
+                LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                mFooterView.setLayoutParams(lp);
+                addView(mFooterView);
+            }
             View target = findViewById(R.id.swipe_target);
             View touch = findViewById(R.id.swipe_target_touch);
             setTagetAndTouchView(target,touch);
