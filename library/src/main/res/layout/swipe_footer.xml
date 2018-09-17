@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aspsine.swipetoloadlayout.SwipeLoadMoreFooterLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/swipe_load_more_footer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:alpha="0.5"
+        android:background="@android:color/darker_gray"/>
+    <TextView
+        android:id="@+id/loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:gravity="center"
+        android:text="加载更多..."
+        android:textColor="@android:color/darker_gray" />
+
+</com.aspsine.swipetoloadlayout.SwipeLoadMoreFooterLayout>

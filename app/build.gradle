@@ -24,13 +24,13 @@ android {
 }
 
 dependencies {
-    compile project(':library')
-    compile "com.android.support:appcompat-v7:$_supportVersion"
-    compile "com.android.support:recyclerview-v7:$_supportVersion"
-    compile "com.android.support:design:$_supportVersion"
-    compile 'com.google.code.gson:gson:2.8.2'
-    compile 'com.mcxiaoke.volley:library-aar:1.0.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
-    compile 'com.github.Aspsine:FragmentNavigator:1.0.2'
+    implementation project(':library')
+    implementation "com.android.support:appcompat-v7:$_supportVersion"
+    implementation "com.android.support:recyclerview-v7:$_supportVersion"
+    implementation "com.android.support:design:$_supportVersion"
+    implementation 'com.google.code.gson:gson:2.4'
+    implementation 'com.mcxiaoke.volley:library-aar:1.0.1'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
+    implementation 'com.github.Aspsine:FragmentNavigator:1.0.2'
 }

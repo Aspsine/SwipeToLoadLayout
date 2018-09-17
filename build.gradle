@@ -2,11 +2,12 @@
 
 buildscript {
     repositories {
+        mavenCentral()
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.4'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -15,6 +16,7 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenCentral()
         jcenter()
         google()
     }
@@ -25,7 +27,7 @@ project.ext {
     ext._minSdkVersion = 16
     ext._targetSdkVersion = 27
     ext._supportVersion = "27.1.1"
-    ext.javaVersion = JavaVersion.VERSION_1_8
+    javaVersion = JavaVersion.VERSION_1_8
 }
 task clean(type: Delete) {
     delete rootProject.buildDir
