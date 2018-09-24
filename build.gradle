@@ -20,6 +20,7 @@ allprojects {
         mavenCentral()
         jcenter()
         google()
+        maven { url 'https://www.jitpack.io' }
     }
 }
 project.ext {

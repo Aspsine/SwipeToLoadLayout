@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="loadLayout" type="id" />
     <item name="swipe_target" type="id" />
     <item name="swipe_target_touch" type="id" />
     <item name="swipe_refresh_header" type="id" />
