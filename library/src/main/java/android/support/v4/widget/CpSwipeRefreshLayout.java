@@ -66,9 +66,9 @@ import android.widget.ListView;
 public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingParent,
         NestedScrollingChild {
     // Maps to ProgressBar.Large style
-    public static final int LARGE = CircularProgressDrawable.LARGE;
+//    public static final int LARGE = CircularProgressDrawable.LARGE;
     // Maps to ProgressBar default style
-    public static final int DEFAULT = CircularProgressDrawable.DEFAULT;
+//    public static final int DEFAULT = CircularProgressDrawable.DEFAULT;
 
     @VisibleForTesting
     static final int CIRCLE_DIAMETER = 40;
