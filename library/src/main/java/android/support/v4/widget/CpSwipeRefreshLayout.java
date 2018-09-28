@@ -42,6 +42,10 @@ import android.view.animation.Transformation;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import com.aspsine.swipetoloadlayout.R;
+import com.aspsine.swipetoloadlayout.SwipeRefreshHeaderLayout;
+import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
+
 /** 从 android-27 拷贝过来的
  * The SwipeRefreshLayout should be used whenever the user can refresh the
  * contents of a view via a vertical swipe gesture. The activity that
@@ -97,7 +101,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     private static final int ANIMATE_TO_START_DURATION = 200;
 
     // Default background for the progress spinner
-    private static final int CIRCLE_BG_LIGHT = 0xFFFAFAFA;
+//    private static final int CIRCLE_BG_LIGHT = 0xFFFAFAFA;
     // Default offset in dips from the top of the view to where the progress spinner should stop
     private static final int DEFAULT_CIRCLE_TARGET = 64;
 
@@ -135,7 +139,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         android.R.attr.enabled
     };
 
-    CircleImageView mCircleView;
+    SwipeRefreshHeaderLayout mCircleView;
     private int mCircleViewIndex = -1;
 
     protected int mFrom;
@@ -147,9 +151,13 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     int mSpinnerOffsetEnd;
 
 //    CircularProgressDrawable mProgress;
-
+    /**
+     * 从原始位置到刷新位置
+     */
     private Animation mScaleAnimation;
-
+    /**
+     * 从刷新回到原始位置
+     */
     private Animation mScaleDownAnimation;
 
 //    private Animation mAlphaStartAnimation;
@@ -157,7 +165,9 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 //    private Animation mAlphaMaxAnimation;
 
     private Animation mScaleDownToStartAnimation;
-
+    /**
+     * 是否通知刷新
+     */
     boolean mNotify;
 
     private int mCircleDiameter;
@@ -166,10 +176,18 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     boolean mUsingCustomStart;
 
     private OnChildScrollUpCallback mChildScrollUpCallback;
-
+    /**
+     * 情况1.到刷新位置
+     * 情况2.刷新位置到关闭
+     */
     private AnimationListener mRefreshListener = new AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {
+            if (mRefreshing){
+                mCircleView.onRelease();
+            }else{
+                mCircleView.onComplete();
+            }
         }
 
         @Override
@@ -189,6 +207,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
                 }
                 mCurrentTargetOffsetTop = mCircleView.getTop();
             } else {
+                mCircleView.onReset();
                 reset();
             }
         }
@@ -223,7 +242,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     private void setColorViewAlpha(int targetAlpha) {
-        mCircleView.getBackground().setAlpha(targetAlpha);
+//        mCircleView.getBackground().setAlpha(targetAlpha);
 //        mProgress.setAlpha(targetAlpha);
     }
 
@@ -306,7 +325,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         // force the bounds of the progress circle inside the circle view to
         // update by setting it to null before updating its size and then
         // re-setting it
-        mCircleView.setImageDrawable(null);
+//        mCircleView.setImageDrawable(null);
 //        mProgress.setStyle(size);
 //        mCircleView.setImageDrawable(mProgress);
     }
@@ -340,7 +359,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         final DisplayMetrics metrics = getResources().getDisplayMetrics();
         mCircleDiameter = (int) (CIRCLE_DIAMETER * metrics.density);
 
-        createProgressView();
+//        createProgressView();
         setChildrenDrawingOrderEnabled(true);
         // the absolute offset has to take into account that the circle starts at an offset
         mSpinnerOffsetEnd = (int) (DEFAULT_CIRCLE_TARGET * metrics.density);
@@ -351,7 +370,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         setNestedScrollingEnabled(true);
 
         mOriginalOffsetTop = mCurrentTargetOffsetTop = -mCircleDiameter;
-        moveToStart(1.0f);
+//        moveToStart(1.0f);
 
         final TypedArray a = context.obtainStyledAttributes(attrs, LAYOUT_ATTRS);
         setEnabled(a.getBoolean(0, true));
@@ -374,8 +393,20 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         }
     }
 
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        mCircleView = findViewById(R.id.swipe_refresh_header);
+        if (mCircleView == null) {
+            mCircleView = (SwipeRefreshHeaderLayout) inflate(getContext(), R.layout.swipe_header, null);
+            SwipeToLoadLayout.LayoutParams lp = new SwipeToLoadLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            mCircleView.setLayoutParams(lp);
+            addView(mCircleView);
+        }
+    }
+
     private void createProgressView() {
-        mCircleView = new CircleImageView(getContext(), CIRCLE_BG_LIGHT);
+        mCircleView = new SwipeRefreshHeaderLayout(getContext());
 //        mProgress = new CircularProgressDrawable(getContext());
 //        mProgress.setStyle(CircularProgressDrawable.DEFAULT);
 //        mCircleView.setImageDrawable(mProgress);
@@ -408,7 +439,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
                 endTarget = mSpinnerOffsetEnd;
             }
             setTargetOffsetTopAndBottom(endTarget - mCurrentTargetOffsetTop);
-            mNotify = false;
+            mNotify = true;//这里改了,不然不会调用到 onRefresh
             startScaleUpAnimation(mRefreshListener);
         } else {
             setRefreshing(refreshing, false /* notify */);
@@ -417,16 +448,18 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     private void startScaleUpAnimation(AnimationListener listener) {
         mCircleView.setVisibility(View.VISIBLE);
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
-            // Pre API 11, alpha is used in place of scale up to show the
-            // progress circle appearing.
-            // Don't adjust the alpha during appearance otherwise.
+        mCircleView.onPrepare();
+//        if (android.os.Build.VERSION.SDK_INT >= 11) {
+//            // Pre API 11, alpha is used in place of scale up to show the
+//            // progress circle appearing.
+//            // Don't adjust the alpha during appearance otherwise.
 //            mProgress.setAlpha(MAX_ALPHA);
-        }
+//        }
         mScaleAnimation = new Animation() {
             @Override
             public void applyTransformation(float interpolatedTime, Transformation t) {
                 setAnimationProgress(interpolatedTime);
+                mCircleView.onMove((int) ((1 - interpolatedTime)*mCurrentTargetOffsetTop),false,false);
             }
         };
         mScaleAnimation.setDuration(mMediumAnimationDuration);
@@ -442,8 +475,8 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
      * @param progress
      */
     void setAnimationProgress(float progress) {
-        mCircleView.setScaleX(progress);
-        mCircleView.setScaleY(progress);
+//        mCircleView.setScaleX(progress);
+//        mCircleView.setScaleY(progress);
     }
 
     private void setRefreshing(boolean refreshing, final boolean notify) {
@@ -464,6 +497,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
             @Override
             public void applyTransformation(float interpolatedTime, Transformation t) {
                 setAnimationProgress(1 - interpolatedTime);
+                mCircleView.onMove((int) ((1 - interpolatedTime)*mCurrentTargetOffsetTop),false,false);
             }
         };
         mScaleDownAnimation.setDuration(SCALE_DOWN_DURATION);
@@ -786,6 +820,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         if (mUsingCustomStart && dy > 0 && mTotalUnconsumed == 0
                 && Math.abs(dy - consumed[1]) > 0) {
             mCircleView.setVisibility(View.GONE);
+            mCircleView.onReset();
         }
 
         // Now let our nested parent consume the leftovers
@@ -919,6 +954,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         // where 1.0f is a full circle
         if (mCircleView.getVisibility() != View.VISIBLE) {
             mCircleView.setVisibility(View.VISIBLE);
+            mCircleView.onPrepare();
         }
         if (!mScale) {
             mCircleView.setScaleX(1f);
@@ -928,6 +964,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         if (mScale) {
             setAnimationProgress(Math.min(1f, overscrollTop / mTotalDragDistance));
         }
+        mCircleView.onMove((int) overscrollTop,false,false);
         if (overscrollTop < mTotalDragDistance) {
 //            if (mProgress.getAlpha() > STARTING_PROGRESS_ALPHA
 //                    && !isAnimationRunning(mAlphaStartAnimation)) {
@@ -1099,6 +1136,9 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         }
     }
 
+    /**
+     * 滑动位置到刷新位置
+     */
     private final Animation mAnimateToCorrectPosition = new Animation() {
         @Override
         public void applyTransformation(float interpolatedTime, Transformation t) {
@@ -1111,6 +1151,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
             }
             targetTop = (mFrom + (int) ((endTarget - mFrom) * interpolatedTime));
             int offset = targetTop - mCircleView.getTop();
+            mCircleView.onMove(targetTop,false,false);
             setTargetOffsetTopAndBottom(offset);
 //            mProgress.setArrowScale(1 - interpolatedTime);
         }
