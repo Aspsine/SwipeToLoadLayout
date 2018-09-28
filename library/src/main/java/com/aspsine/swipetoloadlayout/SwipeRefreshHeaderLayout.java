@@ -2,6 +2,7 @@ package com.aspsine.swipetoloadlayout;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide;
 public class SwipeRefreshHeaderLayout extends FrameLayout implements SwipeRefreshTrigger, SwipeTrigger {
 
     private ImageView iv;
+    private Animation.AnimationListener mListener;
 
     public SwipeRefreshHeaderLayout(Context context) {
         this(context, null);
@@ -32,6 +34,26 @@ public class SwipeRefreshHeaderLayout extends FrameLayout implements SwipeRefres
         iv = findViewById(R.id.loading_view);
     }
 
+    @Override
+    public void setAnimationListener(Animation.AnimationListener listener) {
+        mListener = listener;
+    }
+
+    @Override
+    public void onAnimationStart() {
+        super.onAnimationStart();
+        if (mListener != null) {
+            mListener.onAnimationStart(getAnimation());
+        }
+    }
+
+    @Override
+    public void onAnimationEnd() {
+        super.onAnimationEnd();
+        if (mListener != null) {
+            mListener.onAnimationEnd(getAnimation());
+        }
+    }
     @Override
     public void onPrepare() {
         if (iv!=null){

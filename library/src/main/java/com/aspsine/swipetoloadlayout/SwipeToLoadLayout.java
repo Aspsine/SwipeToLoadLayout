@@ -2,6 +2,10 @@ package com.aspsine.swipetoloadlayout;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.view.NestedScrollingChild;
+import android.support.v4.view.NestedScrollingChildHelper;
+import android.support.v4.view.NestedScrollingParent;
+import android.support.v4.view.NestedScrollingParentHelper;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -9,13 +13,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.AbsListView;
 import android.widget.Scroller;
 
 /**
  * Created by Aspsine on 2015/8/13.
  */
-public class SwipeToLoadLayout extends ViewGroup {
+public class SwipeToLoadLayout extends ViewGroup implements NestedScrollingParent, NestedScrollingChild {
 
     private static final String TAG = SwipeToLoadLayout.class.getSimpleName();
 
@@ -334,6 +339,7 @@ public class SwipeToLoadLayout extends ViewGroup {
 
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mAutoScroller = new AutoScroller();
+        setNestedScrollingEnabled(true);
     }
 
     @Override
@@ -485,6 +491,12 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
+//        //从 SwipeRefreshLayout 拷贝过来的
+//        if (!isEnabled() /*|| mReturningToStart*/ || canChildScrollUp()
+//                || isRefreshing() || mNestedScrollInProgress) {
+//            // Fail fast if we're not in a state where a swipe is possible
+//            return false;
+//        }
         final int action = event.getActionMasked();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
@@ -1469,6 +1481,12 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
     RefreshCallback mRefreshCallback = new RefreshCallback() {
+
+        @Override
+        public void setAnimationListener(Animation.AnimationListener listener) {
+
+        }
+
         @Override
         public void onPrepare() {
             if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
@@ -1523,6 +1541,11 @@ public class SwipeToLoadLayout extends ViewGroup {
     };
 
     LoadMoreCallback mLoadMoreCallback = new LoadMoreCallback() {
+
+        @Override
+        public void setAnimationListener(Animation.AnimationListener listener) {
+
+        }
 
         @Override
         public void onPrepare() {
@@ -1767,5 +1790,166 @@ public class SwipeToLoadLayout extends ViewGroup {
         private static void printStatus(int status) {
             Log.i(TAG, "printStatus:" + getStatus(status));
         }
+    }
+
+    //===================================================== 从SwipeRefreshLayout拷贝过来的
+    private float mTotalUnconsumed;
+    private final int[] mParentOffsetInWindow = new int[2];
+    private final int[] mParentScrollConsumed = new int[2];
+    private boolean mNestedScrollInProgress;
+
+    private NestedScrollingParentHelper mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
+    private NestedScrollingChildHelper mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
+
+    @Override
+    public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
+        return isEnabled() /*&& !mReturningToStart*/ && !isRefreshing()
+                && (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
+    }
+
+    @Override
+    public void onNestedScrollAccepted(View child, View target, int axes) {
+//        super.onNestedScrollAccepted(child, target, axes);
+        mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
+        // Dispatch up to the nested parent
+        startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
+        mTotalUnconsumed = 0;
+        mNestedScrollInProgress = true;
+    }
+
+    @Override
+    public void onStopNestedScroll(View child) {
+//        super.onStopNestedScroll(child);
+        mNestedScrollingParentHelper.onStopNestedScroll(child);
+        mNestedScrollInProgress = false;
+        // Finish the spinner for nested scrolling if we ever consumed any
+        // unconsumed nested scroll
+        if (mTotalUnconsumed > 0) {
+            finishSpinner(mTotalUnconsumed);
+            mTotalUnconsumed = 0;
+        }
+        // Dispatch up our nested parent
+        stopNestedScroll();
+    }
+
+    @Override
+    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+//        super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+        // Dispatch up to the nested parent first
+        dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed,
+                mParentOffsetInWindow);
+
+        // This is a bit of a hack. Nested scrolling works from the bottom up, and as we are
+        // sometimes between two nested scrolling views, we need a way to be able to know when any
+        // nested scrolling parent has stopped handling events. We do that by using the
+        // 'offset in window 'functionality to see if we have been moved from the event.
+        // This is a decent indication of whether we should take over the event stream or not.
+        final int dy = dyUnconsumed + mParentOffsetInWindow[1];
+        if (dy < 0 && !canChildScrollUp()) {
+            mTotalUnconsumed += Math.abs(dy);
+            moveSpinner(mTotalUnconsumed);
+        }
+    }
+
+    @Override
+    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
+//        super.onNestedPreScroll(target, dx, dy, consumed);
+        // If we are in the middle of consuming, a scroll, then we want to move the spinner back up
+        // before allowing the list to scroll
+        if (dy > 0 && mTotalUnconsumed > 0) {
+            if (dy > mTotalUnconsumed) {
+                consumed[1] = dy - (int) mTotalUnconsumed;
+                mTotalUnconsumed = 0;
+            } else {
+                mTotalUnconsumed -= dy;
+                consumed[1] = dy;
+            }
+            moveSpinner(mTotalUnconsumed);
+        }
+        // If a client layout is using a custom start position for the circle
+        // view, they mean to hide it again before scrolling the child view
+        // If we get back to mTotalUnconsumed == 0 and there is more to go, hide
+        // the circle so it isn't exposed if its blocking content is moved
+//        if (mUsingCustomStart && dy > 0 && mTotalUnconsumed == 0
+//                && Math.abs(dy - consumed[1]) > 0) {
+//            mCircleView.setVisibility(View.GONE);
+//        }
+
+        // Now let our nested parent consume the leftovers
+//        final int[] parentConsumed = mParentScrollConsumed;
+//        if (dispatchNestedPreScroll(dx - consumed[0], dy - consumed[1], parentConsumed, null)) {
+//            consumed[0] += parentConsumed[0];
+//            consumed[1] += parentConsumed[1];
+//        }
+    }
+
+    @Override
+    public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed) {
+//        return super.onNestedFling(target, velocityX, velocityY,consumed);
+        return dispatchNestedFling(velocityX, velocityY, consumed);
+    }
+
+    @Override
+    public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
+//        return super.onNestedPreFling(target, velocityX, velocityY);
+        return dispatchNestedPreFling(velocityX, velocityY);
+    }
+
+    @Override
+    public int getNestedScrollAxes() {
+//        return super.getNestedScrollAxes();
+        return mNestedScrollingParentHelper.getNestedScrollAxes();
+    }
+    //===================================================== 从SwipeRefreshLayout拷贝过来的
+
+    @Override
+    public void setNestedScrollingEnabled(boolean enabled) {
+        mNestedScrollingChildHelper.setNestedScrollingEnabled(enabled);
+    }
+
+    @Override
+    public boolean isNestedScrollingEnabled() {
+        return mNestedScrollingChildHelper.isNestedScrollingEnabled();
+    }
+
+    @Override
+    public boolean startNestedScroll(int axes) {
+        return mNestedScrollingChildHelper.startNestedScroll(axes);
+    }
+
+    @Override
+    public void stopNestedScroll() {
+        mNestedScrollingChildHelper.stopNestedScroll();
+    }
+
+    @Override
+    public boolean hasNestedScrollingParent() {
+        return mNestedScrollingChildHelper.hasNestedScrollingParent();
+    }
+
+    @Override
+    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int[] offsetInWindow) {
+        return mNestedScrollingChildHelper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow);
+    }
+
+    @Override
+    public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed, int[] offsetInWindow) {
+        return mNestedScrollingChildHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow);
+    }
+
+    @Override
+    public boolean dispatchNestedFling(float velocityX, float velocityY, boolean consumed) {
+        return mNestedScrollingChildHelper.dispatchNestedFling(velocityX, velocityY, consumed);
+    }
+
+    @Override
+    public boolean dispatchNestedPreFling(float velocityX, float velocityY) {
+        return mNestedScrollingChildHelper.dispatchNestedPreFling(velocityX, velocityY);
+    }
+
+    private void moveSpinner(float overscrollTop) {
+    }
+
+    private void finishSpinner(float overscrollTop) {
     }
 }
