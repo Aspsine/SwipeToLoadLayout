@@ -78,7 +78,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     private static final String LOG_TAG = SwipeRefreshLayout.class.getSimpleName();
 
     private static final int MAX_ALPHA = 255;
-    private static final int STARTING_PROGRESS_ALPHA = (int) (.3f * MAX_ALPHA);
+//    private static final int STARTING_PROGRESS_ALPHA = (int) (.3f * MAX_ALPHA);
 
     private static final float DECELERATE_INTERPOLATION_FACTOR = 2f;
     private static final int INVALID_POINTER = -1;
@@ -86,11 +86,11 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     // Max amount of circle that can be filled by progress during swipe gesture,
     // where 1.0 is a full circle
-    private static final float MAX_PROGRESS_ANGLE = .8f;
+//    private static final float MAX_PROGRESS_ANGLE = .8f;
 
     private static final int SCALE_DOWN_DURATION = 150;
 
-    private static final int ALPHA_ANIMATION_DURATION = 300;
+//    private static final int ALPHA_ANIMATION_DURATION = 300;
 
     private static final int ANIMATE_TO_TRIGGER_DURATION = 200;
 
@@ -146,15 +146,15 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     int mSpinnerOffsetEnd;
 
-    CircularProgressDrawable mProgress;
+//    CircularProgressDrawable mProgress;
 
     private Animation mScaleAnimation;
 
     private Animation mScaleDownAnimation;
 
-    private Animation mAlphaStartAnimation;
+//    private Animation mAlphaStartAnimation;
 
-    private Animation mAlphaMaxAnimation;
+//    private Animation mAlphaMaxAnimation;
 
     private Animation mScaleDownToStartAnimation;
 
@@ -180,8 +180,8 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         public void onAnimationEnd(Animation animation) {
             if (mRefreshing) {
                 // Make sure the progress view is fully visible
-                mProgress.setAlpha(MAX_ALPHA);
-                mProgress.start();
+//                mProgress.setAlpha(MAX_ALPHA);
+//                mProgress.start();
                 if (mNotify) {
                     if (mListener != null) {
                         mListener.onRefresh();
@@ -196,7 +196,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     void reset() {
         mCircleView.clearAnimation();
-        mProgress.stop();
+//        mProgress.stop();
         mCircleView.setVisibility(View.GONE);
         setColorViewAlpha(MAX_ALPHA);
         // Return the circle to its start position
@@ -224,7 +224,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     private void setColorViewAlpha(int targetAlpha) {
         mCircleView.getBackground().setAlpha(targetAlpha);
-        mProgress.setAlpha(targetAlpha);
+//        mProgress.setAlpha(targetAlpha);
     }
 
     /**
@@ -307,8 +307,8 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         // update by setting it to null before updating its size and then
         // re-setting it
         mCircleView.setImageDrawable(null);
-        mProgress.setStyle(size);
-        mCircleView.setImageDrawable(mProgress);
+//        mProgress.setStyle(size);
+//        mCircleView.setImageDrawable(mProgress);
     }
 
     /**
@@ -376,9 +376,9 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     private void createProgressView() {
         mCircleView = new CircleImageView(getContext(), CIRCLE_BG_LIGHT);
-        mProgress = new CircularProgressDrawable(getContext());
-        mProgress.setStyle(CircularProgressDrawable.DEFAULT);
-        mCircleView.setImageDrawable(mProgress);
+//        mProgress = new CircularProgressDrawable(getContext());
+//        mProgress.setStyle(CircularProgressDrawable.DEFAULT);
+//        mCircleView.setImageDrawable(mProgress);
         mCircleView.setVisibility(View.GONE);
         addView(mCircleView);
     }
@@ -421,7 +421,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
             // Pre API 11, alpha is used in place of scale up to show the
             // progress circle appearing.
             // Don't adjust the alpha during appearance otherwise.
-            mProgress.setAlpha(MAX_ALPHA);
+//            mProgress.setAlpha(MAX_ALPHA);
         }
         mScaleAnimation = new Animation() {
             @Override
@@ -472,29 +472,29 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         mCircleView.startAnimation(mScaleDownAnimation);
     }
 
-    private void startProgressAlphaStartAnimation() {
-        mAlphaStartAnimation = startAlphaAnimation(mProgress.getAlpha(), STARTING_PROGRESS_ALPHA);
-    }
-
-    private void startProgressAlphaMaxAnimation() {
-        mAlphaMaxAnimation = startAlphaAnimation(mProgress.getAlpha(), MAX_ALPHA);
-    }
-
-    private Animation startAlphaAnimation(final int startingAlpha, final int endingAlpha) {
-        Animation alpha = new Animation() {
-            @Override
-            public void applyTransformation(float interpolatedTime, Transformation t) {
-                mProgress.setAlpha(
-                        (int) (startingAlpha + ((endingAlpha - startingAlpha) * interpolatedTime)));
-            }
-        };
-        alpha.setDuration(ALPHA_ANIMATION_DURATION);
-        // Clear out the previous animation listeners.
-        mCircleView.setAnimationListener(null);
-        mCircleView.clearAnimation();
-        mCircleView.startAnimation(alpha);
-        return alpha;
-    }
+//    private void startProgressAlphaStartAnimation() {
+//        mAlphaStartAnimation = startAlphaAnimation(mProgress.getAlpha(), STARTING_PROGRESS_ALPHA);
+//    }
+//
+//    private void startProgressAlphaMaxAnimation() {
+//        mAlphaMaxAnimation = startAlphaAnimation(mProgress.getAlpha(), MAX_ALPHA);
+//    }
+//
+//    private Animation startAlphaAnimation(final int startingAlpha, final int endingAlpha) {
+//        Animation alpha = new Animation() {
+//            @Override
+//            public void applyTransformation(float interpolatedTime, Transformation t) {
+//                mProgress.setAlpha(
+//                        (int) (startingAlpha + ((endingAlpha - startingAlpha) * interpolatedTime)));
+//            }
+//        };
+//        alpha.setDuration(ALPHA_ANIMATION_DURATION);
+//        // Clear out the previous animation listeners.
+//        mCircleView.setAnimationListener(null);
+//        mCircleView.clearAnimation();
+//        mCircleView.startAnimation(alpha);
+//        return alpha;
+//    }
 
     /**
      * @deprecated Use {@link #setProgressBackgroundColorSchemeResource(int)}
@@ -555,7 +555,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
      */
     public void setColorSchemeColors(@ColorInt int... colors) {
         ensureTarget();
-        mProgress.setColorSchemeColors(colors);
+//        mProgress.setColorSchemeColors(colors);
     }
 
     /**
@@ -901,7 +901,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     private void moveSpinner(float overscrollTop) {
-        mProgress.setArrowEnabled(true);
+//        mProgress.setArrowEnabled(true);
         float originalDragPercent = overscrollTop / mTotalDragDistance;
 
         float dragPercent = Math.min(1f, Math.abs(originalDragPercent));
@@ -929,23 +929,23 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
             setAnimationProgress(Math.min(1f, overscrollTop / mTotalDragDistance));
         }
         if (overscrollTop < mTotalDragDistance) {
-            if (mProgress.getAlpha() > STARTING_PROGRESS_ALPHA
-                    && !isAnimationRunning(mAlphaStartAnimation)) {
-                // Animate the alpha
-                startProgressAlphaStartAnimation();
-            }
+//            if (mProgress.getAlpha() > STARTING_PROGRESS_ALPHA
+//                    && !isAnimationRunning(mAlphaStartAnimation)) {
+//                // Animate the alpha
+//                startProgressAlphaStartAnimation();
+//            }
         } else {
-            if (mProgress.getAlpha() < MAX_ALPHA && !isAnimationRunning(mAlphaMaxAnimation)) {
-                // Animate the alpha
-                startProgressAlphaMaxAnimation();
-            }
+//            if (mProgress.getAlpha() < MAX_ALPHA && !isAnimationRunning(mAlphaMaxAnimation)) {
+//                // Animate the alpha
+//                startProgressAlphaMaxAnimation();
+//            }
         }
         float strokeStart = adjustedPercent * .8f;
-        mProgress.setStartEndTrim(0f, Math.min(MAX_PROGRESS_ANGLE, strokeStart));
-        mProgress.setArrowScale(Math.min(1f, adjustedPercent));
+//        mProgress.setStartEndTrim(0f, Math.min(MAX_PROGRESS_ANGLE, strokeStart));
+//        mProgress.setArrowScale(Math.min(1f, adjustedPercent));
 
         float rotation = (-0.25f + .4f * adjustedPercent + tensionPercent * 2) * .5f;
-        mProgress.setProgressRotation(rotation);
+//        mProgress.setProgressRotation(rotation);
         setTargetOffsetTopAndBottom(targetY - mCurrentTargetOffsetTop);
     }
 
@@ -955,7 +955,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         } else {
             // cancel refresh
             mRefreshing = false;
-            mProgress.setStartEndTrim(0f, 0f);
+//            mProgress.setStartEndTrim(0f, 0f);
             AnimationListener listener = null;
             if (!mScale) {
                 listener = new AnimationListener() {
@@ -978,7 +978,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
                 };
             }
             animateOffsetToStartPosition(mCurrentTargetOffsetTop, listener);
-            mProgress.setArrowEnabled(false);
+//            mProgress.setArrowEnabled(false);
         }
     }
 
@@ -1066,7 +1066,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         if (yDiff > mTouchSlop && !mIsBeingDragged) {
             mInitialMotionY = mInitialDownY + mTouchSlop;
             mIsBeingDragged = true;
-            mProgress.setAlpha(STARTING_PROGRESS_ALPHA);
+//            mProgress.setAlpha(STARTING_PROGRESS_ALPHA);
         }
     }
 
@@ -1112,7 +1112,7 @@ public class CpSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
             targetTop = (mFrom + (int) ((endTarget - mFrom) * interpolatedTime));
             int offset = targetTop - mCircleView.getTop();
             setTargetOffsetTopAndBottom(offset);
-            mProgress.setArrowScale(1 - interpolatedTime);
+//            mProgress.setArrowScale(1 - interpolatedTime);
         }
     };
 
