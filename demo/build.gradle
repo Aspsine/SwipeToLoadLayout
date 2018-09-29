@@ -5,22 +5,23 @@ android {
     buildToolsVersion _buildToolsVersion
 
     defaultConfig {
-        applicationId "com.aspsine.swipetoloadlayout"
+        applicationId "com.tzj.swipetoloadlayout.demo"
         minSdkVersion _minSdkVersion
         targetSdkVersion _targetSdkVersion
-        versionCode 4
-        versionName "1.0.4"
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
-    repositories {
-        maven { url "https://jitpack.io" }
-    }
 }
 
 dependencies {
@@ -28,9 +29,4 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$_supportVersion"
     implementation "com.android.support:recyclerview-v7:$_supportVersion"
     implementation "com.android.support:design:$_supportVersion"
-    implementation 'com.google.code.gson:gson:2.4'
-    implementation 'com.mcxiaoke.volley:library-aar:1.0.1'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
-    implementation 'com.github.Aspsine:FragmentNavigator:1.0.2'
 }

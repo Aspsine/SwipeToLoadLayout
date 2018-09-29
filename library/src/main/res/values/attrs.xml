@@ -27,5 +27,6 @@
         <attr name="load_more_complete_delay_duration" format="integer" />
         <attr name="load_more_complete_to_default_scrolling_duration" format="integer" />
         <attr name="default_to_loading_more_scrolling_duration" format="integer" />
+        <attr name="whether_touch_in_taget_view" format="boolean" />
     </declare-styleable>
 </resources>

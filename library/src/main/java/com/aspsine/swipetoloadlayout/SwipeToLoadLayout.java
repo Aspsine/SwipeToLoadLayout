@@ -2,7 +2,10 @@ package com.aspsine.swipetoloadlayout;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.view.MotionEventCompat;
+import android.support.v4.view.NestedScrollingChild;
+import android.support.v4.view.NestedScrollingChildHelper;
+import android.support.v4.view.NestedScrollingParent;
+import android.support.v4.view.NestedScrollingParentHelper;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -10,13 +13,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.AbsListView;
 import android.widget.Scroller;
 
 /**
  * Created by Aspsine on 2015/8/13.
  */
-public class SwipeToLoadLayout extends ViewGroup {
+public class SwipeToLoadLayout extends ViewGroup implements NestedScrollingParent, NestedScrollingChild {
 
     private static final String TAG = SwipeToLoadLayout.class.getSimpleName();
 
@@ -24,7 +28,7 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     private static final int DEFAULT_RELEASE_TO_REFRESHING_SCROLLING_DURATION = 200;
 
-    private static final int DEFAULT_REFRESH_COMPLETE_DELAY_DURATION = 300;
+    private static final int DEFAULT_REFRESH_COMPLETE_DELAY_DURATION = 500;
 
     private static final int DEFAULT_REFRESH_COMPLETE_TO_DEFAULT_SCROLLING_DURATION = 500;
 
@@ -58,6 +62,8 @@ public class SwipeToLoadLayout extends ViewGroup {
     private View mHeaderView;
 
     private View mTargetView;
+
+    private View mTouchView;
 
     private View mFooterView;
 
@@ -138,7 +144,7 @@ public class SwipeToLoadLayout extends ViewGroup {
      * <b>ATTRIBUTE:</b>
      * a switcher indicate whiter load more function is enabled
      */
-    private boolean mLoadMoreEnabled = true;
+    private boolean mLoadMoreEnabled = false;
 
     /**
      * <b>ATTRIBUTE:</b>
@@ -245,6 +251,15 @@ public class SwipeToLoadLayout extends ViewGroup {
         public static final int SCALE = 3;
     }
 
+    private boolean isWhetherTouchInTargetView;
+    /**
+     * 为了减少计算
+     * >0 在 touchView 上
+     * =0 无效
+     * <0 在其他view 上
+     */
+    private int mTouchInViewState;
+
     public SwipeToLoadLayout(Context context) {
         this(context, null);
     }
@@ -314,6 +329,8 @@ public class SwipeToLoadLayout extends ViewGroup {
                 } else if (attr == R.styleable.SwipeToLoadLayout_default_to_loading_more_scrolling_duration) {
                     setDefaultToLoadingMoreScrollingDuration(a.getInt(attr, DEFAULT_DEFAULT_TO_LOADING_MORE_SCROLLING_DURATION));
 
+                }else if(attr == R.styleable.SwipeToLoadLayout_whether_touch_in_taget_view){
+                    setWhetherTouchInTargetView(a.getBoolean(attr, false));
                 }
             }
         } finally {
@@ -322,6 +339,7 @@ public class SwipeToLoadLayout extends ViewGroup {
 
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mAutoScroller = new AutoScroller();
+        setNestedScrollingEnabled(true);
     }
 
     @Override
@@ -333,14 +351,36 @@ public class SwipeToLoadLayout extends ViewGroup {
             return;
         } else if (0 < childNum && childNum < 4) {
             mHeaderView = findViewById(R.id.swipe_refresh_header);
-            mTargetView = findViewById(R.id.swipe_target);
             mFooterView = findViewById(R.id.swipe_load_more_footer);
+            if (mHeaderView==null){
+                mHeaderView = inflate(getContext(),R.layout.swipe_header,null);
+                LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                mHeaderView.setLayoutParams(lp);
+                addView(mHeaderView);
+            }
+            if (mFooterView==null){
+                mFooterView = inflate(getContext(),R.layout.swipe_footer,null);
+                LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                mFooterView.setLayoutParams(lp);
+                addView(mFooterView);
+            }
+            View target = findViewById(R.id.swipe_target);
+            View touch = findViewById(R.id.swipe_target_touch);
+            setTagetAndTouchView(target,touch);
         } else {
             // more than three children: unsupported!
             throw new IllegalStateException("Children num must equal or less than 3");
         }
-        if (mTargetView == null) {
+
+    }
+    public void setTagetAndTouchView(View target,View touch) {
+        if(target == null){
             return;
+        }
+        this.mTargetView = target;
+        this.mTouchView = touch;
+        if (this.mTouchView == null) {
+            this.mTouchView = this.mTargetView;
         }
         if (mHeaderView != null && mHeaderView instanceof SwipeTrigger) {
             mHeaderView.setVisibility(GONE);
@@ -349,7 +389,9 @@ public class SwipeToLoadLayout extends ViewGroup {
             mFooterView.setVisibility(GONE);
         }
     }
-
+    public void setWhetherTouchInTargetView(boolean whetherTouchInTargetView) {
+        isWhetherTouchInTargetView = whetherTouchInTargetView;
+    }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -437,16 +479,10 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        final int action = MotionEventCompat.getActionMasked(ev);
+        final int action = ev.getActionMasked();
         switch (action) {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                // swipeToRefresh -> finger up -> finger down if the status is still swipeToRefresh
-                // in onInterceptTouchEvent ACTION_DOWN event will stop the scroller
-                // if the event pass to the child view while ACTION_MOVE(condition is false)
-                // in onInterceptTouchEvent ACTION_MOVE the ACTION_UP or ACTION_CANCEL will not be
-                // passed to onInterceptTouchEvent and onTouchEvent. Instead It will be passed to
-                // child view's onTouchEvent. So we must deal this situation in dispatchTouchEvent
                 onActivePointerUp();
                 break;
         }
@@ -455,18 +491,24 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        final int action = MotionEventCompat.getActionMasked(event);
+//        //从 SwipeRefreshLayout 拷贝过来的
+//        if (!isEnabled() /*|| mReturningToStart*/ || canChildScrollUp()
+//                || isRefreshing() || mNestedScrollInProgress) {
+//            // Fail fast if we're not in a state where a swipe is possible
+//            return false;
+//        }
+        final int action = event.getActionMasked();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
 
-                mActivePointerId = MotionEventCompat.getPointerId(event, 0);
+                mActivePointerId = event.getPointerId( 0);
                 mInitDownY = mLastY = getMotionEventY(event, mActivePointerId);
                 mInitDownX = mLastX = getMotionEventX(event, mActivePointerId);
 
-                // if it isn't an ing status or default status
+                // if it's auto-scrolling state
                 if (STATUS.isSwipingToRefresh(mStatus) || STATUS.isSwipingToLoadMore(mStatus) ||
                         STATUS.isReleaseToRefresh(mStatus) || STATUS.isReleaseToLoadMore(mStatus)) {
-                    // abort autoScrolling, not trigger the method #autoScrollFinished()
+                    // abort autoScrolling, shouldn't trigger the method #autoScrollFinished()
                     mAutoScroller.abortIfRunning();
                     if (mDebug) {
                         Log.i(TAG, "Another finger down, abort auto scrolling, let the new finger handle");
@@ -478,12 +520,13 @@ public class SwipeToLoadLayout extends ViewGroup {
                     return true;
                 }
 
-                // let children view handle the ACTION_DOWN;
+                // else
+                // let children view handle the ACTION_DOWN:
 
                 // 1. children consumed:
                 // if at least one of children onTouchEvent() ACTION_DOWN return true.
                 // ACTION_DOWN event will not return to SwipeToLoadLayout#onTouchEvent().
-                // but the others action can be handled by SwipeToLoadLayout#onInterceptTouchEvent()
+                // but the others action can still be handled by SwipeToLoadLayout#onInterceptTouchEvent()
 
                 // 2. children not consumed:
                 // if children onTouchEvent() ACTION_DOWN return false.
@@ -494,6 +537,12 @@ public class SwipeToLoadLayout extends ViewGroup {
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (mActivePointerId == INVALID_POINTER) {
+                    return false;
+                }
+                if(mTouchInViewState==0){
+                    isInView(event,mTouchView);
+                }
+                if(mTouchInViewState<=0){
                     return false;
                 }
                 float y = getMotionEventY(event, mActivePointerId);
@@ -510,7 +559,7 @@ public class SwipeToLoadLayout extends ViewGroup {
                                 //load more trigger condition
                                 (yInitDiff < 0 && moved && onCheckCanLoadMore());
                 if (triggerCondition) {
-                    // if the refresh's or load more's trigger condition  is true,
+                    // if the refresh or load more trigger condition is true,
                     // intercept the move action event and pass it to SwipeToLoadLayout#onTouchEvent()
                     return true;
                 }
@@ -531,13 +580,17 @@ public class SwipeToLoadLayout extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        final int action = MotionEventCompat.getActionMasked(event);
+        final int action = event.getActionMasked();
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                mActivePointerId = MotionEventCompat.getPointerId(event, 0);
-                return true;
-
+                mActivePointerId = event.getPointerId( 0);
+                boolean inView = isInView(event, mTouchView);
+                mTouchInViewState = 0;
+                if(inView){
+                    return true;
+                }
+                break;
             case MotionEvent.ACTION_MOVE:
                 // take over the ACTION_MOVE event from SwipeToLoadLayout#onInterceptTouchEvent()
                 // if condition is true
@@ -597,8 +650,8 @@ public class SwipeToLoadLayout extends ViewGroup {
                 return true;
 
             case MotionEvent.ACTION_POINTER_DOWN: {
-                final int pointerIndex = MotionEventCompat.getActionIndex(event);
-                final int pointerId = MotionEventCompat.getPointerId(event, pointerIndex);
+                final int pointerIndex = event.getActionIndex();
+                final int pointerId = event.getPointerId(pointerIndex);
                 if (pointerId != INVALID_POINTER) {
                     mActivePointerId = pointerId;
                 }
@@ -623,6 +676,31 @@ public class SwipeToLoadLayout extends ViewGroup {
                 break;
         }
         return super.onTouchEvent(event);
+    }
+
+    /**
+     * 点击在范围内
+     */
+    private boolean isInView(MotionEvent e,View view){
+        if(!isWhetherTouchInTargetView){
+            mTouchInViewState =1;
+            return true;
+        }
+        if(view==null){
+            mTouchInViewState =0;
+            return false;
+        }
+        int[] position = new int[2];
+        view.getLocationInWindow(position);
+        float x = e.getRawX();
+        float y = e.getRawY();
+        if(position[0]<x&&x<position[0]+view.getWidth()
+                &&position[1]<y&&y<position[1]+view.getHeight()){
+            mTouchInViewState =1;
+            return true;
+        }
+        mTouchInViewState =-1;
+        return false;
     }
 
     /**
@@ -965,16 +1043,16 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     protected boolean canChildScrollUp() {
         if (android.os.Build.VERSION.SDK_INT < 14) {
-            if (mTargetView instanceof AbsListView) {
-                final AbsListView absListView = (AbsListView) mTargetView;
+            if (mTouchView instanceof AbsListView) {
+                final AbsListView absListView = (AbsListView) mTouchView;
                 return absListView.getChildCount() > 0
                         && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
                         .getTop() < absListView.getPaddingTop());
             } else {
-                return ViewCompat.canScrollVertically(mTargetView, -1) || mTargetView.getScrollY() > 0;
+                return ViewCompat.canScrollVertically(mTouchView, -1) || mTouchView.getScrollY() > 0;
             }
         } else {
-            return ViewCompat.canScrollVertically(mTargetView, -1);
+            return ViewCompat.canScrollVertically(mTouchView, -1);
         }
     }
 
@@ -986,16 +1064,16 @@ public class SwipeToLoadLayout extends ViewGroup {
      */
     protected boolean canChildScrollDown() {
         if (android.os.Build.VERSION.SDK_INT < 14) {
-            if (mTargetView instanceof AbsListView) {
-                final AbsListView absListView = (AbsListView) mTargetView;
+            if (mTouchView instanceof AbsListView) {
+                final AbsListView absListView = (AbsListView) mTouchView;
                 return absListView.getChildCount() > 0
                         && (absListView.getLastVisiblePosition() < absListView.getChildCount() - 1
                         || absListView.getChildAt(absListView.getChildCount() - 1).getBottom() > absListView.getPaddingBottom());
             } else {
-                return ViewCompat.canScrollVertically(mTargetView, 1) || mTargetView.getScrollY() < 0;
+                return ViewCompat.canScrollVertically(mTouchView, 1) || mTouchView.getScrollY() < 0;
             }
         } else {
-            return ViewCompat.canScrollVertically(mTargetView, 1);
+            return ViewCompat.canScrollVertically(mTouchView, 1);
         }
     }
 
@@ -1239,6 +1317,7 @@ public class SwipeToLoadLayout extends ViewGroup {
      * on active finger up
      */
     private void onActivePointerUp() {
+        mTouchInViewState = 0;
         if (STATUS.isSwipingToRefresh(mStatus)) {
             // simply return
             scrollSwipingToRefreshToDefault();
@@ -1266,13 +1345,13 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @param ev
      */
     private void onSecondaryPointerUp(MotionEvent ev) {
-        final int pointerIndex = MotionEventCompat.getActionIndex(ev);
-        final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
+        final int pointerIndex = ev.getActionIndex();
+        final int pointerId = ev.getPointerId(pointerIndex);
         if (pointerId == mActivePointerId) {
             // This was our active pointer going up. Choose a new
             // active pointer and adjust accordingly.
             final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
-            mActivePointerId = MotionEventCompat.getPointerId(ev, newPointerIndex);
+            mActivePointerId = ev.getPointerId(newPointerIndex);
         }
     }
 
@@ -1386,22 +1465,28 @@ public class SwipeToLoadLayout extends ViewGroup {
     }
 
     private float getMotionEventY(MotionEvent event, int activePointerId) {
-        final int index = MotionEventCompat.findPointerIndex(event, activePointerId);
+        final int index = event.findPointerIndex(activePointerId);
         if (index < 0) {
             return INVALID_COORDINATE;
         }
-        return MotionEventCompat.getY(event, index);
+        return event.getY(index);
     }
 
     private float getMotionEventX(MotionEvent event, int activePointId) {
-        final int index = MotionEventCompat.findPointerIndex(event, activePointId);
+        final int index = event.findPointerIndex(activePointId);
         if (index < 0) {
             return INVALID_COORDINATE;
         }
-        return MotionEventCompat.getX(event, index);
+        return event.getX(index);
     }
 
     RefreshCallback mRefreshCallback = new RefreshCallback() {
+
+        @Override
+        public void setAnimationListener(Animation.AnimationListener listener) {
+
+        }
+
         @Override
         public void onPrepare() {
             if (mHeaderView != null && mHeaderView instanceof SwipeTrigger && STATUS.isStatusDefault(mStatus)) {
@@ -1456,6 +1541,11 @@ public class SwipeToLoadLayout extends ViewGroup {
     };
 
     LoadMoreCallback mLoadMoreCallback = new LoadMoreCallback() {
+
+        @Override
+        public void setAnimationListener(Animation.AnimationListener listener) {
+
+        }
 
         @Override
         public void onPrepare() {
@@ -1700,5 +1790,166 @@ public class SwipeToLoadLayout extends ViewGroup {
         private static void printStatus(int status) {
             Log.i(TAG, "printStatus:" + getStatus(status));
         }
+    }
+
+    //===================================================== 从SwipeRefreshLayout拷贝过来的
+    private float mTotalUnconsumed;
+    private final int[] mParentOffsetInWindow = new int[2];
+    private final int[] mParentScrollConsumed = new int[2];
+    private boolean mNestedScrollInProgress;
+
+    private NestedScrollingParentHelper mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
+    private NestedScrollingChildHelper mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
+
+    @Override
+    public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
+        return isEnabled() /*&& !mReturningToStart*/ && !isRefreshing()
+                && (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
+    }
+
+    @Override
+    public void onNestedScrollAccepted(View child, View target, int axes) {
+//        super.onNestedScrollAccepted(child, target, axes);
+        mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
+        // Dispatch up to the nested parent
+        startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
+        mTotalUnconsumed = 0;
+        mNestedScrollInProgress = true;
+    }
+
+    @Override
+    public void onStopNestedScroll(View child) {
+//        super.onStopNestedScroll(child);
+        mNestedScrollingParentHelper.onStopNestedScroll(child);
+        mNestedScrollInProgress = false;
+        // Finish the spinner for nested scrolling if we ever consumed any
+        // unconsumed nested scroll
+        if (mTotalUnconsumed > 0) {
+            finishSpinner(mTotalUnconsumed);
+            mTotalUnconsumed = 0;
+        }
+        // Dispatch up our nested parent
+        stopNestedScroll();
+    }
+
+    @Override
+    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+//        super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+        // Dispatch up to the nested parent first
+        dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed,
+                mParentOffsetInWindow);
+
+        // This is a bit of a hack. Nested scrolling works from the bottom up, and as we are
+        // sometimes between two nested scrolling views, we need a way to be able to know when any
+        // nested scrolling parent has stopped handling events. We do that by using the
+        // 'offset in window 'functionality to see if we have been moved from the event.
+        // This is a decent indication of whether we should take over the event stream or not.
+        final int dy = dyUnconsumed + mParentOffsetInWindow[1];
+        if (dy < 0 && !canChildScrollUp()) {
+            mTotalUnconsumed += Math.abs(dy);
+            moveSpinner(mTotalUnconsumed);
+        }
+    }
+
+    @Override
+    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
+//        super.onNestedPreScroll(target, dx, dy, consumed);
+        // If we are in the middle of consuming, a scroll, then we want to move the spinner back up
+        // before allowing the list to scroll
+        if (dy > 0 && mTotalUnconsumed > 0) {
+            if (dy > mTotalUnconsumed) {
+                consumed[1] = dy - (int) mTotalUnconsumed;
+                mTotalUnconsumed = 0;
+            } else {
+                mTotalUnconsumed -= dy;
+                consumed[1] = dy;
+            }
+            moveSpinner(mTotalUnconsumed);
+        }
+        // If a client layout is using a custom start position for the circle
+        // view, they mean to hide it again before scrolling the child view
+        // If we get back to mTotalUnconsumed == 0 and there is more to go, hide
+        // the circle so it isn't exposed if its blocking content is moved
+//        if (mUsingCustomStart && dy > 0 && mTotalUnconsumed == 0
+//                && Math.abs(dy - consumed[1]) > 0) {
+//            mCircleView.setVisibility(View.GONE);
+//        }
+
+        // Now let our nested parent consume the leftovers
+//        final int[] parentConsumed = mParentScrollConsumed;
+//        if (dispatchNestedPreScroll(dx - consumed[0], dy - consumed[1], parentConsumed, null)) {
+//            consumed[0] += parentConsumed[0];
+//            consumed[1] += parentConsumed[1];
+//        }
+    }
+
+    @Override
+    public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed) {
+//        return super.onNestedFling(target, velocityX, velocityY,consumed);
+        return dispatchNestedFling(velocityX, velocityY, consumed);
+    }
+
+    @Override
+    public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
+//        return super.onNestedPreFling(target, velocityX, velocityY);
+        return dispatchNestedPreFling(velocityX, velocityY);
+    }
+
+    @Override
+    public int getNestedScrollAxes() {
+//        return super.getNestedScrollAxes();
+        return mNestedScrollingParentHelper.getNestedScrollAxes();
+    }
+    //===================================================== 从SwipeRefreshLayout拷贝过来的
+
+    @Override
+    public void setNestedScrollingEnabled(boolean enabled) {
+        mNestedScrollingChildHelper.setNestedScrollingEnabled(enabled);
+    }
+
+    @Override
+    public boolean isNestedScrollingEnabled() {
+        return mNestedScrollingChildHelper.isNestedScrollingEnabled();
+    }
+
+    @Override
+    public boolean startNestedScroll(int axes) {
+        return mNestedScrollingChildHelper.startNestedScroll(axes);
+    }
+
+    @Override
+    public void stopNestedScroll() {
+        mNestedScrollingChildHelper.stopNestedScroll();
+    }
+
+    @Override
+    public boolean hasNestedScrollingParent() {
+        return mNestedScrollingChildHelper.hasNestedScrollingParent();
+    }
+
+    @Override
+    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int[] offsetInWindow) {
+        return mNestedScrollingChildHelper.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow);
+    }
+
+    @Override
+    public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed, int[] offsetInWindow) {
+        return mNestedScrollingChildHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow);
+    }
+
+    @Override
+    public boolean dispatchNestedFling(float velocityX, float velocityY, boolean consumed) {
+        return mNestedScrollingChildHelper.dispatchNestedFling(velocityX, velocityY, consumed);
+    }
+
+    @Override
+    public boolean dispatchNestedPreFling(float velocityX, float velocityY) {
+        return mNestedScrollingChildHelper.dispatchNestedPreFling(velocityX, velocityY);
+    }
+
+    private void moveSpinner(float overscrollTop) {
+    }
+
+    private void finishSpinner(float overscrollTop) {
     }
 }
