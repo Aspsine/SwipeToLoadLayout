@@ -1,5 +1,7 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwipeToLoadLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2812)
 # SwipeToLoadLayout
+**作者不维护了，并且不支持 CoordinatorLayout 所以弃用**
+
 SwipeToLoadLayout is a reusable pull-to-refresh and pull-to-load-more widget.
 
 ## Supported View
